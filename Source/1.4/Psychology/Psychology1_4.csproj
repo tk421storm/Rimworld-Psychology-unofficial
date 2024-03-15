@@ -14,8 +14,8 @@
     <TargetFrameworkProfile />
   </PropertyGroup>
   <PropertyGroup>
-    <TargetFramework>net6.0</TargetFramework>
-    <LangVersion>10</LangVersion>
+    <TargetFramework>net4.7</TargetFramework>
+    <LangVersion>7</LangVersion>
   </PropertyGroup>
   <!-- <PropertyGroup Condition=" '$(Configuration)|$(Platform)' == 'Debug|AnyCPU' ">
     <DebugSymbols>true</DebugSymbols>
@@ -40,9 +40,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Reference Include="0Harmony">
-      <HintPath Condition="Exists('..\..\..\..\..\..\..\..\workshop\content\294100\2009463077\Current\Assemblies')">..\..\..\..\..\..\..\..\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HintPath>
-      <HintPath Condition="Exists('..\..\..\..\..\..\..\workshop\content\294100\2009463077\Current\Assemblies')">..\..\..\..\..\..\..\..\workshop\content\294100\2009463077\Current\Assemblies\0Harmony.dll</HintPath>
-      <Private>False</Private>
+      <HintPath>..\..\..\..\..\..\..\workshop\content\294100\2009463077\1.4\Assemblies\0Harmony.dll</HintPath>
     </Reference>
     <Reference Include="Assembly-CSharp">
       <HintPath Condition="Exists('..\..\..\..\..\Contents\Resources\Data\Managed')">..\..\..\..\..\Contents\Resources\Data\Managed\Assembly-CSharp.dll</HintPath>
