@@ -1,0 +1,35 @@
+﻿<Project Sdk="Microsoft.NET.Sdk">
+  <!-- Main Psychology assembly. Shared settings (target version, references) live in ../Directory.Build.props. -->
+  <PropertyGroup>
+    <AssemblyName>Psychology</AssemblyName>
+    <RootNamespace>Psychology</RootNamespace>
+    <OutputPath>$(ModRoot)$(RimWorldVersion)\Assemblies\</OutputPath>
+  </PropertyGroup>
+
+  <ItemGroup>
+    <!--
+      Leftover files that are entirely commented out (or reference long-gone APIs) and were never
+      part of the shipped assembly. Kept on disk for reference only; delete once nobody needs them.
+    -->
+    <Compile Remove="Harmony\Misc\Thing.cs" />
+    <Compile Remove="Harmony\RomanceAndFamily\ThoughtWorker_WantToSleepWithSpouseOrLover.cs" />
+    <Compile Remove="Harmony\Thoughts\ThoughtWorker_AlwaysActiveDepression.cs" />
+    <Compile Remove="Harmony\Thoughts\ThoughtWorker_ChemicalInterestVsTeetotaler.cs" />
+    <Compile Remove="Harmony\Thoughts\ThoughtWorker_HardWorkerVsLazy.cs" />
+    <Compile Remove="Harmony\Thoughts\ThoughtWorker_Pretty.cs" />
+    <Compile Remove="Harmony\Thoughts\ThoughtWorker_TeetotalerVsChemicalInterest.cs" />
+    <Compile Remove="Main\Medical\Treatments\Hediff_RecoveringPyromaniac.cs" />
+    <Compile Remove="Main\Medical\Treatments\Recipe_TreatChemicalFascination.cs" />
+    <Compile Remove="Main\Medical\Treatments\Recipe_TreatChemicalInterest.cs" />
+    <Compile Remove="Main\Medical\Treatments\Recipe_TreatDepression.cs" />
+    <Compile Remove="Main\Medical\Treatments\Recipe_TreatInsomnia.cs" />
+    <Compile Remove="Main\Medical\Treatments\Recipe_TreatPyromaniac.cs" />
+  </ItemGroup>
+
+  <ItemGroup>
+    <!-- Mod XML shown in the IDE for convenience; not compiled. -->
+    <None Include="$(ModRoot)About\**\*.xml" Link="Mod\About\%(RecursiveDir)%(Filename)%(Extension)" />
+    <None Include="$(ModRoot)Common\**\*.xml" Link="Mod\Common\%(RecursiveDir)%(Filename)%(Extension)" />
+    <None Include="$(ModRoot)LoadFolders.xml" Link="Mod\LoadFolders.xml" />
+  </ItemGroup>
+</Project>

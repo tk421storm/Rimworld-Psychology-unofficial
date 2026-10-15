@@ -1,74 +1,26 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <ModMetaData>
-	<name>Psychology (unofficial) v1.1-1.6 DEV</name>
+	<name>Psychology (unofficial) v1.6-1.7 DEV</name>
 	<author>Linq</author>
 	<url>https://ludeon.com/forums/index.php?topic=34112.0</url>
 	<packageId>Community.Psychology.UnofficialUpdate</packageId>
 	<supportedVersions>
-		<li>1.1</li>
-		<li>1.2</li>
-		<li>1.3</li>
-		<li>1.4</li>
-		<li>1.5</li>
-    <li>1.6</li>
+		<li>1.6</li>
+		<!-- TODO: enable once 1.7/Assemblies has been built (needs the .NET 10 SDK, see Source/build.ps1). -->
+		<!--<li>1.7</li>-->
 	</supportedVersions>
-	<modDependenciesByVersion>
-		<v1.1>
-			<li>
-				<packageId>UnlimitedHugs.HugsLib</packageId>
-				<displayName>HugsLib</displayName>
-				<steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=818773962</steamWorkshopUrl>
-			</li>
-			<li>
-				<packageId>brrainz.harmony</packageId>
-				<displayName>Harmony</displayName>
-				<steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
-				<downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
-			</li>
-		</v1.1>
-		<v1.2>
-			<li>
-				<packageId>UnlimitedHugs.HugsLib</packageId>
-				<displayName>HugsLib</displayName>
-				<steamWorkshopUrl>https://steamcommunity.com/sharedfiles/filedetails/?id=818773962</steamWorkshopUrl>
-			</li>
-			<li>
-				<packageId>brrainz.harmony</packageId>
-				<displayName>Harmony</displayName>
-				<steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
-				<downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
-			</li>
-		</v1.2>
-		<v1.3>
-			<li>
-				<packageId>brrainz.harmony</packageId>
-				<displayName>Harmony</displayName>
-				<steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
-				<downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
-			</li>
-		</v1.3>
-		<v1.4>
-			<li>
-				<packageId>brrainz.harmony</packageId>
-				<displayName>Harmony</displayName>
-				<steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
-				<downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
-			</li>
-		</v1.4>
-		<v1.5>
-			<li>
-				<packageId>brrainz.harmony</packageId>
-				<displayName>Harmony</displayName>
-				<steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
-				<downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
-			</li>
-		</v1.5>
-	</modDependenciesByVersion>
+	<modDependencies>
+		<li>
+			<packageId>brrainz.harmony</packageId>
+			<displayName>Harmony</displayName>
+			<steamWorkshopUrl>steam://url/CommunityFilePage/2009463077</steamWorkshopUrl>
+			<downloadUrl>https://github.com/pardeike/HarmonyRimWorld/releases/latest</downloadUrl>
+		</li>
+	</modDependencies>
 	<loadAfter>
 		<li>brrainz.harmony</li>
-		<li>UnlimitedHugs.HugsLib</li>
+		<li>erdelf.HumanoidAlienRaces</li>
 		<li>void.charactereditor</li>
-		<li>EdB.PrepareCarefully</li>
 		<li>tachyonite.pawnmorpherpublic</li>
 	</loadAfter>
 	<description>&lt;b&gt;Major update for 1.3 and 1.4!&lt;/b&gt;
