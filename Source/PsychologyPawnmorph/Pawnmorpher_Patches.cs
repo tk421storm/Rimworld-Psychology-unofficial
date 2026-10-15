@@ -2,8 +2,7 @@
 using RimWorld;
 using System.Runtime;
 
-namespace Psychology.Harmony;
-// Pawnmorpher compatibility: gives every pawn race the psyche tab/thoughts machinery (but not the comp itself), and
+namespace Psychology.Harmony;// Pawnmorpher compatibility: gives every pawn race the psyche tab/thoughts machinery (but not the comp itself), and
 // replaces PsycheHelper.HasLatentPsyche so that a former human (an animal that used to be a colonist) copies the psyche
 // of the original human. (Pawnmorpher isn't installed here, so this project can't be built locally; the shipped 1.6 DLL
 // is kept.)
@@ -61,18 +60,15 @@ public class PawnmorphPatches_PsycheHelper_HasLatentPsyche
                 originalPawn = Pawnmorph.FormerHumanUtilities.IsFormerHuman(pawn) ? Pawnmorph.FormerHumanUtilities.GetOriginalPawnOfFormerHuman(pawn) : null;
                 if (originalPawn == null)
                 {
-                    //Log.Message("PsychologyEnabled_Patch, comp == null and originalPawn == null");
                     return false;
                 }
                 originalComp = originalPawn.GetComp<CompPsychology>();
                 if (originalComp == null)
                 {
-                    //Log.Message("PsychologyEnabled_Patch, originalComp == null");
                     return false;
                 }
                 if (originalComp.IsPsychologyPawn != true)
                 {
-                    //Log.Message("PsychologyEnabled_Patch, originalComp.IsPsychologyPawn != true");
                     return false;
                 }
                 comp = new CompPsychology { parent = pawn };
@@ -92,16 +88,13 @@ public class PawnmorphPatches_PsycheHelper_HasLatentPsyche
         }
         if (comp.IsPsychologyPawn != true)
         {
-            //Log.Message("PsychologyEnabled_Patch, comp.IsPsychologyPawn != true");
             return false;
         }
         settings = SpeciesHelper.GetOrMakeSpeciesSettingsFromThingDef(pawn.def);
         if (settings?.enablePsyche != true)
         {
-            //Log.Message("PsychologyEnabled_Patch, settings?.enablePsyche != true");
             return false;
         }
-        //Log.Message("PsychologyEnabled_Patch, return true for pawn = " + pawn.Label);
         return true;
     }
 }
@@ -112,47 +105,10 @@ public class PawnmorphPatches_PsychologyGameComponent_LoadedGame
     [HarmonyPostfix]
     public static void Postfix()
     {
-        //CompPsychology comp;
-        //Pawn originalPawn;
-        //CompPsychology originalComp;
 
         foreach (Pawn pawn in PawnsFinder.All_AliveOrDead)
         {
             PsycheHelper.HasLatentPsyche(pawn);
-            //if (pawn == null)
-            //{
-            //    Log.Warning("LoadedGame_PawnmorphPostfix, pawn == null");
-            //    continue;
-            //}
-            //comp = pawn.GetComp<CompPsychology>();
-            //if (comp == null)
-            //{
-            //    originalPawn = Pawnmorph.FormerHumanUtilities.GetOriginalPawnOfFormerHuman(pawn);
-            //    if (originalPawn == null)
-            //    {
-            //        //Log.Message("LoadedGame_PawnmorphPostfix, comp == null and originalPawn == null");
-            //        continue;
-            //    }
-            //    originalComp = originalPawn.GetComp<CompPsychology>();
-            //    if (originalComp == null)
-            //    {
-            //        //Log.Message("LoadedGame_PawnmorphPostfix, originalComp == null");
-            //        continue;
-            //    }
-            //    if (originalComp.IsPsychologyPawn != true)
-            //    {
-            //        //Log.Message("LoadedGame_PawnmorphPostfix, originalComp.IsPsychologyPawn != true");
-            //        continue;
-            //    }
-            //    comp = new CompPsychology { parent = pawn };
-            //    comp.DeepCopyFromOtherComp(originalComp);
-            //    pawn.AllComps.Add(comp);
-            //    SpeciesHelper.AddEverythingExceptCompPsychology(pawn.def);
-            //}
-            //if (comp.IsPsychologyPawn != true)
-            //{
-            //    //Log.Message("LoadedGame_PawnmorphPostfix, comp.IsPsychologyPawn != true");
-            //}
         }
     }
 }

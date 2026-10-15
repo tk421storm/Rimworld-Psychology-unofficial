@@ -22,15 +22,5 @@ namespace Psychology
             Scribe_Values.Look(ref this.worldTileElectedOn, "worldTileElectedOn", 0);
         }
 
-        
-        //public override void Tick()
-        //{
-        //    base.Tick();
-        //    Settlement colony = Find.WorldObjects.ObjectsAt(worldTileElectedOn).OfType<Settlement>().FirstOrDefault();
-        //    //if (this.pawn.Dead || !PsychologyBase.ActivateElections() || colony == null || colony.Map.lordManager.lords.Find(l => l.LordJob is LordJob_Joinable_Election) != null)
-        //    //{
-        //    //    this.pawn.health.RemoveHediff(this);
-        //    //}
-        //}
     }
 }

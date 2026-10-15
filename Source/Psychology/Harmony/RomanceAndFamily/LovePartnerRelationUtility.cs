@@ -20,16 +20,6 @@ public static class LovePartnerRelationUtility_GenerationChancePatch
   [HarmonyPrefix]
   public static bool LovePartnerRelationGenerationChance(ref float __result, Pawn generated, Pawn other, PawnGenerationRequest request, bool ex)
   {
-    //if (!SpeciesHelper.RomanceLifestageAgeCheck(generated, true) || !SpeciesHelper.RomanceLifestageAgeCheck(other, true))
-    //{
-    //    __result = 0f;
-    //    return false;
-    //}
-    //if (!SpeciesHelper.RomanceSettingsAgeCheck(generated, true) || !SpeciesHelper.RomanceSettingsAgeCheck(other, true))
-    //{
-    //    __result = 0f;
-    //    return false;
-    //}
     if (!SpeciesHelper.RomanceEnabled(generated, true) || !SpeciesHelper.RomanceEnabled(other, true))
     {
       __result = 0f;
@@ -39,7 +29,6 @@ public static class LovePartnerRelationUtility_GenerationChancePatch
     bool sameGender = generated.gender == other.gender;
 
     float sexualityFactor = 1f;
-    //if (PsychologySettings.enableKinsey)
     if (PsychologySettings.enableKinsey && PsycheHelper.PsychologyEnabled(generated) && PsycheHelper.PsychologyEnabled(other))
     {
       int kinsey1 = PsycheHelper.Comp(generated).Sexuality.kinseyRating;
@@ -160,10 +149,6 @@ public static class LovePartnerRelationUtility_GenerationChancePatch
     }
     float num2 = PawnRelationUtility.MaxPossibleBioAgeAt(scaledBioAge2, scaledChrAge2, num);
     float num3 = PawnRelationUtility.MinPossibleBioAgeAt(scaledBioAge2, num);
-    //if (num2 < 0f)
-    //{
-    //    return -1f;
-    //}
     if (num2 < 14f)
     {
       return -1f;
@@ -175,23 +160,6 @@ public static class LovePartnerRelationUtility_GenerationChancePatch
     return num3 - 14f;
   }
 
-  // The maximum possible bio age at time atChronologicalAge
-  //public static float MaxPossibleBioAgeAt(float myBiologicalAge, float myChronologicalAge, float atChronologicalAge)
-  //{
-  //    // atChronologicalAge is atChrAge - 14
-  //    // myChronologicalAge - atChronologicalAge
-  //    float num = Mathf.Min(myBiologicalAge, myChronologicalAge - atChronologicalAge);
-  //    if (num < 0f)
-  //    {
-  //        return -1f;
-  //    }
-  //    return num;
-  //}
-
-  //public static float MinPossibleBioAgeAt(float myBiologicalAge, float atChronologicalAge)
-  //{
-  //    return Mathf.Max(myBiologicalAge - atChronologicalAge, 0f);
-  //}
 }
 
 // When a Polygamous pawn marries again, only non-Polygamous spouses become ex-spouses.
@@ -267,135 +235,3 @@ public static class LovePartnerRelationUtility_LovinMtbSinglePawnFactor_Patch
     __result = RomanceUtility.LovinMtbSinglePawnFactorPsychology(pawn, out float yMean);
   }
 }
-
-//[HarmonyPrefix]
-//public static bool GetLovinMtbHoursPrefix(ref float __result, Pawn pawn, Pawn partner)
-//{
-//    if (!PsycheHelper.PsychologyEnabled(pawn) || !PsycheHelper.PsychologyEnabled(partner))
-//    {
-//        __result = -1f;
-//        return false;
-//    }
-//    if (!SpeciesHelper.RomanceCombinedAgeCheck(pawn, false) || !SpeciesHelper.RomanceCombinedAgeCheck(partner, false))
-//    {
-//        //Log.Message("GetLovinMtbHours, RomanceLifestageCheck != true");
-//        // No underage lovin
-//        __result = -1f;
-//        return false;
-//    }
-//    if (pawn?.ageTracker?.Adult != true || partner?.ageTracker?.Adult != true)
-//    {
-//        //long AdultMinAgeTicks = pawn.ageTracker.AdultMinAgeTicks;
-//        //long AgeBiologicalTicks = pawn.ageTracker.AgeBiologicalTicks;
-//        //long TicksToAdulthood = AdultMinAgeTicks - AgeBiologicalTicks;
-//        //bool Adult = TicksToAdulthood <= 0f;
-//        //long AdultMinAgeTicks2 = partner.ageTracker.AdultMinAgeTicks;
-//        //long AgeBiologicalTicks2 = partner.ageTracker.AgeBiologicalTicks;
-//        //long TicksToAdulthood2 = AdultMinAgeTicks2 - AgeBiologicalTicks2;
-//        //bool Adult2 = TicksToAdulthood2 <= 0f;
-//        //Log.Message("GetLovinMtbHours, pawn: " + pawn + ", AdultMinAgeTicks: " + AdultMinAgeTicks + ", AgeBiologicalTicks: " + AgeBiologicalTicks + ", TicksToAdulthood: " + TicksToAdulthood + ", Adult: " + Adult + "\nGetLovinMtbHours, pawn2: " + partner + ", AdultMinAgeTicks2: " + AdultMinAgeTicks2 + ", AgeBiologicalTicks2: " + AgeBiologicalTicks2 + ", TicksToAdulthood2: " + TicksToAdulthood2 + ", Adult2: " + Adult2);
-
-//        // No underage lovin
-//        __result = -1f;
-//        return false;
-//    }
-//    return true;
-//}
-
-//[HarmonyPrefix]
-//public static bool GetLovinMtbHours(ref float __result, Pawn pawn, Pawn partner)
-//{
-//    if (!PsycheHelper.PsychologyEnabled(pawn) || !PsycheHelper.PsychologyEnabled(partner))
-//    {
-//        __result = -1;
-//        return false;
-//        //return true;
-//    }
-//    if (pawn.Dead || partner.Dead)
-//    {
-//        __result = -1f;
-//        return false;
-//    }
-//    if (DebugSettings.alwaysDoLovin)
-//    {
-//        __result = 0.1f;
-//        return false;
-//    }
-//    if (pawn.needs.food.Starving || partner.needs.food.Starving)
-//    {
-//        Log.Message("GetLovinMtbHours, pawn.needs.food.Starving == true");
-//        __result = -1f;
-//        return false;
-//    }
-//    if (pawn.health.hediffSet.BleedRateTotal > 0f || partner.health.hediffSet.BleedRateTotal > 0f)
-//    {
-//        Log.Message("GetLovinMtbHours, BleedRateTotal > 0f");
-//        __result = -1f;
-//        return false;
-//    }
-//    if (!pawn?.ageTracker?.Adult != true || !partner?.ageTracker?.Adult != true)
-//    {
-//        Log.Message("GetLovinMtbHours, pawn?.ageTracker?.Adult != true");
-//        // No underage lovin
-//        __result = -1f;
-//        return false;
-//    }
-//    if (!SpeciesHelper.RomanceLifestageCheck(pawn, false) || !SpeciesHelper.RomanceLifestageCheck(partner, false))
-//    {
-//        Log.Message("GetLovinMtbHours, RomanceLifestageCheck != true");
-//        // No underage lovin
-//        __result = -1f;
-//        return false;
-//    }
-
-//    //float pawnAge = pawn.ageTracker.AgeBiologicalYearsFloat;
-//    //float partnerAge = partner.ageTracker.AgeBiologicalYearsFloat;
-//    //SpeciesSettings pawnSpeciesSettings = SpeciesHelper.GetOrMakeSpeciesSettingsFromThingDef(pawn.def);
-//    //SpeciesSettings partnerSpeciesSettings = SpeciesHelper.GetOrMakeSpeciesSettingsFromThingDef(partner.def);
-
-//    //float pawnMinLovinAge = PsychologySettings.speciesDict[pawn.def.defName].minLovinAge;
-//    //float partnerMinLovinAge = PsychologySettings.speciesDict[partner.def.defName].minLovinAge;
-//    //if (pawnAge < pawnMinLovinAge || partnerAge < partnerMinLovinAge || pawnMinLovinAge < 0f || partnerMinLovinAge < 0f)
-//    //{
-//    //    // No underage lovin
-//    //    __result = -1f;
-//    //    return false;
-//    //}
-
-//    float pawnSexDrive = PsycheHelper.Comp(pawn).Sexuality.AdjustedSexDrive;
-//    float partnerSexDrive = PsycheHelper.Comp(partner).Sexuality.AdjustedSexDrive;
-//    if (pawnSexDrive < 0.1f || partnerSexDrive < 0.1f)
-//    {
-//        Log.Message("GetLovinMtbHours, sex drive too low");
-//        // Asexual pawns avoid lovin
-//        __result = -1f;
-//        return false;
-//    }
-//    float frequency = 1f;
-//    frequency *= LovinMtbSinglePawnFactor(pawn);
-//    frequency *= LovinMtbSinglePawnFactor(partner);
-//    frequency *= Mathf.Pow(pawnSexDrive, 2f);
-//    frequency *= Mathf.Pow(partnerSexDrive, 2f);
-//    frequency *= Mathf.Max(pawn.relations.SecondaryLovinChanceFactor(partner), 0.1f);
-//    frequency *= Mathf.Max(partner.relations.SecondaryLovinChanceFactor(pawn), 0.1f);
-//    frequency /= GenMath.LerpDouble(-100f, 100f, 1.3f, 0.7f, pawn.relations.OpinionOf(partner));
-//    frequency /= GenMath.LerpDouble(-100f, 100f, 1.3f, 0.7f, partner.relations.OpinionOf(pawn));
-//    if (pawn.health.hediffSet.HasHediff(HediffDefOf.PsychicLove))
-//    {
-//        frequency *= 4f;
-//    }
-//    __result = frequency > 0f ? 12f / frequency : -1f;
-//    return false;
-//}
-
-//public static float LovinMtbSinglePawnFactor(Pawn pawn)
-//{
-//    float num = 1f;
-//    num *= 1f - pawn.health.hediffSet.PainTotal;
-//    float level = pawn.health.capacities.GetLevel(PawnCapacityDefOf.Consciousness);
-//    if (level < 0.5f)
-//    {
-//        num *= level * 2f;
-//    }
-//    return num;
-//}

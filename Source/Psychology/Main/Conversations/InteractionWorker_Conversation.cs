@@ -21,7 +21,7 @@ namespace Psychology;
 /// </summary>
 public class InteractionWorker_Conversation : InteractionWorker
 {
-    
+
     /// <summary>
     /// 0.35 x a personality multiplier. The multiplier comes from 4 x the sum of: initiator Extroverted - 0.5, initiator
     /// Outspoken - 0.5, recipient Friendly - 0.5, +0.5 if the initiator is Chatty and +0.5 if both are on the same
@@ -31,25 +31,12 @@ public class InteractionWorker_Conversation : InteractionWorker
     {
         if (!PsycheHelper.PsychologyEnabled(initiator) || !PsycheHelper.PsychologyEnabled(recipient))
         {
-            //Log.Message("InteractionWorker_Conversation.RandomSelectionWeight, not enabled for initiator " + initiator.LabelShort + ", recipient " + recipient.LabelShort);
             return 0f;
         }
         if (!initiator.health.capacities.CapableOf(PawnCapacityDefOf.Talking) || !recipient.health.capacities.CapableOf(PawnCapacityDefOf.Talking))
         {
-            //Log.Message("InteractionWorker_Conversation.RandomSelectionWeight, initiator " + initiator.LabelShort + ", recipient " + recipient.LabelShort + ", not talking");
             return 0f;
         }
-        //float baseChance = 0.45f;
-        //Lord lord = LordUtility.GetLord(initiator);
-        //if (lord != null && (lord.LordJob is LordJob_HangOut || lord.LordJob is LordJob_Date) && LordUtility.GetLord(recipient) == lord)
-        //{
-        //    baseChance = 0.75f;
-        //}
-        //if (initiator.story.traits.HasTrait(TraitDefOfPsychology.Chatty))
-        //{
-        //    baseChance *= 1.2f;
-        //}
-        //return Mathf.Max(0f, baseChance + (PsycheHelper.Comp(recipient).Psyche.GetPersonalityRating(PersonalityNodeDefOf.Friendly)-0.6f) + (PsycheHelper.Comp(initiator).Psyche.GetPersonalityRating(PersonalityNodeDefOf.Extroverted)-0.5f));
         float chanceFactor = 0.0f;
         Lord lord = LordUtility.GetLord(initiator);
         if (lord != null && (lord.LordJob is LordJob_HangOut || lord.LordJob is LordJob_Date) && LordUtility.GetLord(recipient) == lord)
@@ -66,14 +53,9 @@ public class InteractionWorker_Conversation : InteractionWorker
 
         chanceFactor *= 4f;
         float multiplicativeFactor = chanceFactor > 0 ? 1f + chanceFactor : 1f / (1f - chanceFactor);
-        //float multiplicativeFactor = chanceFactor > 0 ? Mathf.Sqrt(1f + 2f * chanceFactor) : 1f / (1f - chanceFactor);
         return 0.35f * multiplicativeFactor;
-        //float successChance = 1f / (1f + Mathf.Pow(16f, -chanceFactor));
-        //Log.Message("InteractionWorker_Conversation.RandomSelectionWeight, initiator " + initiator.LabelShort + ", recipient " + recipient.LabelShort + ", successChance " + successChance);
-        //return successChance;
     }
 
-    
     // Topic: one of the initiator's nodes, weighted by Pawn_PsycheTracker.GetConversationTopicWeight (controversial topics
     // are avoided with people they don't know well), then a random phrase from that node's conversationTopics.
     // The initiator's hediff has waveGoodbye = true: it owns the log entry and the goodbye bubble.

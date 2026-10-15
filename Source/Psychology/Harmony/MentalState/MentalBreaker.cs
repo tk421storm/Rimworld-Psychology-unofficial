@@ -15,13 +15,6 @@ namespace Psychology.Harmony;
 [HarmonyPatch(typeof(MentalBreaker), nameof(MentalBreaker.TryDoRandomMoodCausedMentalBreak))]
 public static class MentalBreaker_AnxietyPatch
 {
-    //public static Dictionary<MentalBreakIntensity, Pair<float, float>> dict = new Dictionary<MentalBreakIntensity, Pair<float, float>>()
-    //{
-    //    { MentalBreakIntensity.None   , new Pair<float, float>(0.0f * PsychologySettings.mentalBreakAnxietyChance, 0.0f) },
-    //    { MentalBreakIntensity.Minor  , new Pair<float, float>(0.1f * PsychologySettings.mentalBreakAnxietyChance, 0.3f) },
-    //    { MentalBreakIntensity.Major  , new Pair<float, float>(0.2f * PsychologySettings.mentalBreakAnxietyChance, 0.7f) },
-    //    { MentalBreakIntensity.Extreme, new Pair<float, float>(0.4f * PsychologySettings.mentalBreakAnxietyChance, 1.1f) }
-    //};
 
     public static Pair<float, float> AnxietyChanceAndSeverity(MentalBreakIntensity intensity)
     {
@@ -45,13 +38,11 @@ public static class MentalBreaker_AnxietyPatch
         {
             return;
         }
-        //Pawn pawn = Traverse.Create(__instance).Field("pawn").GetValue<Pawn>();
         MentalBreakIntensity intensity = Traverse.Create(__instance).Property("CurrentDesiredMoodBreakIntensity").GetValue<MentalBreakIntensity>();
         Pair<float, float> pair = AnxietyChanceAndSeverity(intensity);
         float PTSDChance = pair.First;
         float severity = pair.Second;
 
-        //int.TryParse("" + (byte)Traverse.Create(__instance).Property("CurrentDesiredMoodBreakIntensity").GetValue<MentalBreakIntensity>(), out intensity);
         if (PTSDChance == 0.0f)
         {
             return;

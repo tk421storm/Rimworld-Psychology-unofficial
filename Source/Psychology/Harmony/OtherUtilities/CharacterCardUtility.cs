@@ -50,24 +50,4 @@ public static class CharacterCardUtility_DrawCharacterCard_Patch
         return Widgets.InfoCardButton(x, y, pawn);
     }
 
-    //[HarmonyTranspiler]
-    //public static IEnumerable<CodeInstruction> AddPsycheDisplay(IEnumerable<CodeInstruction> instr)
-    //{
-    //    int doNames = 0;
-    //    foreach (CodeInstruction itr in instr)
-    //    {
-    //        yield return itr;
-    //        if (itr.opcode == OpCodes.Call && itr.operand as MethodInfo == typeof(CharacterCardUtility).GetMethod(nameof(CharacterCardUtility.DoNameInputRect)))
-    //        {
-    //            doNames++;
-    //            if (doNames == 3)
-    //            {
-    //                yield return new CodeInstruction(OpCodes.Ldloc_S, 6);
-    //                yield return new CodeInstruction(OpCodes.Ldarg_1);
-    //                yield return new CodeInstruction(OpCodes.Call, AccessTools.Method(typeof(CharacterCardUtility_DrawCharacterCard_Patch), nameof(PsycheCardButton), new Type[] { typeof(Rect), typeof(Pawn) }));
-    //            }
-    //        }
-    //    }
-    //}
-
 }

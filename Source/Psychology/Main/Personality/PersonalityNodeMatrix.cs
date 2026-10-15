@@ -53,31 +53,21 @@ public static class PersonalityNodeMatrix
 
   static PersonalityNodeMatrix()
   {
-    //Stopwatch stopwatch = new Stopwatch();
-    //stopwatch.Start();
 
-    //Log.Message("Initializing PersonalityNodeParentMatrix");
-    //defList = DefDatabase<PersonalityNodeDef>.AllDefsListForReading;
-
-    //Log.Message("Initializing indexDict");
     indexDict = new Dictionary<PersonalityNodeDef, int>();
 
-    //Log.Message("Define order and size");
     order = DefList.Count();
     size = order * order;
 
-    //Log.Message("Initialize parentModifierMatrix");
     parentModifierMatrix = IdentityMatrix(order);
     for (int i = 0; i < DefList.Count(); i++)
     {
       indexDict.Add(DefList[i], i);
     }
 
-    //Log.Message("Adding elements to parentModifierMatrix");
     foreach (PersonalityNodeDef def in DefList)
     {
       int i = indexDict[def];
-      //Log.Message("Element: (" + i + ", " + def.defName + ")");
       foreach (KeyValuePair<PersonalityNodeDef, PersonalityNodeParent> kvp in def.ParentNodes)
       {
         int k = indexDict[kvp.Key];
@@ -87,7 +77,6 @@ public static class PersonalityNodeMatrix
       }
     }
 
-    //Log.Message("Get Big Five Vectors");
     for (int bf = 0; bf < 5; bf++)
     {
       float norm = 0f;
@@ -107,7 +96,6 @@ public static class PersonalityNodeMatrix
       bigFiveVectors.Add(vector);
     }
 
-    //Log.Message("Get weights of Ten Aspects");
     List<float[]> tenAspectsVectors = new List<float[]>();
     List<float[]> tenAspectsWeights = new List<float[]>();
     for (int t = 0; t < 10; t++)
@@ -134,54 +122,25 @@ public static class PersonalityNodeMatrix
     for (int s = 0; s < size; s++)
     {
       (int i, int j) = Get2Dindicies(s);
-      //cBigFive0[s] = 0f;
-      //for (int bf = 0; bf < 5; bf++)
-      //{
-      //    cBigFive0[s] += 0.2f * order * bigFiveVectors[bf][i] * bigFiveVectors[bf][j];
-      //}
       for (int t = 0; t < 10; t += 2)
       {
         cTen0[s] += tenAspectsWeights[t][i] * tenAspectsWeights[t][j];
         cTen0[s] += tenAspectsWeights[t + 1][i] * tenAspectsWeights[t + 1][j];
         cTen0[s] += 0.5f * tenAspectsWeights[t][i] * tenAspectsWeights[t + 1][j];
         cTen0[s] += 0.5f * tenAspectsWeights[t + 1][i] * tenAspectsWeights[t][j];
-        //cTen0[s] += 0.2f * tenAspectsVectors[t][i] * tenAspectsVectors[t + 1][j];
-        //cTen0[s] += 0.2f * tenAspectsVectors[t + 1][i] * tenAspectsVectors[t][j];
       }
       cTen0[s] *= 0.85f;
       cTen0[s] += (s % (order + 1) == 0) ? 0.15f : 0f;
     }
 
-    //Log.Message("Get nearest correlation matrix");
-    //float[] cParent0 = NearCorr(parentModifierMatrix);
-    //Log.Message("Calculate Big Five correlation matrix");
-    //float[] cBigFive1 = NearCorr(cBigFive0);
-    //Log.Message("Calculate Ten Aspects correlation matrix");
-    //float[] cTen1 = NearCorr(cTen0);
-
-    //Log.Message("Construct ultimate mixture matrix");
     float[] cMix = new float[size];
     for (int s = 0; s < size; s++)
     {
-      //List<float> list = new List<float>() { parentModifierMatrix[s], cParent0[s], 0f * cBigFive0[s] + 1f * cTen0[s], 0f * cBigFive1[s] + 1f * cTen1[s] };
-      //cMix[s] = list.OrderBy(x => -Mathf.Abs(x)).First();
       cMix[s] = Mathf.Abs(parentModifierMatrix[s]) > 0.01f ? parentModifierMatrix[s] : cTen0[s];
 
-      //Log.Message("list = " + string.Join(", ", list));
-      //Log.Message("max = " + cMix[s]);
     }
-    //(float[] vMix, float[] dMix) = EigenDecomp(cMix, order);
-    //float[] cMixTest = VtimesDtimesTransposeOfV(vMix, dMix);
-    //Log.Message("Test VtimesDtimesTransposeOfV: " + MatrixNorm(MatrixDiff(cMix, cMixTest)));
 
-
-    //Stopwatch stopwatch2 = new Stopwatch();
-    //Log.Message("Calculate personality correlation matrix");
-    //stopwatch2.Start();
     float[] C = NearCorr(cMix);
-    //stopwatch2.Stop();
-    //TimeSpan ts2 = stopwatch.Elapsed;
-    //Log.Message("NearCorr time in seconds = " + String.Format("{0:00}.{1:000}", ts2.Seconds, ts2.Milliseconds));
 
     /* ToDo: make this a setting, total correlation */
     for (int s = 0; s < size; s++)
@@ -189,31 +148,13 @@ public static class PersonalityNodeMatrix
       C[s] *= 0.85f;
       C[s] += (s % (order + 1) == 0) ? 0.15f : 0f;
     }
-    //Log.Message("Start Decomposition");
     (float[] V, float[] d) = EigenDecomp(C, order);
-    //for (int i = 0; i < order; i++)
-    //{
-    //    d[i] = 0.85f * d[i] + 0.15f;
-    //}
-    //C = VtimesDtimesTransposeOfV(V, d);
-    //C = NearCorr(C);
-    //(V, d) = EigenDecomp(C, order);
-    //(float[] vParent, float[] dParent) = EigenDecomp(parentModifierMatrix, order);
-    //(float[] vTen0, float[] dten0) = EigenDecomp(cTen0, order);
-    //(float[] vTen1, float[] dten1) = EigenDecomp(cTen1, order);
-    //Log.Message("Eigenvalues of parentModifierMatrix = " + string.Join(", ", dParent.Reverse()));
-    //Log.Message("Eigenvalues of cTen0 = " + string.Join(", ", dten0.Reverse()));
-    //Log.Message("Eigenvalues of cTen1 = " + string.Join(", ", dten1.Reverse()));
-    //Log.Message("Eigenvalues of C = " + string.Join(", ", d.Reverse()));
 
-    //string bigFiveVariances = "Big five variances = ";
     for (int bf = 0; bf < 5; bf++)
     {
       float variance = DotProduct(bigFiveVectors[bf], MatrixVectorProduct(C, bigFiveVectors[bf]));
       bigFiveStandardDevInvs[bf] = 1f / Mathf.Sqrt(variance);
-      //bigFiveVariances += variance + ", ";
     }
-    //Log.Message(bigFiveVariances);
 
     float[] dSqrt = new float[order];
     float[] dInvSqrt = new float[order];
@@ -223,39 +164,7 @@ public static class PersonalityNodeMatrix
       dInvSqrt[i] = 1f / Mathf.Max(dSqrt[i], 0.001f);
     }
     parentTransformMatrix = VtimesDtimesTransposeOfV(V, dSqrt);
-    //inverseTransformMatrix = VtimesDtimesTransposeOfV(V, dInvSqrt);
 
-    //Log.Message("PersonalityNodeParentMatrix initialized");
-
-    //foreach (PersonalityNodeDef def in defList)
-    //{
-    //    int i = indexDict[def];
-    //    string rowOfMCP = def.defName + ": ";
-    //    foreach (PersonalityNodeDef def2 in defList)
-    //    {
-    //        int j = indexDict[def2];
-    //        float num1 = cMix[i + j * order];
-    //        float num2 = C[i + j * order];
-    //        float num3 = parentTransformMatrix[i + j * order];
-    //        rowOfMCP += "{" + def2.defName + " " + num1 + ", " + num2 + ", " + num3 + "}, ";
-    //    }
-    //    //Log.Message(rowOfMCP);
-    //}
-    //for (int j = 0; j < 10; j++)
-    //{
-    //    List<Pair<string, float>> vecList = new List<Pair<string, float>>();
-    //    foreach (PersonalityNodeDef def in defList)
-    //    {
-    //        int i = indexDict[def];
-    //        vecList.Add(new Pair<string, float>(def.defName, V[i + (order - 1 - j) * order]));
-    //    }
-    //    vecList = vecList.OrderBy(pair => -Mathf.Abs(pair.Second)).ToList();
-    //    //Log.Message("Eigenvector " + j + ": " + string.Join(", ", vecList));
-    //}
-
-    //stopwatch.Stop();
-    //TimeSpan ts = stopwatch.Elapsed;
-    //Log.Message("Calculation time in seconds = " + String.Format("{0:00}.{1:000}", ts.Seconds, ts.Milliseconds));
     Log.Message("Psychology: calculated personality correlation matrix");
 
     PsycheHelper.InitializeDictionariesForPersonalityNodeDefs();
@@ -275,7 +184,6 @@ public static class PersonalityNodeMatrix
     Log.Message("bigFiveInverse rows: " + bigFiveInverse.GetLength(0) + ", columns: " + bigFiveInverse.GetLength(1));
   }
 
-
   public static (int, int) Get2Dindicies(int s) => (s % order, s / order);
 
   /// <summary>
@@ -283,7 +191,6 @@ public static class PersonalityNodeMatrix
   /// </summary>
   /// <param name="order">The order of the matrix.</param>
   /// <param name="matrix">The matrix to decompose. The length of the array must be order * order.</param>
-  // public void EigenDecomp(int order, float[] matrix, float[] matrixEv, Complex[] vectorEv, float[] matrixD)
   public static (float[], float[]) EigenDecomp(float[] matrix, int order)
   {
     if (matrix.Length != order * order)
@@ -499,7 +406,6 @@ public static class PersonalityNodeMatrix
     }
 
     const int Maxiter = 1000;
-    //Log.Message("SymmetricDiagonalize");
     for (var i = 1; i < order; i++)
     {
       e[i - 1] = e[i];
@@ -511,7 +417,6 @@ public static class PersonalityNodeMatrix
     var tst1 = 0.0f;
     var eps = 1e-9f;
 
-    //Log.Message("Second for loop");
     for (var l = 0; l < order; l++)
     {
       // Find small subdiagonal element
@@ -525,7 +430,6 @@ public static class PersonalityNodeMatrix
         }
         m++;
       }
-
 
       // If m == l, d[l] is an eigenvalue,
       // otherwise, iterate.
@@ -670,8 +574,6 @@ public static class PersonalityNodeMatrix
       for (int k = 0; k < order; ++k)
       {
         matrix[s] += V[i + k * order] * d[k] * V[j + k * order];
-        //matrix[1] += V[1 + 2 k] * d[k] * V[0 + 2k];
-        //matrix[1] += V[1] * d[0] * V[0] + V[3] * d[1] * V[1];
       }
     }
     return matrix;
@@ -679,31 +581,9 @@ public static class PersonalityNodeMatrix
 
   // --------------------------------------------------
 
-  //public static float[] ZeroArray(int order)
-  //{
-  //    float[] zeroArray = new float[order];
-  //    for (int i = 0; i < order; ++i)
-  //    {
-  //        zeroArray[i] = 0f;
-  //    }
-  //    return zeroArray;
-  //}
-
   public static float[] IdentityMatrix(int order)
   {
-    // return an order x order Identity matrix
-    //float[] identity = new float[order * order];
-    //int s;
-    //int i;
-    //int j;
-    //for (s = 0; s < order * order; ++s)
-    //{
-    //    (i, j) = Get2Dindicies(s);
-    //    identity[s] = i == j ? 1f : 0f;
-    //}
-    //return identity;
 
-    // return an order x order Identity matrix
     float[] identity = new float[order * order];
     int s;
     for (s = 0; s < order * order; s += order + 1)
@@ -722,7 +602,6 @@ public static class PersonalityNodeMatrix
     float num;
     for (int s = 0; s < size; ++s)
     {
-      //(int i, int j) = Get2Dindicies(s, order);
       j = s % order;
       num = 0f;
       for (int k = 0; k < order; ++k)
@@ -794,7 +673,6 @@ public static class PersonalityNodeMatrix
       relDiffXY = MatrixNormSquared(MatrixDiff(Y, X)) / MatrixNormSquared(Y);
       iter++;
     }
-    //Log.Message("Number of iterations for NearCorr = " + iter + ", distance = " + MatrixNorm(MatrixDiff(X, A)));
     return X;
   }
 
@@ -812,24 +690,6 @@ public static class PersonalityNodeMatrix
   {
     (float[] V, float[] d) = EigenDecomp(A, order);
     float dMax = d.OrderBy(x => -Mathf.Abs(x)).First();
-    //List<int> indexList = new List<int>();
-    //for (int i = 0; i < order; i++)
-    //{
-    //    if (d[i] > 1e-7f * dMax)
-    //    {
-    //        indexList.Add(i);
-    //    }
-    //}
-    //float[] B = new float[size];
-    //for (int s = 0; s < size; s++)
-    //{
-    //    B[s] = 0f;
-    //    (int i, int j) = Get2Dindicies(s);
-    //    foreach (int k in indexList)
-    //    {
-    //        B[s] += V[i + k * order] * d[k] * V[j + k * order];
-    //    }
-    //}
     for (int i = 0; i < order; i++)
     {
       if (d[i] < 1e-7f * dMax)
@@ -860,9 +720,7 @@ public static class PersonalityNodeMatrix
       norm += A[i] * A[i];
     }
     return Mathf.Sqrt(norm);
-    //return norm;
   }
-
 
   /// <summary>
   /// Implements the "personality extremeness" setting (0 = off). For each Big Five direction, takes the pawn's projection
@@ -968,7 +826,6 @@ public static class PersonalityNodeMatrix
 
     double[,] remaining = matrix.MatrixCopy();
 
-    // for each singular value
     for (var i = 0; i < numValues; i++)
     {
       // compute the v singular vector
@@ -1309,8 +1166,5 @@ public static class PersonalityNodeMatrix
     }
     return result;
   }
-
-
-
 
 }

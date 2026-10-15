@@ -14,10 +14,6 @@ public class MentalStateWorker_FireStartingSpree : MentalStateWorker
     public override bool StateCanOccur(Pawn pawn)
     {
         Hediff hediff = pawn.health.hediffSet.GetFirstHediffOfDef(HediffDefOfPsychology.RecoveringPyromaniac);
-        //if ((hediff is Hediff_RecoveringPyromaniac hediff_RecoveringPyromaniac) != true)
-        //{
-        //    return true;
-        //}
         if (hediff == null)
         {
             return true;

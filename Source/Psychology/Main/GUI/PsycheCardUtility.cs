@@ -31,8 +31,6 @@ public class PsycheCardUtility
   public const int FiveFactorTitleFontSize = 18;
   public const int CategoryNodeFontSize = 16;
 
-  //public static Color TitleColor = ColoredText.TipSectionTitleColor;
-  //public static Color RatingColor = Color.yellow;
   public static string RatingFormat = "##0.000%";
 
   public static int DisplayOptionCached;
@@ -79,11 +77,6 @@ public class PsycheCardUtility
   public static Vector2 FiveFactorSize;
   public static float[] bigFiveRatings = new float[5];
 
-  //public static string EditText = "EditPsyche".Translate();
-  //public static Vector2 EditSize;
-  //public static float EditWidth;
-  //public static float EditHeight;
-
   public static float SexualityWidth;
   public static float KinseyWidth;
 
@@ -94,9 +87,6 @@ public class PsycheCardUtility
   public const int RadialCategories = 2;
   public const float SideScaling = 0.809017f;
   public static float[] BigFiveManualSliders = new float[] { 0.5f, 0.5f, 0.5f, 0.5f, 0.5f };
-  //public static Texture2D PsycheLineTex = new Texture2D(1, 3, TextureFormat.ARGB32, mipChain: false);
-  //public static Material PsycheYellowMat = SolidColorMaterials.SimpleSolidColorMaterial(new Color(1f, 1f, 0f, 0.5f));
-  //public static Texture2D HexagonTexture;
 
   public static float HighlightRadius = 0f;
 
@@ -105,15 +95,11 @@ public class PsycheCardUtility
   public static float CategoryNodeHeight = 0f;
   public static readonly string[] NodeDescriptions = { "Not", "Slightly", "Less", "Somewhat", "More", "Very", "Extremely" };
   public static readonly Color[] CategoryColors = { new Color(1f, 0.2f, 0.2f, 0.8f), new Color(1f, 0.4f, 0.4f, 0.6f), new Color(1f, 0.6f, 0.6f, 0.4f), new Color(1f, 1f, 1f, 0.2f), new Color(0.6f, 1f, 0.6f, 0.4f), new Color(0.4f, 1f, 0.4f, 0.6f), new Color(0.2f, 1f, 0.2f, 0.8f) };
-  //public static bool NeedToCalculateNodeWidthBool = true;
   public static Vector2 NodeScrollPosition = Vector2.zero;
   public static List<Tuple<string, PersonalityNode, string>> LabelNodeList = new List<Tuple<string, PersonalityNode, string>>();
 
-  //public static float ViewRectHeight = 0f;
-
   public static List<Rect> CloudTextRects = new List<Rect>();
   public static List<Rect> CloudTightRects = new List<Rect>();
-  //public static List<Rect> CloudHighlightRects = new List<Rect>();
   public static List<string> CloudTexts = new List<string>();
   public static List<PersonalityNode> CloudNodes = new List<PersonalityNode>();
   public static List<int> CloudFontSizes = new List<int>();
@@ -137,9 +123,7 @@ public class PsycheCardUtility
   {
     DisplayOptionCached = PsychologySettings.displayOption;
     UseColorsCached = PsychologySettings.useColors;
-    //PsychologySettings.listAlphabetical = PsychologySettings.listAlphabetical;
     ListAlphabeticalCached = PsychologySettings.listAlphabetical;
-    //PsychologySettings.useAntonyms = PsychologySettings.useAntonyms;
     UseAntonymsCached = PsychologySettings.useAntonyms;
 
     Text.Font = GameFont.Small;
@@ -189,13 +173,7 @@ public class PsycheCardUtility
     UseAntonymsHeight = Mathf.Max(UseAntonymsSize.y, 24f);
 
     style.fontSize = FiveFactorTitleFontSize;
-    //FiveFactorText = "<b>" + FiveFactorText + "</b>";
     FiveFactorSize = Text.CalcSize(FiveFactorText) * calcSizeScalingVector;
-
-    //style.fontSize = OldSmallFontSize;
-    //EditSize = Text.CalcSize(EditText) * scalingVector;
-    //EditWidth = 20f + EditSize.x;
-    //EditHeight = 5f + EditSize.y;
 
     SexualityWidth = Mathf.Max(KinseyTextSize.x, SexDriveWidth, RomDriveWidth, OptionsWidth, UseColorsWidth, AlphabeticalWidth, UseAntonymsWidth, FiveFactorSize.x);
     KinseyWidth = SexualityWidth + BoundaryPadding - 27f;
@@ -232,19 +210,6 @@ public class PsycheCardUtility
     float totalRectHeight = forbiddenRectHeight + AlphabeticalHeight + BoundaryPadding + UseAntonymsHeight + BoundaryPadding + FiveFactorSize.y + BoundaryPadding + 2f * HighlightRadius + BoundaryPadding;// + FiveFactorSize.y + BoundaryPadding;
     PsycheRect = new Rect(0f, 0f, totalRectWidth, totalRectHeight);
 
-    //TestTexture = new Texture2D(128, 128, TextureFormat.ARGB32, mipChain: false);
-    //Color32[] colorArray = TestTexture.GetPixels32();
-    //for (int i = 0; i < colorArray.Count(); i++)
-    //{
-    //    //Log.Message("Setting to cyan");
-    //    colorArray[i] = Color.cyan;
-    //}
-    //TestTexture.SetPixels32(colorArray);
-
-    //Texture2D TestTexture = ContentFinder<Texture2D>.Get("UI/RedSquare", true);
-    //RenderTexture newTexture = new RenderTexture(TestTexture);
-
-    //HexagonTexture = ColoredHexagon2.GetHexagonTexture(PsychologyTexCommand.TestTexture);
   }
 
   public static void DrawPsycheCard(Rect totalRect, Pawn pawn, bool OnWindow = true, bool ShowNumbers = false)
@@ -261,9 +226,6 @@ public class PsycheCardUtility
 
     PawnCached = PawnCached == null ? pawn : PawnCached;
     ShowNumbersBool = ShowNumbers || Prefs.DevMode;
-    //CalculateNodeWidth(pawn);
-    //float totalRectX = CategoryWidth + NodeWidth + SexualityWidth + 4f * BoundaryPadding + 3f * TraitListPadding + 3f * TraitListPadding;
-    //Rect totalRect = new Rect(0f, 0f, totalRectWidth, totalRectHeight);
     float kWidth = OnWindow || Prefs.DevMode ? SexualityWidth : KinseyWidth;
     Rect kinseyRect = new Rect(totalRect.xMax - SexualityWidth - BoundaryPadding, totalRect.y + BoundaryPadding, kWidth, KinseyTextSize.y);
     Rect sexDriveRect = new Rect(kinseyRect.x, kinseyRect.yMax + RowTopPadding, SexualityWidth, SexDriveHeight);
@@ -274,14 +236,12 @@ public class PsycheCardUtility
     Rect useColorsRect = new Rect(kinseyRect.x, optionsRect.yMax + BoundaryPadding, UseColorsWidth, UseColorsHeight);
     Rect alphabeticalRect = new Rect(kinseyRect.x, useColorsRect.yMax + BoundaryPadding, AlphabeticalWidth, AlphabeticalHeight);
     Rect useAntonymsRect = new Rect(kinseyRect.x, alphabeticalRect.yMax + BoundaryPadding, UseAntonymsWidth, UseAntonymsHeight);
-    //Rect editRect = new Rect(totalRect.xMax - EditWidth - BoundaryPadding, totalRect.yMax - EditHeight - BoundaryPadding, EditWidth, EditHeight);
 
     //Calculate personality rectangle
     Rect personalityRect = totalRect;
     personalityRect.xMax = kinseyRect.x - HighlightPadding;
     personalityRect = personalityRect.ContractedBy(BoundaryPadding);
     Rect forbiddenRect = new Rect(personalityRect.xMax, 0f, totalRect.width - personalityRect.xMax, useColorsRect.yMax + BoundaryPadding);
-    //Rect forbiddenRect = new Rect(personalityRect.xMax, 0f, forbiddenRectWidth, forbiddenRectHeight);
     Rect fiveFactorRect = new Rect(forbiddenRect.center.x - 0.5f * FiveFactorSize.x, useAntonymsRect.yMax + 2f * BoundaryPadding, FiveFactorSize.x, FiveFactorSize.y);
 
     personalityRect.xMax = totalRect.xMax - SexualityWidth - HighlightPadding - 2f * BoundaryPadding;
@@ -352,11 +312,9 @@ public class PsycheCardUtility
     else
     {
       Rect disabledRect = new Rect(kinseyRect.x, kinseyRect.y, kinseyRect.width, romDriveRect.yMax - kinseyRect.y);
-      //style.fontSize = SexualityFontSize;
       GUI.color = Color.red;
       Widgets.Label(disabledRect, "SexualityDisabledWarning".Translate());
       GUI.color = Color.white;
-      //style.fontSize = OldSmallFontSize;
     }
 
     style.fontSize = OptionsFontSize;
@@ -390,14 +348,12 @@ public class PsycheCardUtility
 
     if (PsychologySettings.displayOption == 4)
     {
-      //Log.Message("Draw word cloud");
       GUI.color = UIAssets.LineColor;
       Widgets.DrawLineVertical(forbiddenRect.x, forbiddenRect.y, forbiddenRect.height);
       Widgets.DrawLineHorizontal(forbiddenRect.x, forbiddenRect.yMax, forbiddenRect.width);
       GUI.color = Color.white;
       Vector2 cloudCenter = totalRect.center;
       cloudCenter.x = 0.5f * totalRect.center.x + 0.5f * personalityRect.center.x;
-      //Vector2 cloudCenter = new Vector2(0.5f * totalRect.center.x + 0.25f * forbiddenRect.x, 0.5f * totalRect.center.x + 0.25f * forbiddenRect.yMax + 0.25f * totalRect.yMax);
       PersonalityWordCloud(totalRect, cloudCenter, forbiddenRect, pawn);//, editRect);
     }
     else
@@ -419,7 +375,6 @@ public class PsycheCardUtility
       PersonalityTraitList(personalityRect, pawn);
     }
 
-    //Log.Message("Checking PsychologyEnabled for pawn = " + pawn.Label);
     if (PsycheHelper.PsychologyEnabled(pawn) != true)
     {
       Widgets.DrawHighlight(totalRect);
@@ -480,20 +435,11 @@ public class PsycheCardUtility
         {
           UIAssets.DrawLine(pentaPoints[p], pentaPoints[(p + 1) % 5], Color.white, 0.5f);
           UIAssets.DrawLine(pentaCenter, pentaPoints[p], Color.white, 0.5f);
-          //Log.Message("Check devmode");
-          //if (Prefs.DevMode)
-          //{
-          //    //Log.Message("Call DrawSlider");
-          //    float sliderVal = BigFiveManualSliders[p]; 
-          //    UIAssets.DrawSlider(pentaCenter, pentaPoints[p], 15f, ref sliderVal);
-          //    BigFiveManualSliders[p] = sliderVal;
-          //}
 
         }
       }
     }
 
-    //float[] bigFiveList = { 0.8f, 0.3f, 0.5f, 0.1f, 0.6f };
     CalculateBigFiveRatings(pawn);
 
     List<Vector2> yellowVerticies = new List<Vector2> { };
@@ -512,7 +458,6 @@ public class PsycheCardUtility
       string letterTranslated = ("BigFive" + letter).Translate();
       string letterBold = "<b>" + letterTranslated + "</b>";
 
-      //string letterBold = ("<b>" + letter + "</b>").Colorize(BigFiveColors[p]);
       style.fontSize = SexualityFontSize;
       Vector2 letterSize = Text.CalcSize(letterBold);
       letterSize.x *= 1.1f;
@@ -521,7 +466,6 @@ public class PsycheCardUtility
       Vector2 position = RadialProjectionFromCenter(pentaCenter, pentaRadius + displacement, 72 * p);
 
       Rect letterRect = new Rect(position.x - 0.5f * letterSize.x, position.y - 0.46f * letterSize.y, letterSize.x, letterSize.y);
-
 
       Text.Anchor = TextAnchor.MiddleCenter;
       Widgets.Label(letterRect, letterBold.Colorize(PsychologySettings.useColors ? BigFiveColors[p] : Color.white));
@@ -535,7 +479,6 @@ public class PsycheCardUtility
       verticies.Add(RadialProjectionFromCenter(pentaCenter, HighlightRadius, 72f * p));
       verticies.Add(RadialProjectionFromCenter(pentaCenter, SideScaling * HighlightRadius, 72f * (p + 0.5f)));
       List<int[]> triangles = new List<int[]> { };
-      //Log.Message("verticies = " + verticies.ToString());
       PolygonUtility.DrawPolygonHighlightIfMouseover(verticies, triangles);
 
       Color bigFiveTitleColor = PsychologySettings.useColors ? BigFiveColors[p] : ColoredText.TipSectionTitleColor;
@@ -563,32 +506,19 @@ public class PsycheCardUtility
     LabelNodeList.Clear();
 
     List<string> nodeTextList = new List<string>();
-    //var arlist = from PersonalityNodeDef def in PersonalityNodeParentMatrix.defList
-    //             select PsycheHelper.Comp(pawn).Psyche.GetPersonalityRating(def);
-    //Log.Message("PersonalityTraitList: Adjusted ratings for " + pawn.LabelShort + ": " + string.Join(", ", arlist));
-    //var arlist2 = from PersonalityNode node in PsycheHelper.Comp(pawn).Psyche.PersonalityNodes
-    //              select node.AdjustedRating;
-    //Log.Message("PersonalityTraitList: Adjusted ratings for " + pawn.LabelShort + ": " + string.Join(", ", arlist2));
     foreach (PersonalityNode node in PsycheHelper.Comp(pawn).Psyche.PersonalityNodes)
     {
-      //Log.Message("PersonalityTraitList: Step 2a");
       float displacement = 2f * node.AdjustedRating - 1f;
-      //Log.Message("Displacement = " + displacement);
       string nodeText = ColorizedNodeText(node.def, displacement);
       float yAxis = PsychologySettings.useAntonyms ? Mathf.Abs(displacement) : displacement;
       int category = Mathf.RoundToInt(3f + 3f * yAxis * Mathf.Sqrt(Mathf.Abs(yAxis)));
-      //Log.Message("Category = " + category);
       if (Mathf.Abs(category - 3) >= PsychologySettings.displayOption)
       {
-        //Log.Message("PersonalityTraitList: Step 2c");
         string categoryText = ("Psyche" + NodeDescriptions[category]).Translate();
-        //Log.Message("PersonalityTraitList: Step 2d");
         LabelNodeList.Add(new Tuple<string, PersonalityNode, string>(nodeText, node, categoryText.Colorize(CategoryColors[category])));
-        //Log.Message("PersonalityTraitList: Step 2e");
         nodeTextList.Add(PsychologySettings.useAntonyms && displacement < 0f ? node.def.antonymLabel : node.def.label);
       }
     }
-    //Log.Message("PersonalityTraitList: Step 3");
     if (PsychologySettings.listAlphabetical)
     {
       LabelNodeList = LabelNodeList.OrderBy(tup => nodeTextList[LabelNodeList.IndexOf(tup)]).ToList();
@@ -601,14 +531,11 @@ public class PsycheCardUtility
     {
       LabelNodeList = LabelNodeList.OrderBy(tup => -tup.Item2.AdjustedRating).ToList();
     }
-    //Log.Message("PersonalityTraitList: Step 4");
     DrawTraitList(personalityRect);
-    //Log.Message("PersonalityTraitList: Step 5");
   }
 
   public static void DrawTraitList(Rect personalityRect)
   {
-    //Log.Message("Start DrawTraitList");
     Text.Font = GameFont.Small;
     GUIStyle style = Text.fontStyles[1];
     TextAnchor oldAnchor = Text.Anchor;
@@ -616,13 +543,10 @@ public class PsycheCardUtility
     float highlightShift = 0.07f;
 
     Rect viewRect = new Rect(0f, 0f, personalityRect.width - 20f, LabelNodeList.Count() * yCompression * CategoryNodeHeight + 3f);
-    //Rect viewRect = new Rect(personalityRect.x, personalityRect.y, 0.9f * personalityRect.width, (categoryNodeHeight + RowTopPadding) * categoryIndexList.Count);
     Widgets.BeginScrollView(personalityRect, ref NodeScrollPosition, viewRect);
     float categoryNodeVerticalPosition = 0f;
-    //float xSpacing = BoundaryPadding;
     float xSpacing = Mathf.Max(BoundaryPadding, 0.33f * (viewRect.width - NodeWidth - CategoryWidth));
     float categoryRectX = viewRect.center.x - 0.5f * (CategoryWidth + xSpacing + NodeWidth);
-    //float categoryRectX = viewRect.xMin + BoundaryPadding + HighlightPadding;
     Rect categoryRect = new Rect(categoryRectX, categoryNodeVerticalPosition, CategoryWidth, CategoryNodeHeight);
     Rect nodeRect = new Rect(categoryRect.xMax + xSpacing, categoryNodeVerticalPosition, NodeWidth, CategoryNodeHeight);
     Rect highlightRect = categoryRect;
@@ -639,7 +563,6 @@ public class PsycheCardUtility
 
       Text.Anchor = TextAnchor.MiddleLeft;
       Widgets.Label(nodeRect, LabelNodeList[j].Item1);
-      //Text.Anchor = TextAnchor.MiddleRight;
       Widgets.Label(categoryRect, LabelNodeList[j].Item3);
       Text.Anchor = oldAnchor;
       DrawHighlightAndTooltip(highlightRect, LabelNodeList[j].Item2, j);
@@ -649,26 +572,15 @@ public class PsycheCardUtility
 
     Widgets.EndScrollView();
 
-    //Log.Message("End DrawTraitList");
   }
 
   public static void PersonalityWordCloud(Rect totalRect, Vector2 cloudCenter, Rect forbiddenRect, Pawn pawn)//, Rect editPsycheRect)
   {
-    //if (Ticker % 100 == 0)
-    //{
-    //    //Log.Message("Ticker = " + Ticker);
-    //}
-    //if (Ticker > 0 && pawn == PawnCached && PsychologySettings.displayOption == PsychologySettings.displayOptionCached && PsychologySettings.useColors == PsychologySettings.useColorsCached && CloudTextRects.Any())
     if (UseCachedBool)
     {
       DrawWordCloud();
       return;
     }
-    //PsycheHelper.Comp(pawn).Psyche.CalculateAdjustedRatings();
-    //Ticker = MaxTicks;
-    //PawnCached = pawn;
-    //PsychologySettings.displayOptionCached = PsychologySettings.displayOption;
-    //PsychologySettings.useColorsCached = PsychologySettings.useColors;
     CloudTextRects.Clear();
     CloudTightRects.Clear();
     CloudTexts.Clear();
@@ -677,7 +589,6 @@ public class PsycheCardUtility
 
     Rect cloudRect = totalRect.ContractedBy(BoundaryPadding);
     Rect forbiddenRect1 = forbiddenRect.ExpandedBy(BoundaryPadding);
-    //Rect forbiddenRect2 = editPsycheRect.ExpandedBy(BoundaryPadding);
     List<PersonalityNode> allNodes = (from n in PsycheHelper.Comp(pawn).Psyche.PersonalityNodes
                                       orderby Mathf.Abs(n.AdjustedRating - 0.5f) descending, n.def.defName
                                       select n).ToList();
@@ -691,10 +602,6 @@ public class PsycheCardUtility
     {
       PersonalityNode node = allNodes[i];
       float displacement = node.AdjustedRating - 0.5f;
-      //style.fontSize = Mathf.FloorToInt(60f * Mathf.Abs(displacement)) + 5;
-      //style.fontSize = Mathf.RoundToInt(Mathf.Clamp(35f * Mathf.Pow(Mathf.Abs(2 * displacement), 0.5f), 10f, 35f));
-      //style.fontSize = Mathf.FloorToInt(30f * Mathf.Pow(Mathf.Abs(2 * displacement), 0.25f)) + 5;
-      //style.fontSize = Mathf.RoundToInt(Mathf.Lerp(35f, 8f, i / 36f));
 
       PsychologySettings.useAntonyms = true;
       string personalityText = ColorizedNodeText(node.def, displacement);
@@ -729,27 +636,6 @@ public class PsycheCardUtility
         tightRect.y = y0 + lengthY * t * Mathf.Sin(alpha0) * sign;
         alpha0 += dl;
       }
-      //for (float l = 0f; l < kSpiral; l += dl)
-      //{
-      //    if (RectDoesNotOverlapWordCloud(tightRect, cloudRect, forbiddenRect1, forbiddenRect2))
-      //    {
-      //        textRect.x = tightRect.x;
-      //        textRect.y = tightRect.y - yMinTightScaling * textRect.height;
-      //        CloudRects.Add(textRect);
-      //        CloudTexts.Add(personalityText);
-      //        CloudNodes.Add(node);
-      //        CloudFontSizes.Add(style.fontSize);
-      //        break;
-      //    }
-      //    float kt2 = 2f * kSpiral * l;
-      //    float kt = Mathf.Sqrt(kt2);
-      //    float ds = dl / Mathf.Sqrt(1f + kt2);
-      //    float alpha = kt + alpha0;
-      //    float cos = Mathf.Cos(alpha);
-      //    float sin = Mathf.Sin(alpha);
-      //    tightRect.x += lengthX * (cos - kt * sin) * ds;
-      //    tightRect.y += sign * lengthY * (sin + kt * cos) * ds;
-      //}
     }
     style.fontSize = OldMediumFontSize;
     Text.Font = GameFont.Small;
@@ -806,10 +692,6 @@ public class PsycheCardUtility
         Color antoColor = HSVtoColor(node.def.antonymHSV);
         nodeName = nodeName == "Creative" ? CreativeRainbow : nodeName.Colorize(nodeColor);
         antonymLabel = antonymLabel.Colorize(antoColor);
-        //nodeName = nodeColor == Color.white ? "<b>" + nodeName + "</b>" : nodeName;
-        //antonymLabel = antoColor == Color.white ? "<b>" + antonymLabel + "</b>" : antonymLabel;
-        //nodeName = "<b>" + nodeName + "</b>";
-        //antonymLabel = "<b>" + antonymLabel + "</b>";
       }
       else
       {
@@ -906,12 +788,6 @@ public class PsycheCardUtility
       bigFiveRatings[p] = PsycheHelper.NormalCDF((float)projection[p]);
     }
 
-    //for (int p = 0; p < 5; p++)
-    //{
-    //  float dotProduct = PersonalityNodeMatrix.DotProduct(gaussianList, PersonalityNodeMatrix.bigFiveVectors[p]);
-    //  // Added 0.5f here to make the big five ratings have a bell shaped curve along the range of 0 to 1;
-    //  bigFiveRatings[p] = PsycheHelper.NormalCDF(0.5f * PersonalityNodeMatrix.bigFiveStandardDevInvs[p] * dotProduct);
-    //}
   }
 
   // Legacy method
@@ -934,9 +810,6 @@ public class PsycheCardUtility
     bool bool3 = UseColorsCached == PsychologySettings.useColors;
     bool bool4 = UseAntonymsCached == PsychologySettings.useAntonyms;
     bool bool5 = ListAlphabeticalCached == PsychologySettings.listAlphabetical;
-    //bool bool6 = CloudTextRects.Any();
-    //bool bool7 = LabelNodeList.Any();
-    //bool bool8 = bigFiveRatings != new float[5];
     UseCachedBool = bool0 && bool1 && bool2 && bool3 && bool4 && bool5;
     if (UseCachedBool)
     {
@@ -1031,4 +904,3 @@ public class PsycheCardUtility
   }
 
 }
-

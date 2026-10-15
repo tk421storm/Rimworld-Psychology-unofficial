@@ -19,22 +19,12 @@ namespace Psychology.Harmony
     [HarmonyPatch(new Type[] { typeof(Pawn), typeof(Pawn), typeof(string), typeof(string), typeof(bool), typeof(bool) }, new ArgumentType[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Ref, ArgumentType.Ref, ArgumentType.Normal, ArgumentType.Normal })]
     public static class InteractionWorker_RecruitAttempt_DoRecruitPatch
     {
-        
+
         [HarmonyPrefix]
         public static bool AddCapturedThoughts(Pawn recruiter, Pawn recruitee)
         {
-            //if (recruitee.RaceProps.Humanlike && PsychologySettings.imprisonedDebuff != 0f)
             if (PsycheHelper.PsychologyEnabled(recruitee) && PsychologySettings.imprisonedDebuff != 0f)
             {
-                //recruitee.needs.mood.thoughts.memories.RemoveMemoriesOfDef(ThoughtDefOf.RapportBuilt);
-                //List<Thought_Memory> memories = recruitee.needs.mood.thoughts.memories.Memories;
-                //foreach (Thought_Memory mem in memories)
-                //{
-                //    if (mem.def == ThoughtDefOf.RapportBuilt)
-                //    {
-                //        mem.CurStage.baseOpinionOffset *= 
-                //    }
-                //}
                 if (PsychologySettings.imprisonedDebuff >= PsychologySettings.imprisonedDebuffDefault)
                 {
                     // ThoughtDefOf.RapportBuilt was removed from vanilla in 1.5; the 1.5/1.6 builds dropped this line.
@@ -50,115 +40,9 @@ namespace Psychology.Harmony
                         recruitee.needs.mood.thoughts.memories.TryGainMemory(ThoughtDefOfPsychology.CapturedMe, pawn);
                     }
                 }
-                /*if(PsycheHelper.PsychologyEnabled(recruitee))
-                {
-                    PsycheHelper.Comp(recruitee).Recruiting = null;
-                }*/
             }
             return true;
         }
     }
 
-    // Old (pre-1.1) replacement of vanilla recruiting with the "warden tour" (Main/Recruiting); disabled long ago.
-    /*[HarmonyPatch(typeof(InteractionWorker_RecruitAttempt), "Interacted")]
-    public static class InteractionWorker_RecruitAttempt_RecruitingHook
-    {
-        [HarmonyPrefix]
-        public static bool ReplaceVanillaRecruiting(this InteractionWorker_RecruitAttempt __instance, Pawn initiator, Pawn recipient, List<RulePackDef> extraSentencePacks)
-        {
-
-            if (Traverse.Create<Pawn_MindState>().Method("CheckStartMentalStateBecauseRecruitAttempted").GetValue<bool>((new object[] { recipient, initiator })))
-            {
-                return false;
-            }
-            bool flag = initiator.InspirationDef == InspirationDefOf.Inspired_Recruitment && recipient.RaceProps.Humanlike;
-            float recruitChance = 1f;
-            if (flag || DebugSettings.instantRecruit)
-            {
-                InteractionWorker_RecruitAttempt.DoRecruit(initiator, recipient, recruitChance, true);
-                extraSentencePacks.Add(RulePackDefOf.Sentence_RecruitAttemptAccepted);
-                if (flag)
-                {
-                    initiator.mindState.inspirationHandler.EndInspiration(InspirationDefOf.Inspired_Recruitment);
-                }
-            }
-            else
-            {
-                if(recipient.NonHumanlikeOrWildMan() || !(recipient is PsychologyPawn))
-                {
-                    recruitChance *= ((!recipient.NonHumanlikeOrWildMan()) ? initiator.GetStatValue(StatDefOf.RecruitPrisonerChance, true) : initiator.GetStatValue(StatDefOf.TameAnimalChance, true));
-                    float num2;
-                    if (recipient.IsWildMan())
-                    {
-                        num2 = 0.25f;
-                    }
-                    else if (recipient.RaceProps.Humanlike)
-                    {
-                        num2 = 1f - recipient.RecruitDifficulty(initiator.Faction, true);
-                    }
-                    else
-                    {
-                        num2 = Traverse.Create<InteractionWorker_RecruitAttempt>().Field("RecruitChanceFactorCurve_Wildness").GetValue<SimpleCurve>().Evaluate(recipient.RaceProps.wildness);
-                    }
-                    recruitChance *= num2;
-                    if (!recipient.NonHumanlikeOrWildMan())
-                    {
-                        float x = (float)recipient.relations.OpinionOf(initiator);
-                        recruitChance *= Traverse.Create<InteractionWorker_RecruitAttempt>().Field("RecruitChanceFactorCurve_Opinion").GetValue<SimpleCurve>().Evaluate(x);
-                        if (recipient.needs.mood != null)
-                        {
-                            float curLevel = recipient.needs.mood.CurLevel;
-                            recruitChance *= Traverse.Create<InteractionWorker_RecruitAttempt>().Field("RecruitChanceFactorCurve_Mood").GetValue<SimpleCurve>().Evaluate(curLevel);
-                        }
-                    }
-                    if (initiator.relations.DirectRelationExists(PawnRelationDefOf.Bond, recipient))
-                    {
-                        recruitChance *= 4f;
-                    }
-                    recruitChance = Mathf.Clamp(recruitChance, 0.005f, 1f);
-                    if (Rand.Chance(recruitChance))
-                    {
-                        InteractionWorker_RecruitAttempt.DoRecruit(initiator, recipient, recruitChance, true);
-                        extraSentencePacks.Add(RulePackDefOf.Sentence_RecruitAttemptAccepted);
-                        if (flag)
-                        {
-                            initiator.mindState.inspirationHandler.EndInspiration(InspirationDefOf.InspiredRecruitment);
-                        }
-                    }
-                    else
-                    {
-                        string text;
-                        if (recipient.NonHumanlikeOrWildMan())
-                        {
-                            text = "TextMote_TameFail".Translate(new object[]
-                            {
-                                recruitChance.ToStringPercent()
-                            });
-                        }
-                        else
-                        {
-                            text = "TextMote_RecruitFail".Translate(new object[]
-                            {
-                                recruitChance.ToStringPercent()
-                            });
-                        }
-                        MoteMaker.ThrowText((initiator.DrawPos + recipient.DrawPos) / 2f, initiator.Map, text, 8f);
-                        extraSentencePacks.Add(RulePackDefOf.Sentence_RecruitAttemptRejected);
-                    }
-                }
-                else
-                {
-                    PsychologyPawn realPawn = recipient as PsychologyPawn;
-                    PsychologyPawn realRecruiter = initiator as PsychologyPawn;
-                    RecruitingUtility.PrepareForRecruiting(realPawn);
-                    LordJob_WardenTour tour = new LordJob_WardenTour(realRecruiter, realPawn);
-                    List<Pawn> pawns = new List<Pawn>();
-                    pawns.Add(realPawn);
-                    pawns.Add(realRecruiter);
-                    LordMaker.MakeNewLord(realRecruiter.Faction, tour, realPawn.Map, pawns);
-                }
-            }
-            return false;
-        }
-    }*/
 }

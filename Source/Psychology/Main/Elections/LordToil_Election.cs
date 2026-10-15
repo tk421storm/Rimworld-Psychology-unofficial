@@ -32,7 +32,6 @@ namespace Psychology
             return DutyDefOfPsychology.Vote.hook;
         }
 
-        
         public override void Notify_ReachedDutyLocation(Pawn voter)
         {
             LordJob_Joinable_Election election = voter.GetLord().LordJob as LordJob_Joinable_Election;
@@ -47,7 +46,6 @@ namespace Psychology
                 foreach (Candidate candidate in election.candidates)
                 {
                     float issueWeighting = 0f;
-                    //candidate.nodes.ForEach(p => issueWeighting += Mathf.Pow(1f - Mathf.Abs(PsycheHelper.Comp(candidate.pawn).Psyche.GetPersonalityRating(p) - PsycheHelper.Comp(voter).Psyche.GetPersonalityRating(p)), 5f) * Mathf.Pow(2.5f, p.controversiality));
                     foreach (PersonalityNodeDef issue in candidate.nodes)
                     {
                         float candidateStance = PsycheHelper.Comp(candidate.pawn).Psyche.GetPersonalityRating(issue);
@@ -67,9 +65,7 @@ namespace Psychology
                     {
                         voteString.Append("\n" + v.First.LabelShort + " with weight " + v.Second);
                     }
-                    //Log.Message(voteString.ToString());
                 }
-                //election.votes.Add(orderedPossibleVotes.First().First.LabelShort);
                 election.votes.Add(possibleVotes.RandomElementByWeight(pv => Mathf.Max(pv.Second, 0.0000001f)).First.LabelShort);
             }
             else

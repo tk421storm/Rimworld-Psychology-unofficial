@@ -30,14 +30,6 @@ namespace Psychology
             // Make election start at 7
             this.Duration += GenMath.PositiveMod(7 - plannedStart, 24) * GenDate.TicksPerHour;
 
-            //if (plannedStart < 7)
-            //{
-            //    this.Duration += (7 - plannedStart) * GenDate.TicksPerHour;
-            //}
-            //else if (plannedStart > 18)
-            //{
-            //    this.Duration -= (plannedStart - 18) * GenDate.TicksPerHour;
-            //}
             IEnumerable<Pawn> colonists = from p in this.SingleMap.mapPawns.FreeColonistsSpawned
                                           where PsycheHelper.PsychologyEnabled(p) && p.HomeFaction == Faction.OfPlayer // 1.3
                                           select p;
@@ -47,7 +39,6 @@ namespace Psychology
             {
                 return;
             }
-            //float maxCandidatesThisColonySupports = Mathf.Clamp(0.3f * numColonists, 2f, 4f);
             IEnumerable<Pawn> eligibleColonists = from p in colonists
                                                   where p.ageTracker.AgeBiologicalYearsFloat >= PsychologySettings.mayorAge // 1.3
                                                   select p;
@@ -156,13 +147,11 @@ namespace Psychology
             }
         }
 
-        
         public override void End()
         {
             base.End();
             if (candidates.Count == 0)
             {
-                //Log.Message("Psychology :: Tried to start election... but there were no candidates.");
                 return;
             }
             IntVec3 intVec;
@@ -238,6 +227,5 @@ namespace Psychology
             return false;
         }
 
-        
     }
 }

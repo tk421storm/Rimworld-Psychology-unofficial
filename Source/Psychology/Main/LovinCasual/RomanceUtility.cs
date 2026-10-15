@@ -85,15 +85,6 @@ namespace Psychology
       }
       if (pawn?.ageTracker?.Adult != true)
       {
-        //long AdultMinAgeTicks = pawn.ageTracker.AdultMinAgeTicks;
-        //long AgeBiologicalTicks = pawn.ageTracker.AgeBiologicalTicks;
-        //long TicksToAdulthood = AdultMinAgeTicks - AgeBiologicalTicks;
-        //bool Adult = TicksToAdulthood <= 0f;
-        //long AdultMinAgeTicks2 = partner.ageTracker.AdultMinAgeTicks;
-        //long AgeBiologicalTicks2 = partner.ageTracker.AgeBiologicalTicks;
-        //long TicksToAdulthood2 = AdultMinAgeTicks2 - AgeBiologicalTicks2;
-        //bool Adult2 = TicksToAdulthood2 <= 0f;
-        //Log.Message("GetLovinMtbHours, pawn: " + pawn + ", AdultMinAgeTicks: " + AdultMinAgeTicks + ", AgeBiologicalTicks: " + AgeBiologicalTicks + ", TicksToAdulthood: " + TicksToAdulthood + ", Adult: " + Adult + "\nGetLovinMtbHours, pawn2: " + partner + ", AdultMinAgeTicks2: " + AdultMinAgeTicks2 + ", AgeBiologicalTicks2: " + AgeBiologicalTicks2 + ", TicksToAdulthood2: " + TicksToAdulthood2 + ", Adult2: " + Adult2);
 
         // No underage lovin
         return -1f;
@@ -165,7 +156,6 @@ namespace Psychology
       {
         ageCurveFactor = rescaledCurve.Evaluate(bioAge);
       }
-
 
       if (PsychologySettings.enableKinsey)
       {
@@ -245,8 +235,6 @@ namespace Psychology
       return null;
     }
 
-
-
     /// <summary>
     /// Builds a list of up to five other pawns that <paramref name="pawn"/> finds suitable for the given activity. Looks at romance chance factor for hookups and opinion for dates.
     /// </summary>
@@ -309,11 +297,6 @@ namespace Psychology
               tempPawn = p;
             }
 
-            //if ((memory == null && pawn.relations.OpinionOf(p) > pawn.MinOpinionForHookup()) || !hookup)
-            //{
-            //    num = pawn.relations.SecondaryRomanceChanceFactor(p);
-            //    tempPawn = p;
-            //}
           }
         }
         if (tempPawn == null)
@@ -351,11 +334,6 @@ namespace Psychology
       }
       foreach (Pawn p in GetAllLoveRelationPawns(pawn, false, false))
       {
-        //If the pawns have different ideos, I think this will check if the partner would feel cheated on per their ideo and settings
-        //if (!new HistoryEvent(pawn.GetHistoryEventForLoveRelationCountPlusOne(), p.Named(HistoryEventArgsNames.Doer)).DoerWillingToDo() && p.CaresAboutCheating())
-        //{
-        //    cheaterList.Add(p);
-        //}
         if (!new HistoryEvent(pawn.GetHistoryEventForLoveRelationCountPlusOne(), p.Named(HistoryEventArgsNames.Doer)).DoerWillingToDo() && p.CaresAboutCheating())
         {
           cheaterList.Add(p);
@@ -378,7 +356,6 @@ namespace Psychology
       return true;
     }
 
-
     /// <summary>
     /// Returns true if interaction between <paramref name="pawn"/> and <paramref name="target"/> is not cheating and is allowed by ideo. Otherwise, finds the partner they would feel the worst about cheating on and decides based on opinion.
     /// </summary>
@@ -398,11 +375,6 @@ namespace Psychology
         if (!cheatedOnList.NullOrEmpty())
         {
           //At this point, both the pawn and a non-zero number of partners consider this cheating
-          //If they are faithful, don't do it
-          //if (pawn.story.traits.HasTrait(RomanceDefOf.Faithful))
-          //{
-          //    return false;
-          //}
           if (pawn.story.traits.HasTrait(TraitDefOfPsychology.Codependent))
           {
             return false;
@@ -419,12 +391,6 @@ namespace Psychology
           {
             float opinion = pawn.relations.OpinionOf(p);
             float tempOpinionFactor;
-            //if (pawn.story.traits.HasTrait(RomanceDefOf.Philanderer))
-            //{
-            //    tempOpinionFactor = pawn.Map == p.Map
-            //        ? Mathf.InverseLerp(70f, 15f, opinion)
-            //        : Mathf.InverseLerp(100f, 50f, opinion);
-            //}
             if (pawn.story.traits.HasTrait(TraitDefOfPsychology.Lecher))
             {
               tempOpinionFactor = pawn.Map == p.Map
@@ -471,11 +437,6 @@ namespace Psychology
       {
         return false;
       }
-      //if (target.relations.OpinionOf(asker) < target.MinOpinionForHookup())
-      //{
-      //    return false;
-      //}
-      //Asexual pawns below a certain rating will only agree to sex with existing partners
       if (PsychologySettings.enableKinsey)
       {
         if (PsycheHelper.Comp(target).Sexuality.IsAsexual)
@@ -495,15 +456,6 @@ namespace Psychology
         //Otherwise their rating is already factored in via secondary romance chance factor
       }
 
-
-      //if (target.story.traits.HasTrait(TraitDefOf.Asexual) && target.AsexualRating() < 0.5f)
-      //{
-      //    if (!LovePartnerRelationUtility.LovePartnerRelationExists(target, asker))
-      //    {
-      //        return false;
-      //    }
-      //    //Otherwise their rating is already factored in via secondary romance chance factor
-      //}
       if (WillPawnContinue(target, asker, out _))
       {
         //It's either not cheating or they have decided to cheat
@@ -528,37 +480,6 @@ namespace Psychology
     /// <param name="target"></param>
     /// <param name="asker"></param>
     /// <returns>True or false</returns>
-    //public static bool IsDateAppealing(Pawn target, Pawn asker)
-    //{
-    //    //Always agree with an existing partner
-    //    if (LovePartnerRelationUtility.LovePartnerRelationExists(target, asker))
-    //    {
-    //        return true;
-    //    }
-    //    if (WillPawnContinue(target, asker, out _))
-    //    {
-    //        //Definitely not cheating, or they decided to cheat
-    //        //Same math as agreeing to a hookup but no asexual check
-    //        float num = 0f;
-    //        num += target.relations.SecondaryRomanceChanceFactor(asker) / 1.5f;
-    //        num *= Mathf.InverseLerp(-100f, 0f, target.relations.OpinionOf(asker));
-    //        return Rand.Range(0.05f, 1f) < num;
-    //    }
-    //    return false;
-    //}
-
-    //public static bool IsHangoutAppealing(Pawn target, Pawn asker)
-    //{
-    //    //Always agree with an existing partner?
-    //    if (LovePartnerRelationUtility.LovePartnerRelationExists(target, asker))
-    //    {
-    //        return true;
-    //    }
-    //    //Just looking at opinion
-    //    float num = Mathf.InverseLerp(-100f, 0f, target.relations.OpinionOf(asker));
-    //    return Rand.Range(0.05f, 1f) < num;
-
-    //}
 
     /// <summary>
     /// Will <paramref name="pawn"/> participate in a hookup. Checks settings and asexuality rating.
@@ -588,17 +509,6 @@ namespace Psychology
       }
       // ToDo: perhaps add a species specific enable hookup option
 
-
-      //Sex repulsed asexual pawns will never agree to sex
-      //if (pawn.story.traits.HasTrait(TraitDefOf.Asexual) && pawn.AsexualRating() < 0.2f)
-      //{
-      //    return false;
-      //}
-      //Is the race/pawnkind allowed to have hookups?
-      //if (!pawn.HookupAllowed())
-      //{
-      //    return false;
-      //}
       if (PsychologySettings.enableKinsey)
       {
         if (PsycheHelper.Comp(pawn).Sexuality.IsAsexual)
@@ -656,7 +566,6 @@ namespace Psychology
       }
       return true;
 
-
     }
 
     /// <summary>
@@ -690,7 +599,6 @@ namespace Psychology
         return list;
       }
       List<DirectPawnRelation> relations = pawn.relations.DirectRelations;
-      //List<DirectPawnRelation> relations = pawn.GetLoveRelations(includeDead);
 
       foreach (DirectPawnRelation rel in relations)
       {
@@ -698,10 +606,6 @@ namespace Psychology
         {
           list.Add(rel.otherPawn);
         }
-        //else if (SettingsUtilities.LoveRelations.Contains(rel.def) && (includeDead || !rel.otherPawn.Dead))
-        //{
-        //    list.Add(rel.otherPawn);
-        //}
       }
       return list;
     }
@@ -773,47 +677,18 @@ namespace Psychology
       {
         return false;
       }
-      // ToDo: account for genes
-      //if (pawn.genes != null)
-      //{
-      //    pawn.genes.HasGene(GeneDefOf.)
-      //}
       return true;
     }
-
 
     /// <summary>
     /// A rating to use for determining sex aversion for asexual pawns. Seed is based on pawn's ID, so it will always return the same number for a given pawn.
     /// </summary>
     /// <param name="pawn"></param>
     /// <returns>float between 0 and 1</returns>
-    //public static float AsexualRating(this Pawn pawn)
-    //{
-    //    Rand.PushState();
-    //    Rand.Seed = pawn.thingIDNumber;
-    //    float rating = Rand.Range(0f, 1f);
-    //    Rand.PopState();
-    //    return rating;
-    //}
 
     /// <summary>
     /// Generates points for the lovin age curve based on age settings
     /// </summary>
     /// <returns>List<CurvePoint></returns>
-    //public static List<CurvePoint> GetLovinCurve(this Pawn pawn)
-    //{
-    //    float minAge = pawn.MinAgeForSex();
-    //    float maxAge = pawn.MaxAgeForSex();
-    //    float declineAge = pawn.DeclineAtAge();
-    //    List<CurvePoint> curves = new List<CurvePoint>
-    //    {
-    //        new CurvePoint(minAge, 1.5f),
-    //        new CurvePoint((declineAge / 5) + minAge, 1.5f),
-    //        new CurvePoint(declineAge, 4f),
-    //        new CurvePoint((maxAge / 4) + declineAge, 12f),
-    //        new CurvePoint(maxAge, 36f)
-    //    };
-    //    return curves;
-    //}
   }
 }

@@ -22,7 +22,6 @@ public static class Need_Rest_IntervalDreamPatch
         {
             return;
         }
-        //Pawn pawn = Traverse.Create(__instance).Field("pawn").GetValue<Pawn>();
         Pawn pawn = ___pawn;
         if (Rand.Value < 0.001f && pawn.RaceProps.Humanlike && !pawn.Awake())
         {
@@ -55,7 +54,6 @@ public static class Need_Rest_IntervalInsomniacPatch
         {
             return;
         }
-        //Pawn pawn = Traverse.Create(__instance).Field("pawn").GetValue<Pawn>();
         Pawn pawn = ___pawn;
         if (Traverse.Create(__instance).Property("IsFrozen").GetValue<bool>())
         {

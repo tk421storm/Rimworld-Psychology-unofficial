@@ -12,8 +12,6 @@ using UnityEngine;
 using System.Xml.Linq;
 using System.Runtime;
 using System.Security.Cryptography;
-//using System.Security.Cryptography;
-//using Verse.Sound;
 
 namespace Psychology;
 
@@ -34,14 +32,12 @@ namespace Psychology;
 public class SpeciesHelper
 {
   public static HashSet<ThingDef> registeredSpecies = new HashSet<ThingDef>();
-  //public static Dictionary<string, SpeciesSettings> speciesDictDefault = new Dictionary<string, SpeciesSettings>();
   public static List<string> mindlessList = new List<string>() { "ChjDroid", "ChjBattleDroid", "Android1Tier", "M7Mech", "M8Mech" };
   public static List<string> androidLikeList = new List<string>() { "ChjAndroid", "Android2Tier", "Android3Tier", "Android4Tier", "Android5Tier" };
   public static List<string> elfLikeList = new List<string>() { };
   public static List<string> mindlessSubstringList = new List<string> { "Robot", "AIPawn" };
   public static List<string> androidLikeSubstringList = new List<string> { "Android" };
   public static List<string> elfLikeSubstringList = new List<string>() { "Elf" };
-  //public static List<string> animalLikeSubstringList = new List<string>() { "morph", "Morph" };
 
   // Presets: (enablePsyche, enableAgeGap, minDatingAge, minLovinAge). -1 = never, 0 = no age limit.
   public static SpeciesSettings mindlessSettings = new SpeciesSettings(false, false, -1f, -1f);
@@ -49,32 +45,8 @@ public class SpeciesHelper
   public static SpeciesSettings elfLikeSettings = new SpeciesSettings(EnablePsyche: true, EnableAgeGap: false);
   public static SpeciesSettings animalLikeSettings = new SpeciesSettings(true, true, -1f, -1f);
 
-  //public static Dictionary<string, SpeciesSettings> speciesDictDefault = new Dictionary<string, SpeciesSettings>();
   public static ThinkTreeDef zombieThinkTree;
   public static bool zombieNotNull;
-
-  // At startup, add everything to every humanlike def, but only register Human to show up settings window
-  //static SpeciesHelper()
-  //{
-  //    zombieThinkTree = DefDatabase<ThinkTreeDef>.GetNamedSilentFail("Zombie");
-  //    zombieNotNull = zombieThinkTree != null;
-  //    foreach (ThingDef t in DefDatabase<ThingDef>.AllDefs)
-  //    {
-  //        if (CheckIntelligenceAndAddEverythingToSpeciesDef(t, checkIntelligence: true, register: false, allowAddComp: true) != true)
-  //        {
-  //            continue;
-  //        }
-  //        if (t.defName != "Human")
-  //        {
-  //            continue;
-  //        }
-  //        if (registeredSpecies.Add(t))
-  //        {
-  //            //Log.Message("SpeciesHelper(), registered = " + t);
-  //        }
-  //    }
-  //    SettingsWindowUtility.Initialize();
-  //}
 
   static SpeciesHelper()
   {
@@ -86,10 +58,6 @@ public class SpeciesHelper
       {
         continue;
       }
-      //if (t.defName != "Human")
-      //{
-      //    continue;
-      //}
       if (registeredSpecies.Add(t))
       {
         Log.Message("Psychology, registered species: " + t);
@@ -138,7 +106,6 @@ public class SpeciesHelper
     if (PsychologySettings.speciesDict.ContainsKey(defName) != true)
     {
       PsychologySettings.speciesDict[defName] = DefaultSettingsForSpeciesDef(thingDef);
-      //Log.Message("CheckIntelligenceAndAddEverythingToHumanlikeDef, PsychologySettings.speciesDict, added defName = " + defName);
     }
     if (register)
     {
@@ -151,7 +118,6 @@ public class SpeciesHelper
         }
         SettingsWindowUtility.SaveBackupOfSettings();
         SettingsWindowUtility.Initialize();
-        //Log.Message("CheckIntelligenceAndAddEverythingToHumanlikeDef, registered = " + thingDef);
       }
     }
     else
@@ -165,24 +131,6 @@ public class SpeciesHelper
     return true;
   }
 
-  // To be used on game loaded
-  //public static void RegisterHumanlikeSpeciesLoadedGame()
-  //{
-  //    ThingDef pawnDef;
-  //    foreach (Pawn pawn in PawnsFinder.All_AliveOrDead)
-  //    {
-  //        pawnDef = pawn?.def;
-  //        if (pawnDef == null)
-  //        {
-  //            continue;
-  //        }
-  //        if (CheckIntelligenceAndAddEverythingToSpeciesDef(pawnDef, checkIntelligence: true, register: true, allowAddComp: true))
-  //        {
-  //            PsycheHelper.PsychologyEnabled(pawn);
-  //        }
-  //    }
-  //}
-
   // To be used after game (save file) is loaded
   // Settings for a race, creating default ones (and registering the race) on first use.
   public static SpeciesSettings GetOrMakeSpeciesSettingsFromThingDef(ThingDef pawnDef)
@@ -191,7 +139,6 @@ public class SpeciesHelper
     {
       settings = DefaultSettingsForSpeciesDef(pawnDef);
       PsychologySettings.speciesDict[pawnDef.defName] = settings;
-      //Log.Message("GetOrMakeSpeciesSettingsFromThingDef, added to PsychologySettings.speciesDict, defName = " + pawnDef.defName);
     }
     if (registeredSpecies.Add(pawnDef))
     {
@@ -200,7 +147,6 @@ public class SpeciesHelper
       {
         AddCompPsychologyToHumanlikeDef(pawnDef);
       }
-      //Log.Message("SpeciesHelper.GetOrMakeSpeciesSettingsFromThingDef, registered = " + pawnDef);
       SettingsWindowUtility.SaveBackupOfSettings();
       SettingsWindowUtility.Initialize();
     }
@@ -340,26 +286,6 @@ public class SpeciesHelper
     }
     if (def.race?.lifeStageAges != null)
     {
-      //if (def.race.lifeStageAges.Exists(x => x.def.defName.Contains("Adult") && x?.minAge != null))
-      //{
-      //    float adultAge = (def.race.lifeStageAges.First(x => x.def.defName.Contains("Adult"))).minAge;
-      //    if (def.race.lifeStageAges.Exists(x => x.def.defName.Contains("Teenager") && x?.minAge != null))
-      //    {
-      //        float teenAge = (def.race.lifeStageAges.First(x => x.def.defName.Contains("Teenager"))).minAge;
-      //        settings.minDatingAge = teenAge + (adultAge - teenAge) * (14f - 13f) / (18f - 13f);
-      //        settings.minLovinAge = teenAge + (adultAge - teenAge) * (16f - 13f) / (18f - 13f);
-      //    }
-      //    else
-      //    {
-      //        settings.minDatingAge = adultAge * 14f / 18f;
-      //        settings.minLovinAge = adultAge * 16f / 18f;
-      //    }
-      //}
-      //else
-      //{
-      //    settings.minDatingAge = -1f;
-      //    settings.minLovinAge = -1f;
-      //}
 
       bool foundTeen = false;
       bool foundAdult = false;
@@ -521,8 +447,6 @@ public class SpeciesHelper
     return pawn.ageTracker != null && minSettingsAge < pawn.ageTracker.AgeBiologicalYearsFloat && 0f < minSettingsAge;
   }
 
-
-
   // Hook: the HAR compatibility assembly postfixes this to disable the psyche for non-sentient races and the age gap
   // for ageless/non-flesh races (see the note in PsychologyAlienRace about whether that postfix ever gets applied).
   public static void AlienRaceHeuristicSettingsHook(SpeciesSettings settings, ThingDef def)
@@ -530,34 +454,4 @@ public class SpeciesHelper
     return;
   }
 
-
-
 }
-
-//public static class SpeciesHelperAlienRace
-//{
-//    public static void HeuristicSettings(SpeciesSettings settings, ThingDef def)
-//    {
-//        //AlienRace.ThingDef_AlienRace alienDef = def as AlienRace.ThingDef_AlienRace;
-//        if (def is AlienRace.ThingDef_AlienRace alienDef)
-//        {
-//            if (alienDef?.alienRace?.compatibility?.IsSentient != null)
-//            {
-//                settings.enablePsyche = alienDef.alienRace.compatibility.IsSentient;
-//            }
-//            bool bool1 = true;
-//            bool bool2 = true;
-//            if (alienDef?.alienRace?.generalSettings?.immuneToAge != null)
-//            {
-//                bool1 = !alienDef.alienRace.generalSettings.immuneToAge;
-//            }
-//            if (alienDef?.alienRace?.compatibility?.IsFlesh != null)
-//            {
-//                bool2 = alienDef.alienRace.compatibility.IsFlesh;
-//            }
-//            settings.enableAgeGap = bool1 && bool2;
-//        }
-//    }
-//}
-
-

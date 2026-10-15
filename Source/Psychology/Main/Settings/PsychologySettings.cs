@@ -83,8 +83,6 @@ public class PsychologySettings : ModSettings
   public const float conversationDurationDefault = 60f;
   public static float conversationDuration = 60f;
 
-
-
   public const float convoMaxOpinionChangeDefault = 40f;
   public static float convoMaxOpinionChange = 40f;
 
@@ -164,7 +162,6 @@ public class PsychologySettings : ModSettings
     ScribeValueAndAddToNameList(nameof(mentalBreakAnxietyChance));
     ScribeValueAndAddToNameList(nameof(imprisonedDebuff));
     ScribeValueAndAddToNameList(nameof(conversationDuration));
-    //ScribeValueAndAddToNameList(nameof(convoOpinionMultiplier));
     ScribeValueAndAddToNameList(nameof(convoMaxOpinionChange));
     ScribeValueAndAddToNameList(nameof(convoMeanHours));
     ScribeValueAndAddToNameList(nameof(convoTimeScaleHours));
@@ -191,7 +188,6 @@ public class PsychologySettings : ModSettings
     Scribe_Values.Look(ref convoOpinionMultiplier, "Psychology_ConvoOpinionMultiplier", convoOpinionMultiplierDefault);
     enableAnxiety = enableAnxietyDefault;
 
-    //Log.Message("PsychologySettings, ExposeData end");
   }
 
   // Saves/loads the static field called settingName (bool or float) and registers it in the name lists.
@@ -209,7 +205,6 @@ public class PsychologySettings : ModSettings
       if (BoolSettingNameList.Add(settingName))
       {
         CombinedSettingNameList.Add(settingName);
-        //Log.Message("Psychology: added " + settingName + " as a bool setting");
       }
       return;
     }
@@ -220,7 +215,6 @@ public class PsychologySettings : ModSettings
       if (FloatSettingNameList.Add(settingName))
       {
         CombinedSettingNameList.Add(settingName);
-        //Log.Message("Psycholog: added " + settingName + " as a float setting");
       }
       return;
     }
@@ -276,5 +270,3 @@ public class PsychologySettings : ModSettings
     SpeciesHelper.ResetSpeciesDict(speciesDict);
   }
 }
-
-

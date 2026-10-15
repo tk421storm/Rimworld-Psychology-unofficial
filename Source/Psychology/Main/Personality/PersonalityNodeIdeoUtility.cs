@@ -17,17 +17,13 @@ public static class PersonalityNodeIdeoUtility
 {
     public static Dictionary<MemeDef, Dictionary<PersonalityNodeDef, float>> memesAffectedByNodes = new Dictionary<MemeDef, Dictionary<PersonalityNodeDef, float>>();
     public static Dictionary<PreceptDef, Dictionary<PersonalityNodeDef, float>> preceptsAffectedByNodes = new Dictionary<PreceptDef, Dictionary<PersonalityNodeDef, float>>();
-    //public static Dictionary<PersonalityNodeDef, List<PersonalityNodeMemeCertaintyModifier>> nodeDefsWithMemes;
-    //public static Dictionary<PersonalityNodeDef, List<PersonalityNodePreceptCertaintyModifier>> nodeDefsWithPrecepts;
 
     static PersonalityNodeIdeoUtility()
     {
-        //List<Pair<PersonalityNodeDef, float>> list = new List<Pair<PersonalityNodeDef, float>>();
         foreach (PersonalityNodeDef def in DefDatabase<PersonalityNodeDef>.AllDefsListForReading)
         {
             if (def.memeCertaintyModifiers != null && def.memeCertaintyModifiers.Count > 0)
             {
-                //Log.Message("memeCertaintyModifiers exists for " + def.defName);
                 foreach (PersonalityNodeMemeCertaintyModifier mcm in def.memeCertaintyModifiers)
                 {
                     if (!memesAffectedByNodes.ContainsKey(mcm.meme))
@@ -37,10 +33,8 @@ public static class PersonalityNodeIdeoUtility
                     memesAffectedByNodes[mcm.meme][def] = mcm.modifier;
                 }
             }
-            //Log.Message("Check preceptCertaintyModifiers for " + def.defName);
             if (def.preceptCertaintyModifiers != null && def.preceptCertaintyModifiers.Count > 0)
             {
-                //Log.Message("preceptCertaintyModifiers exist for " + def.defName);
                 
                 foreach (PersonalityNodePreceptCertaintyModifier pcm in def.preceptCertaintyModifiers)
                 {
@@ -131,8 +125,4 @@ public static class PersonalityNodeIdeoUtility
         return favoredVector;
     }
 
-
-
 }
-
-

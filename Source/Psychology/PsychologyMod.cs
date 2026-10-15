@@ -46,7 +46,6 @@ public class PsychologyMod : Mod
     }
     if (Time.frameCount - lastDrawFrame > 5)
     {
-      //Log.Message("DoSettingsWindowContents, SpeciesHelper.Initialize()");
       SettingsWindowUtility.Initialize();
     }
     SettingsWindowUtility.DrawSettingsWindow(inRect);

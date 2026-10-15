@@ -78,7 +78,6 @@ public class Pawn_SexualityTracker : IExposable
     // Pawns can still have drive even if they are underage from the user species settings. Hence no check on species settings.
     if (!SpeciesHelper.RomanceLifestageAgeCheck(pawn, true))
     {
-      //Log.Message("AdjustedDrive, !RomanceLifestageAgeCheck");
       return 0f;
     }
     float age = pawn.ageTracker.AgeBiologicalYearsFloat;
@@ -87,7 +86,6 @@ public class Pawn_SexualityTracker : IExposable
     float drive = isDating ? romanticDrive : sexDrive;
     if (!settings.enablePsyche || minSettingsAge < 0f)
     {
-      //Log.Message("AdjustedDrive, !settings.enablePsyche || minLovinAge < 0f, pawn: " + pawn + ", minSettingsAge: " + minSettingsAge);
       return 0f;
     }
     if (!settings.enableAgeGap)
@@ -166,9 +164,6 @@ public class Pawn_SexualityTracker : IExposable
 
   public virtual void GenerateSexuality(float[] overrideKinseyArray, int inputSeed = 0)
   {
-    //kinseyRating = RandKinsey(b0, b1, b2, b3, b4, b5, b6, inputSeed);
-    //sexDrive = GenerateSexDrive(inputSeed);
-    //romanticDrive = GenerateRomanticDrive(inputSeed);
     GenerateKinsey(overrideKinseyArray, inputSeed);
     GenerateSexDrive(inputSeed);
     GenerateRomanticDrive(inputSeed);
@@ -263,7 +258,6 @@ public class Pawn_SexualityTracker : IExposable
     int seed2 = 13 * pawnSeed + 7 * inputSeed + 89;
     while ((drive < 0f || 1f < drive) && kill < 500)
     {
-      //drive = Rand.Gaussian(1.1f, 0.26f);
       drive = PsycheHelper.RandGaussianSeeded(seed1, seed2, 1.1f, 0.26f);
       seed1 += 43;
       seed2 += 67;
@@ -310,13 +304,9 @@ public class Pawn_SexualityTracker : IExposable
 
   public void DeepCopyFromOtherTracker(Pawn_SexualityTracker otherTracker)
   {
-    //Log.Message("Pawn_SexualityTracker.DeepCopyFromOtherTracker step 0");
     this.kinseyRating = otherTracker.kinseyRating;
-    //Log.Message("Pawn_SexualityTracker.DeepCopyFromOtherTracker step 1, otherTracker.kinseyRating = " + otherTracker.kinseyRating);
     this.sexDrive = otherTracker.sexDrive;
-    //Log.Message("Pawn_SexualityTracker.DeepCopyFromOtherTracker step 2, otherTracker.sexDrive = " + otherTracker.sexDrive);
     this.romanticDrive = otherTracker.romanticDrive;
-    //Log.Message("Pawn_SexualityTracker.DeepCopyFromOtherTracker step 3, otherTracker.romanticDrive " + otherTracker.romanticDrive);
     if (otherTracker.knownSexualitiesWorkingKeys != null)
     {
       this.knownSexualitiesWorkingKeys = new List<Pawn>();
@@ -325,7 +315,6 @@ public class Pawn_SexualityTracker : IExposable
         this.knownSexualitiesWorkingKeys.Add(p);
       }
     }
-    //Log.Message("Pawn_SexualityTracker.DeepCopyFromOtherTracker step 4");
     if (otherTracker.knownSexualitiesWorkingValues != null)
     {
       this.knownSexualitiesWorkingValues = new List<int>();
@@ -334,7 +323,6 @@ public class Pawn_SexualityTracker : IExposable
         this.knownSexualitiesWorkingValues.Add(i);
       }
     }
-    //Log.Message("Pawn_SexualityTracker.DeepCopyFromOtherTracker step 5");
     this.knownSexualities = new Dictionary<Pawn, int>();
     foreach (KeyValuePair<Pawn, int> kvp in otherTracker.knownSexualities)
     {
@@ -342,5 +330,3 @@ public class Pawn_SexualityTracker : IExposable
     }
   }
 }
-
-

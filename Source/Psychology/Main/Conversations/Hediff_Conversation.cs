@@ -53,21 +53,6 @@ public class Hediff_Conversation : HediffWithComps
   public override void Tick()
   {
     base.Tick();
-    //if (this.otherPawn == null)
-    //{
-    //    this.pawn.health.RemoveHediff(this);
-    //    return;
-    //}
-    //if (!this.otherPawn.Spawned || !this.pawn.Spawned || !SocialInteractionUtility.CanReceiveInteraction(this.pawn) || !SocialInteractionUtility.CanReceiveInteraction(this.otherPawn))
-    //{
-    //    this.pawn.health.RemoveHediff(this);
-    //    return;
-    //}
-    //if (this.otherPawn.Dead || this.otherPawn.Downed || this.otherPawn.InAggroMentalState)
-    //{
-    //    this.pawn.health.RemoveHediff(this);
-    //    return;
-    //}
     if (this.pawn.IsHashIntervalTick(200))
     {
       if (this.otherPawn == null)
@@ -152,7 +137,6 @@ public class Hediff_Conversation : HediffWithComps
       Log.Warning("Hediff_Conversation.PostRemoved(), psychology not enabled or pawn dead");
       return;
     }
-    //Log.Message("Hediff_Conversation.PostRemoved(), pawn = " + pawn.LabelShort + " otherPawn = " + otherPawn.LabelShort + ", step 0");
     Hediff_Conversation otherConvo = otherPawn.health.hediffSet.hediffs.Find(h => h is Hediff_Conversation && ((Hediff_Conversation)h).otherPawn == this.pawn) as Hediff_Conversation;
     if (otherConvo != null)
     {
@@ -180,7 +164,6 @@ public class Hediff_Conversation : HediffWithComps
       int numEpicTalks = int.Parse("NumberOfEpicTalks".Translate());
       talkDesc = "EpicTalk" + Rand.RangeInclusive(1, numEpicTalks);
     }
-    //Log.Message("Hediff_Conversation.PostRemoved(), pawn = " + pawn.LabelShort + " otherPawn = " + otherPawn.LabelShort + ", step 1");
     float opinionMod;
     ThoughtDef def = CreateSocialThought(out opinionMod);
     bool mattered = TryGainThought(def, Mathf.RoundToInt(opinionMod));
@@ -209,7 +192,6 @@ public class Hediff_Conversation : HediffWithComps
     }
     if (this.waveGoodbye && this.pawn.Map != null)
     {
-      //Log.Message("Hediff_Conversation.PostRemoved(), pawn = " + pawn.LabelShort + " otherPawn = " + otherPawn.LabelShort + ", step 2");
       RulePack goodbyeText = new RulePack();
       FieldInfo RuleStrings = typeof(RulePack).GetField("rulesStrings", BindingFlags.Instance | BindingFlags.NonPublic);
       List<string> text = new List<string>(1);
@@ -222,7 +204,6 @@ public class Hediff_Conversation : HediffWithComps
       Find.PlayLog.Add(log);
       convoLog = log;
       MoteMaker.MakeInteractionBubble(this.pawn, this.otherPawn, InteractionDefOf.Chitchat.interactionMote, InteractionDefOf.Chitchat.GetSymbol()); // 1.3
-                                                                                                                                                    //Log.Message("Hediff_Conversation.PostRemoved(), pawn = " + pawn.LabelShort + " otherPawn = " + otherPawn.LabelShort + ", step 3");
     }
   }
 
@@ -255,7 +236,6 @@ public class Hediff_Conversation : HediffWithComps
     float controversiality = topic.controversiality;
     // Baseline opinion modifier ranges from -1 to +1. It's expected value should be positive for low controversiality (less than 1), and negative otherwise
     float opinionModRaw = PsycheHelper.SaddleShapeFunction(opin1, opin2, 1f - 0.5f * controversiality, 4f * controversiality * controversiality);
-    //Log.Message(pawn.LabelShort + " and " + otherPawn.LabelShort + " opinionModRaw = " + opinionModRaw.ToString());
 
     Pawn_PsycheTracker pawnPT = PsycheHelper.Comp(pawn).Psyche;
     float pawnJudgmental = -0.5f + pawnPT.GetPersonalityRating(PersonalityNodeDefOf.Judgmental);
@@ -329,8 +309,6 @@ public class Hediff_Conversation : HediffWithComps
 
     // Added time minimum to baseline to opinionMod because conversations often end very quickly
     float y = yr * r + y0x * Func(x) + y0t * Func(t) + y1 * Func(x) * Func(t) + y2 * Func(x * (1f + t));
-    //y *= PsychologySettings.convoOpinionMultiplier;
-    //y = Mathf.Min(y, PsychologySettings.convoMaxOpinionChange);
     y *= PsychologySettings.convoMaxOpinionChange / (yr + y0x + y0t + y1 + y2);
 
     // In low-population colonies, pawns will put aside their differences.
@@ -379,9 +357,6 @@ public class Hediff_Conversation : HediffWithComps
       return false;
     }
     this.pawn.needs.mood.thoughts.memories.TryGainMemory(def, this.otherPawn);
-    //Thought thought = ThoughtMaker.MakeThought(ThoughtDefOfPsychology.DynamicSocial);
-    //thought.CurStage.baseOpinionOffset = ;
-    //thought.CurStage.label = ;
 
     foreach (Thought_MemorySocialDynamic m in removedMemories)
     {
@@ -404,6 +379,5 @@ public class Hediff_Conversation : HediffWithComps
       return 1f;
     }
   }
-
 
 }

@@ -28,7 +28,6 @@ public static class PawnDiedOrDownedThoughtUtility_AppendThoughtsPatch
         bool flag = dinfo.HasValue && dinfo.Value.Def.execution;
         bool flag2 = victim.IsPrisonerOfColony && !victim.guilt.IsGuilty && !victim.InAggroMentalState;
         bool flag3 = dinfo.HasValue && dinfo.Value.Def.ExternalViolenceFor(victim) && dinfo.Value.Instigator != null && dinfo.Value.Instigator is Pawn;
-        //List<Pawn> allPawnsSpawned = victim.Map.mapPawns.AllPawnsSpawned; // Causes NPE
         if (flag3)
         {
             Pawn pawn = (Pawn)dinfo.Value.Instigator;

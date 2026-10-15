@@ -9,7 +9,6 @@ namespace Psychology;
 // Point-in-polygon tests and mesh drawing for the radar chart (Unity GUI has no polygon primitives).
 public class PolygonUtility
 {
-    //private static readonly Material PsycheHighlightMat = SolidColorMaterials.SimpleSolidColorMaterial(new Color(1f, 1f, 1f, 0.1f));
 
     public static float TriangleSign(Vector2 p1, Vector2 p2, Vector2 p3)
     {
@@ -29,7 +28,6 @@ public class PolygonUtility
         }
         return !(has_neg && has_pos);
     }
-
 
     public static bool IsMouseoverPolygon(List<Vector2> polyVertexList, float errorMargin = 0f)
     {
@@ -55,9 +53,7 @@ public class PolygonUtility
             return;
         }
         int sides = verticies.Count();
-        //GL.PushMatrix();
         mat.SetPass(0);
-        //GL.LoadIdentity();
         if (sides == 3)
         {
             GL.Begin(GL.TRIANGLES);
@@ -87,7 +83,5 @@ public class PolygonUtility
             }
             GL.End();
         }
-        //GL.PopMatrix();
     }
 }
-

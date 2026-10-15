@@ -55,10 +55,6 @@ public class Pawn_PsycheTracker : IExposable
   public Dictionary<MemeDef, Dictionary<PersonalityNodeDef, float>> dailyCertaintyFromMemesAndNodes = new Dictionary<MemeDef, Dictionary<PersonalityNodeDef, float>>();
   public Dictionary<PreceptDef, Dictionary<PersonalityNodeDef, float>> dailyCertaintyFromPerceptsAndNodes = new Dictionary<PreceptDef, Dictionary<PersonalityNodeDef, float>>();
 
-  //public float[] RawRatingArray = new float[PersonalityNodeMatrix.order];
-  //public Dictionary<PersonalityNodeDef, float> RawRatingDict = new Dictionary<PersonalityNodeDef, float>();
-  //public Dictionary<PersonalityNodeDef, float> AdjustedRatingDict = new Dictionary<PersonalityNodeDef, float>();
-
   public HashSet<PersonalityNode> PersonalityNodes
   {
     get
@@ -108,7 +104,6 @@ public class Pawn_PsycheTracker : IExposable
     foreach (PersonalityNode n in this.nodes)
     {
       nodeDict[n.def] = n;
-      //RawRatingDict[n.def] = n.rawRating;
     }
   }
 
@@ -140,8 +135,6 @@ public class Pawn_PsycheTracker : IExposable
     {
       defSeed = node.def.GetHashCode();
       node.rawRating = Rand.ValueSeeded(Gen.HashCombineInt(pawnSeed, defSeed, inputSeed, 37));
-      //RawRatingArray[PersonalityNodeMatrix.indexDict[node.def]] = node.rawRating;
-      //RawRatingDict[node.def] = node.rawRating;
     }
     AdjustedRatingTicker = -1;
   }
@@ -158,7 +151,6 @@ public class Pawn_PsycheTracker : IExposable
     }
     AdjustedRatingTicker--;
     return nodeDict[def].AdjustedRating;
-    //return AdjustedRatingDict[def];
   }
 
   public PersonalityNode GetPersonalityNodeOfDef(PersonalityNodeDef def)
@@ -182,7 +174,6 @@ public class Pawn_PsycheTracker : IExposable
     float t = Mathf.Max(0f, totalOpinion / 30f + GetPersonalityRating(PersonalityNodeDefOf.Outspoken) - GetPersonalityRating(PersonalityNodeDefOf.Polite));
     float c = def.controversiality;
     float weight = 1f / (Mathf.Pow(32f, c) + 64f * t * t);
-    //float weight = 10f / Mathf.Lerp(1f + 8f * def.controversiality, 1f + 0.5f * def.controversiality, t);
 
     /* Polite pawns will avoid topics they already know are contentious. */
     Pair<string, string> disagreementKey = new Pair<string, string>(otherPawn.ThingID, def.defName);
@@ -195,11 +186,6 @@ public class Pawn_PsycheTracker : IExposable
       float knownDisagreements = (from m in convoMemories
                                   where m.opinionOffset < 0f && m.CurStage.label == def.defName
                                   select Math.Abs(m.opinionOffset)).Sum();
-      //float disagree = 1f;
-      //if (knownDisagreements > 0)
-      //{
-      //    disagree = Mathf.Clamp01(1f / (knownDisagreements / 50f)) * Mathf.Lerp(0.25f, 1f, this.GetPersonalityRating(PersonalityNodeDefOf.Polite));
-      //}
       float disagree = Mathf.Lerp(1f, 0.25f, 0.1f * knownDisagreements * GetPersonalityRating(PersonalityNodeDefOf.Polite) - 0.25f);
       cachedDisagreementWeights[disagreementKey] = disagree;
       recalcNodeDisagreement[disagreementKey] = false;
@@ -218,8 +204,6 @@ public class Pawn_PsycheTracker : IExposable
     {
       return cachedOpinions[other.ThingID];
     }
-    //float knownThoughtOpinion = 1f;
-    //convoMemories.Do(m => knownThoughtOpinion += Math.Abs(m.opinionOffset));
     float knownThoughtOpinion = 0f;
     convoMemories.Do(m => knownThoughtOpinion += m.opinionOffset);
 
@@ -243,30 +227,13 @@ public class Pawn_PsycheTracker : IExposable
   /// </summary>
   public void CalculateAdjustedRatings()
   {
-    //Stopwatch stopwatch = new Stopwatch();
-    //stopwatch.Start();
     Gender gender = pawn.gender;
-    //stopwatch.Stop();
-    //PsycheHelper.CircumstanceTimings[0] += (float)stopwatch.Elapsed.TotalMilliseconds;
-    //stopwatch.Reset();
 
-    //stopwatch.Start();
     List<Trait> traits = pawn.story.traits.allTraits;
-    //stopwatch.Stop();
-    //PsycheHelper.CircumstanceTimings[1] += (float)stopwatch.Elapsed.TotalMilliseconds;
-    //stopwatch.Reset();
 
-    //stopwatch.Start();
     List<SkillRecord> skills = pawn.skills.skills;
-    //stopwatch.Stop();
-    //PsycheHelper.CircumstanceTimings[2] += (float)stopwatch.Elapsed.TotalMilliseconds;
-    //stopwatch.Reset();
 
-    //stopwatch.Start();
     List<WorkTypeDef> incapables = pawn.GetDisabledWorkTypes();
-    //stopwatch.Stop();
-    //PsycheHelper.CircumstanceTimings[3] += (float)stopwatch.Elapsed.TotalMilliseconds;
-    //stopwatch.Reset();
 
     int index;
     float[] adjustedRatingList = new float[PersonalityNodeMatrix.order];
@@ -291,13 +258,6 @@ public class Pawn_PsycheTracker : IExposable
       node.AdjustedRating = adjustedRatingList[PersonalityNodeMatrix.indexDict[node.def]];
     }
     AdjustedRatingTicker = 500;
-    //string text = "AdjustForCircumstance, total timings in ms:";
-    //for (index = 0; index < PsycheHelper.CircumstanceTimings.Count(); index++)
-    //{
-    //    text += " | {" + index + ", " + PsycheHelper.CircumstanceTimings[index] + "}";
-    //}
-    //Log.Message(text);
-    //Log.Message("AdjustForCircumstance, average timings in ms: " + PsycheHelper.CircumstanceTimings.Sum() / PsycheHelper.CircumstanceCount + " for count = " + PsycheHelper.CircumstanceCount);
   }
 
   /// <summary>
@@ -322,10 +282,6 @@ public class Pawn_PsycheTracker : IExposable
   /// </summary>
   public void AdjustForCircumstance(float[] ratings, bool applyTwice, Gender gender, List<Trait> traits, List<SkillRecord> skills, List<WorkTypeDef> incapables)
   {
-    //PsycheHelper.CircumstanceCount++;
-    //Stopwatch stopwatch = new Stopwatch();
-    //Stopwatch stopwatch2 = new Stopwatch();
-    //Stopwatch stopwatch3 = new Stopwatch();
 
     float[] tM = new float[PersonalityNodeMatrix.order];
     float s;
@@ -333,125 +289,68 @@ public class Pawn_PsycheTracker : IExposable
     int index;
     Dictionary<int, float> dict;
 
-    //stopwatch.Start();
     float gM;
     float gMm1;
     float kinseyFactor = PsychologySettings.enableKinsey ? 1f - PsycheHelper.Comp(pawn).Sexuality.kinseyRating / 6f : pawn.story.traits.HasTrait(TraitDefOf.Gay) ? 0f : 1f;
-    //stopwatch.Stop();
-    //PsycheHelper.CircumstanceTimings[4] += (float)stopwatch.Elapsed.TotalMilliseconds;
-    //stopwatch.Reset();
 
-    //stopwatch.Start();
     if (PsycheHelper.GenderModifierNodeDefDict.TryGetValue(gender, out dict) && kinseyFactor != 0f)
     {
-      //stopwatch2.Start();
       foreach (KeyValuePair<int, float> kvp in dict)
       {
-        //stopwatch3.Start();
         gM = kvp.Value * kinseyFactor;
         if (Mathf.Abs(gM) > 0.001f)
         {
           gMm1 = gM - 1f;
           ratings[kvp.Key] = (gMm1 + Mathf.Sqrt(gMm1 * gMm1 + 4f * gM * ratings[kvp.Key])) / (2f * gM);
         }
-        //stopwatch3.Stop();
-        //PsycheHelper.CircumstanceTimings[5] += (float)stopwatch3.Elapsed.TotalMilliseconds;
-        //PsycheHelper.CircumstanceTimings[6] -= (float)stopwatch3.Elapsed.TotalMilliseconds;
-        //stopwatch3.Reset();
       }
-      //stopwatch2.Stop();
-      //PsycheHelper.CircumstanceTimings[6] += (float)stopwatch2.Elapsed.TotalMilliseconds;
-      //PsycheHelper.CircumstanceTimings[7] -= (float)stopwatch2.Elapsed.TotalMilliseconds;
-      //stopwatch2.Reset();
     }
-    //stopwatch.Stop();
-    //PsycheHelper.CircumstanceTimings[7] += (float)stopwatch.Elapsed.TotalMilliseconds;
-    //stopwatch.Reset();
 
-    //stopwatch.Start();
     Pair<TraitDef, int> traitPair = new Pair<TraitDef, int>();
     bool trygetvalue;
     if (traits.NullOrEmpty() != true)
     {
       foreach (Trait trait in traits)
       {
-        //stopwatch2.Start();
         traitPair = new Pair<TraitDef, int>(trait.def, trait.Degree);
         trygetvalue = PsycheHelper.TraitModifierNodeDefDict.TryGetValue(traitPair, out dict);
-        //stopwatch2.Stop();
-        //PsycheHelper.CircumstanceTimings[8] += (float)stopwatch2.Elapsed.TotalMilliseconds;
-        //PsycheHelper.CircumstanceTimings[10] -= (float)stopwatch2.Elapsed.TotalMilliseconds;
-        //stopwatch2.Reset();
 
         if (trygetvalue != true)
         {
           continue;
         }
 
-        //stopwatch2.Start();
         foreach (KeyValuePair<int, float> kvp in dict)
         {
           index = kvp.Key;
           tM[index] = PsycheHelper.RelativisticAddition(tM[index], kvp.Value);
 
         }
-        //stopwatch2.Stop();
-        //PsycheHelper.CircumstanceTimings[9] += (float)stopwatch2.Elapsed.TotalMilliseconds;
-        //PsycheHelper.CircumstanceTimings[10] -= (float)stopwatch2.Elapsed.TotalMilliseconds;
-        //stopwatch2.Reset();
       }
     }
-    //stopwatch.Stop();
-    //PsycheHelper.CircumstanceTimings[10] += (float)stopwatch.Elapsed.TotalMilliseconds;
-    //stopwatch.Reset();
 
-    //stopwatch.Start();
     float skillWeight;
     if (skills.NullOrEmpty() != true)
     {
       foreach (SkillRecord skill in skills)
       {
-        //stopwatch2.Start();
         trygetvalue = PsycheHelper.SkillModifierNodeDefDict.TryGetValue(skill.def, out HashSet<int> indices);
-        //stopwatch2.Stop();
-        //PsycheHelper.CircumstanceTimings[11] += (float)stopwatch2.Elapsed.TotalMilliseconds;
-        //PsycheHelper.CircumstanceTimings[15] -= (float)stopwatch2.Elapsed.TotalMilliseconds;
-        //stopwatch2.Reset();
 
         if (trygetvalue != true)
         {
           continue;
         }
 
-        //stopwatch2.Start();
         foreach (int i in indices)
         {
-          //stopwatch3.Start();
           skillWeight = Mathf.Lerp(-0.20f, 0.85f, skill.levelInt / 20f);
-          //stopwatch3.Stop();
-          //PsycheHelper.CircumstanceTimings[12] += (float)stopwatch3.Elapsed.TotalMilliseconds;
-          //PsycheHelper.CircumstanceTimings[14] -= (float)stopwatch3.Elapsed.TotalMilliseconds;
-          //stopwatch3.Reset();
 
-          //stopwatch3.Start();
           tM[i] = PsycheHelper.RelativisticAddition(tM[i], skillWeight);
-          //stopwatch3.Stop();
-          //PsycheHelper.CircumstanceTimings[13] += (float)stopwatch3.Elapsed.TotalMilliseconds;
-          //PsycheHelper.CircumstanceTimings[14] -= (float)stopwatch3.Elapsed.TotalMilliseconds;
-          //stopwatch3.Reset();
         }
-        //stopwatch2.Stop();
-        //PsycheHelper.CircumstanceTimings[14] += (float)stopwatch2.Elapsed.TotalMilliseconds;
-        //PsycheHelper.CircumstanceTimings[15] -= (float)stopwatch2.Elapsed.TotalMilliseconds;
-        //stopwatch2.Reset();
 
       }
     }
-    //stopwatch.Stop();
-    //PsycheHelper.CircumstanceTimings[15] += (float)stopwatch.Elapsed.TotalMilliseconds;
-    //stopwatch.Reset();
 
-    //stopwatch.Start();
     if (incapables.NullOrEmpty() != true)
     {
       foreach (WorkTypeDef incapable in incapables)
@@ -467,27 +366,11 @@ public class Pawn_PsycheTracker : IExposable
         }
       }
     }
-    //stopwatch.Stop();
-    //PsycheHelper.CircumstanceTimings[16] += (float)stopwatch.Elapsed.TotalMilliseconds;
-    //stopwatch.Reset();
 
-    //stopwatch.Start();
     index = PersonalityNodeMatrix.indexDict[PersonalityNodeDefOf.Cool];
-    //stopwatch.Stop();
-    //PsycheHelper.CircumstanceTimings[17] += (float)stopwatch.Elapsed.TotalMilliseconds;
-    //stopwatch.Reset();
-    //stopwatch.Start();
     tM[index] = RelationsUtility.IsDisfigured(this.pawn) ? PsycheHelper.RelativisticAddition(tM[index], -0.1f) : tM[index];
-    //stopwatch.Stop();
-    //PsycheHelper.CircumstanceTimings[18] += (float)stopwatch.Elapsed.TotalMilliseconds;
-    //stopwatch.Reset();
-    //stopwatch.Start();
     tM[index] = PsycheHelper.RelativisticAddition(tM[index], 0.3f * this.pawn.GetStatValue(StatDefOf.PawnBeauty));
-    //stopwatch.Stop();
-    //PsycheHelper.CircumstanceTimings[19] += (float)stopwatch.Elapsed.TotalMilliseconds;
-    //stopwatch.Reset();
 
-    //stopwatch.Start();
     index = PersonalityNodeMatrix.indexDict[PersonalityNodeDefOf.LaidBack];
     foreach (Hediff hediff in pawn.health.hediffSet.hediffs)
     {
@@ -498,11 +381,7 @@ public class Pawn_PsycheTracker : IExposable
         break;
       }
     }
-    //stopwatch.Stop();
-    //PsycheHelper.CircumstanceTimings[20] += (float)stopwatch.Elapsed.TotalMilliseconds;
-    //stopwatch.Reset();
 
-    //stopwatch.Start();
     bool flag;
     if (applyTwice)
     {
@@ -520,18 +399,11 @@ public class Pawn_PsycheTracker : IExposable
 
       }
     }
-    //stopwatch.Stop();
-    //PsycheHelper.CircumstanceTimings[21] += (float)stopwatch.Elapsed.TotalMilliseconds;
-    //stopwatch.Reset();
 
-    //stopwatch.Start();
     for (index = 0; index < PersonalityNodeMatrix.order; index++)
     {
       ratings[index] = (1f - Mathf.Abs(tM[index])) * ratings[index] + Mathf.Max(0f, tM[index]);
     }
-    //stopwatch.Stop();
-    //PsycheHelper.CircumstanceTimings[22] += (float)stopwatch.Elapsed.TotalMilliseconds;
-    //stopwatch.Reset();
   }
 
   /// <summary>Rebuilds this tracker's nodes with another tracker's raw ratings and caches (see CompPsychology.DeepCopyFromOtherComp).</summary>
@@ -597,20 +469,16 @@ public class Pawn_PsycheTracker : IExposable
   /// </summary>
   public float CalculateCertaintyChangePerDay(Ideo ideo, bool addToDicts = true)
   {
-    //Log.Message("CalculateCertaintyChangePerDay, start");
     CalculateAdjustedRatings();
     if (addToDicts)
     {
-      //Log.Message("CalculateCertaintyChangePerDay, clearing dictionaries");
       dailyCertaintyFromMemesAndNodes.Clear();
       dailyCertaintyFromPerceptsAndNodes.Clear();
     }
     if (ideo == null)
     {
-      //Log.Message("ideo is null for pawn " + pawn);
       return 0f;
     }
-    //CalculateAdjustedRatings();
     float certaintyChange = 0f;
     float rating;
     float adjustment;
@@ -620,14 +488,12 @@ public class Pawn_PsycheTracker : IExposable
     foreach (KeyValuePair<MemeDef, Dictionary<PersonalityNodeDef, float>> kvp0 in PersonalityNodeIdeoUtility.memesAffectedByNodes)
     {
       memeDef = kvp0.Key;
-      //Log.Message("CalculateCertaintyChangePerDay, iterating over memesAffectedByNodes, meme def = " + memeDef.LabelCap);
       if (ideo.HasMeme(memeDef) != true)
       {
         continue;
       }
       if (addToDicts && dailyCertaintyFromMemesAndNodes.ContainsKey(memeDef) != true)
       {
-        //Log.Message("CalculateCertaintyChangePerDay, created new dictionary for meme def " + memeDef.LabelCap);
         dailyCertaintyFromMemesAndNodes[memeDef] = new Dictionary<PersonalityNodeDef, float>();
       }
       foreach (KeyValuePair<PersonalityNodeDef, float> kvp1 in kvp0.Value)
@@ -636,10 +502,8 @@ public class Pawn_PsycheTracker : IExposable
         rating = GetPersonalityRating(nodeDef);
         adjustment = PsycheHelper.DailyCertaintyChangeScale * (2f * rating - 1f) * kvp1.Value;
         certaintyChange += adjustment;
-        //Log.Message("CalculateCertaintyChangePerDay, meme def " + memeDef.LabelCap + ", and node def = " + nodeDef.LabelCap);
         if (addToDicts)
         {
-          //Log.Message("CalculateCertaintyChangePerDay, added memeDef: " + memeDef.LabelCap + ", with nodeDef: " + nodeDef + ", and adjustment: " + adjustment);
           dailyCertaintyFromMemesAndNodes[memeDef][nodeDef] = adjustment;
         }
       }
@@ -671,7 +535,6 @@ public class Pawn_PsycheTracker : IExposable
     {
       foreach (KeyValuePair<PersonalityNodeDef, float> kvp1 in kvp0.Value)
       {
-        //Log.Message("CalculateCertaintyChangePerDay, memeDef: " + kvp0.Key.LabelCap + ", with nodeDef: " + kvp1.Key + ", and adjustment: " + kvp1.Value);
       }
     }
     return certaintyChange;
@@ -707,11 +570,6 @@ public class Pawn_PsycheTracker : IExposable
       {
         adjDisplacementUnitVector[index] /= norm;
       }
-      //foreach (PersonalityNode node in this.nodes)
-      //{
-      //    index = PersonalityNodeMatrix.indexDict[node.def];
-      //    adjDisplacementUnitVector[index] /= norm;
-      //}
     }
     float[] favoredDisplacementUnitVector = PersonalityNodeIdeoUtility.FavoredDisplacmentForIdeo(ideo, randomize: false, normalize: true);
     float compat = PersonalityNodeMatrix.DotProduct(adjDisplacementUnitVector, favoredDisplacementUnitVector);
@@ -774,67 +632,4 @@ public class Pawn_PsycheTracker : IExposable
     return newRawRatings;
   }
 
-  //public string IdeoAbilityEffectOnPsycheTooltip(float multiplier)
-  //{
-  //    Ideo ideo = this.pawn.Ideo;
-  //    int index;
-  //    // Calculate current compatibility 
-  //    CalculateAdjustedRatings();
-  //    float oldDailyChange = CalculateCertaintyChangePerDay(ideo, true);
-  //    float[] oldRawRatings = new float[PersonalityNodeMatrix.order];
-  //    //float[] oldAdjRatings = new float[PersonalityNodeMatrix.order];
-
-  //    float[] newRawRatings = RatingsAfterBoostTowardsIdeo(ideo, multiplier, true);
-  //    //float[] newAdjRatings = new float[PersonalityNodeMatrix.order];
-  //    foreach (PersonalityNode node in this.nodes)
-  //    {
-  //        index = PersonalityNodeMatrix.indexDict[node.def];
-  //        // Store old raw ratings
-  //        oldRawRatings[index] = node.rawRating;
-  //        // Store old adjusted ratings
-  //        //oldAdjRatings[index] = node.AdjustedRating;
-  //        // Set raw to new ratings
-  //        node.rawRating = newRawRatings[index];
-  //    }
-  //    // Calculate new adjusted ratings and compatibility
-  //    CalculateAdjustedRatings();
-  //    float newDailyChange = CalculateCertaintyChangePerDay(ideo, false);
-  //    foreach (PersonalityNode node in this.nodes)
-  //    {
-  //        //index = PersonalityNodeMatrix.indexDict[node.def];
-  //        // Store new adjusted ratings
-  //        //newAdjRatings[index] = node.AdjustedRating;
-  //        // Restore old raw ratings
-  //        //node.rawRating = oldRawRatings[index];
-  //    }
-  //    // Restore old adjusted ratings
-  //    CalculateAdjustedRatings();
-
-  //    //List<Pair<PersonalityNodeDef, float>> list = new List<Pair<PersonalityNodeDef, float>>();
-  //    //foreach (PersonalityNodeDef nodeDef in PersonalityNodeMatrix.defList)
-  //    //{
-  //    //    //index = PersonalityNodeMatrix.indexDict[nodeDef];
-  //    //    //list.Add(new Pair<PersonalityNodeDef, float>(nodeDef, newAdjRatings[index] - oldAdjRatings[index]));
-  //    //}
-  //    //list.OrderBy(x => -Mathf.Abs(x.Second));
-
-  //    //string text = "";
-  //    //text += "Counseling will alter {PAWN_possessive} personality to be more compatible with {IDEO}.";
-  //    //text += "\n\nEffects on psyche";
-  //    //text += "\n -  Certainty change per day increases on average by " + (newCompat - oldCompat).ToStringPercent();
-
-  //    string oldPercent = (oldDailyChange > 0f ? "+" : "") + oldDailyChange.ToStringPercent();
-  //    string newPercent = (newDailyChange > 0f ? "+" : "") + newDailyChange.ToStringPercent();
-
-  //    // ToDo: turn this into translation
-  //    string text = "Effect on daily certainty change due to personality:\nShould increase from " + oldPercent + " to " + newPercent + ", up to some randomness.";
-  //    if (newDailyChange < oldDailyChange)
-  //    {
-  //        Log.Error("New daily change is lower than old daily change");
-  //    }
-  //    return text;
-  //}
-
 }
-
-

@@ -17,7 +17,6 @@ public static class ConversionUtility_ConversionPowerFactor_MemesVsTraits_Patch
     [HarmonyPostfix]
     public static void ConversionPowerFactor_MemesVsTraits(ref float __result, Pawn initiator, Pawn recipient, StringBuilder sb)
     {
-        //Log.Message("Begin ConversionPowerFactor_MemesVsTraits");
         float initWithInitIdeo = 0.5f * PsychologySettings.ideoPsycheMultiplier * PsycheHelper.Comp(initiator).Psyche.CompatibilityWithIdeo(initiator.Ideo);
         float initWithReciIdeo = 0.5f * PsychologySettings.ideoPsycheMultiplier * PsycheHelper.Comp(initiator).Psyche.CompatibilityWithIdeo(recipient.Ideo);
         float reciWithInitIdeo = 1.0f * PsychologySettings.ideoPsycheMultiplier * PsycheHelper.Comp(recipient).Psyche.CompatibilityWithIdeo(initiator.Ideo);
@@ -27,19 +26,14 @@ public static class ConversionUtility_ConversionPowerFactor_MemesVsTraits_Patch
         __result *= multiplicativeFactor;
         if (sb == null)
         {
-            //Log.Message("sb was null");
             needToAddToSB = true;
             return;
         }
         if (!needToAddToSB)
         {
-            //Log.Message("Did not need to add to sb");
             return;
         }
-        //Log.Message("String builder before = \n" + sb.ToString());
         string text = string.Empty;
-        //text += "   -  test";
-        //Log.Message("String builder middle = \n" + sb.ToString());
         NamedArgument initName = initiator.Named("PAWN");
         NamedArgument reciName = recipient.Named("PAWN");
         NamedArgument initIdeo = initiator.Ideo.Named("IDEO");
@@ -50,7 +44,6 @@ public static class ConversionUtility_ConversionPowerFactor_MemesVsTraits_Patch
         text += PawnCompatWithIdeoText(initName, reciIdeo, initWithReciIdeo, false);
         sb.AppendInNewLine(" -  " + "AbilityIdeoConvertBreakdownPsychologyEffects".Translate() + ": " + multiplicativeFactor.ToStringPercent() + text);
         needToAddToSB = false;
-        //Log.Message("String builder after = \n" + sb.ToString());
     }
     public static string PawnCompatWithIdeoText(NamedArgument pawnName, NamedArgument ideoName, float compat, bool isInitIdeo)
     {
@@ -60,5 +53,3 @@ public static class ConversionUtility_ConversionPowerFactor_MemesVsTraits_Patch
         return "\n   -  " + compatText.Translate(pawnName, ideoName) + ": " + compatPercent;
     }
 }
-
-

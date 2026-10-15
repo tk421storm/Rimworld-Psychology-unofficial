@@ -14,17 +14,11 @@ namespace Psychology;
 public static class EditPsycheUtility
 {
   public static Vector2 NodeScrollPosition = Vector2.zero;
-  //public static List<Pair<string, float>> CachedList = new List<Pair<string, float>>();
   public static Dictionary<string, string> Descriptions = new Dictionary<string, string>();
-  //public static Dictionary<string, PersonalityNode> Nodes = new Dictionary<string, PersonalityNode>();
-  //public static int pawnKinseyRating = 0;
-  //public static float pawnSexDrive = 0f;
-  //public static float pawnRomanticDrive = 0f;
   public static List<Pair<string, PersonalityNodeDef>> SortedLabelNodeDefList = new List<Pair<string, PersonalityNodeDef>>();
 
   public static float TitleHeight;
   public static float TitleWidth;
-  //public static float WarningHeight;
   public static Vector2 KinseySize;
   public static Vector2 SexDriveSize;
   public static Vector2 RomDriveSize;
@@ -39,7 +33,6 @@ public static class EditPsycheUtility
   public static float EditWidth = 0f;
 
   public static string TitleText = "";
-  //public static string CachedTitleText = "";
   public static string WarningText = "PersonalityNodeWarning".Translate();
   public static string KinseyRatingText = "KinseyRating".Translate();
   public static string SexDriveText = "SexDrive".Translate();
@@ -50,8 +43,6 @@ public static class EditPsycheUtility
 
   public static Vector2 ScalingVector = new Vector2(1.035f, 1.025f);
   public static float SliderWidth = 200f;
-  //public static float SliderHeight = 0f;
-  //public static float SliderBarWidth = PsycheCardUtility.SliderWidth;
   public static float SliderShiftDown = 2.5f;
   public static float HighlightPadding = PsycheCardUtility.HighlightPadding;
   public static float BoundaryPadding = PsycheCardUtility.BoundaryPadding;
@@ -60,27 +51,15 @@ public static class EditPsycheUtility
   static EditPsycheUtility()
   {
 
-    //if ((EditWidth != 0f && TitleText == CachedTitleText) || !PsycheHelper.PsychologyEnabled(pawn))
-    //{
-    //    return EditWidth;
-    //}
-    //CachedTitleText = TitleText;
-
     if (PsychologySettings.enableKinsey)
     {
-      //pawnKinseyRating = PsycheHelper.Comp(pawn).Sexuality.kinseyRating;
-      //pawnSexDrive = PsycheHelper.Comp(pawn).Sexuality.sexDrive;
-      //pawnRomanticDrive = PsycheHelper.Comp(pawn).Sexuality.romanticDrive;
       KinseySize = ScalingVector * Text.CalcSize(KinseyRatingText);
       SexDriveSize = ScalingVector * Text.CalcSize(SexDriveText);
       RomDriveSize = ScalingVector * Text.CalcSize(RomDriveText);
       SexualityWidth = Mathf.Max(KinseySize.x, SexDriveSize.x, RomDriveSize.x);
       SexualityHeight = Mathf.Max(KinseySize.y, SexDriveSize.y, RomDriveSize.y);
     }
-    //SexualityHeight = Mathf.Max(SliderHeight, SexualityHeight);
 
-    //CachedList.Clear();
-    //Nodes.Clear();
     Descriptions.Clear();
     SortedLabelNodeDefList.Clear();
 
@@ -90,24 +69,12 @@ public static class EditPsycheUtility
       Vector2 nodeSize = ScalingVector * Text.CalcSize(nodeLabel);
       NodeWidth = Mathf.Max(NodeWidth, nodeSize.x);
       NodeHeight = Mathf.Max(NodeHeight, nodeSize.y);
-      //CachedList.Add(new Pair<string, float>(nodeLabel, node.rawRating));
-      //string descriptionString = node.def.description.ReplaceFirst("{0}", node.def.descriptionLabel)
       string descriptionString = def.description.ReplaceFirst("{0}", def.descriptionLabel.Colorize(UIAssets.TitleColor));
       descriptionString += ((string)"AntonymColon".Translate()).ReplaceFirst("{0}", def.antonymLabel.Colorize(UIAssets.TitleColor));
       Descriptions.Add(nodeLabel, descriptionString);
       SortedLabelNodeDefList.Add(new Pair<string, PersonalityNodeDef>(nodeLabel, def));
-      //Nodes.Add(nodeLabel, node);
     }
     SortedLabelNodeDefList.SortBy(n => n.First);
-
-    //CachedList.SortBy(n => n.First);
-    //NodeHeight = Mathf.Max(SliderHeight, NodeHeight);
-
-
-
-
-    //WarningHeight = Text.CalcHeight(WarningText + " buffer buffer buffer buffer  buffer buffer buffer buffer buffer buffer buffer buffer ", width) + 5f;
-    //WarningHeight = UIAssets.TextCalcHeight(WarningText, width) + 5f;
 
     Vector2 saveButtonSize = ScalingVector * Text.CalcSize(SaveButtonText);
     Vector2 resetButtonSize = ScalingVector * Text.CalcSize(ResetButtonText);
@@ -147,7 +114,6 @@ public static class EditPsycheUtility
     float highlightShift = 0.063f;
 
     totalRect.width = CalculateEditWidth(pawn);
-    //ScrollHeight = totalRect.height - (BoundaryPadding + TitleHeight + WarningHeight + 3f * yCompression * SexualityHeight + 2f * BoundaryPadding + 0f + 2f * BoundaryPadding + ButtonHeight + BoundaryPadding);
     ScrollHeight = totalRect.height - (BoundaryPadding + TitleHeight + BoundaryPadding + 3f * yCompression * SexualityHeight + 2f * BoundaryPadding + 0f + 2f * BoundaryPadding + ButtonHeight + BoundaryPadding);
 
     GUI.BeginGroup(totalRect);
@@ -169,8 +135,6 @@ public static class EditPsycheUtility
     }, WarningText.GetHashCode());
     mainRect.yMin += TitleHeight;
 
-    //Widgets.Label(mainRect, WarningText);
-    //mainRect.yMin += WarningHeight;
     mainRect.yMin += BoundaryPadding;
 
     if (PsychologySettings.enableKinsey)
@@ -202,7 +166,6 @@ public static class EditPsycheUtility
       Widgets.Label(sexualityLabelRect, RomDriveText);
       Text.Anchor = oldAnchor;
 
-      
       st.kinseyRating = Mathf.RoundToInt(Widgets.HorizontalSlider(sexualitySliderRect, st.kinseyRating, 0f, 6f, true));
       sexualitySliderRect.y += sexualityHighlightRect.height;
       st.sexDrive = Widgets.HorizontalSlider(sexualitySliderRect, st.sexDrive, 0f, 1f, true);
@@ -278,29 +241,6 @@ public static class EditPsycheUtility
     Rect resetRect = new Rect(blankWidth, mainRect.yMax - ButtonHeight, ButtonWidth, ButtonHeight);
     Rect randomRect = new Rect(resetRect.xMax + blankWidth, resetRect.y, ButtonWidth, ButtonHeight);
 
-    //for (int i = 0; i < CachedList.Count; i++)
-    //{
-    //    PersonalityNode node = Nodes[CachedList[i].First];
-    //    if (node.rawRating != CachedList[i].Second)
-    //    {
-    //        PsycheCardUtility.Ticker = -1;
-    //    }
-    //    node.rawRating = CachedList[i].Second;
-    //}
-    //if (PsychologySettings.enableKinsey)
-    //{
-    //    bool bool1 = PsycheHelper.Comp(pawn).Sexuality.kinseyRating != pawnKinseyRating;
-    //    bool bool2 = PsycheHelper.Comp(pawn).Sexuality.sexDrive != pawnSexDrive;
-    //    bool bool3 = PsycheHelper.Comp(pawn).Sexuality.romanticDrive != pawnRomanticDrive;
-    //    if (bool1 || bool2 || bool3)
-    //    {
-    //        PsycheHelper.Comp(pawn).Sexuality.kinseyRating = pawnKinseyRating;
-    //        PsycheHelper.Comp(pawn).Sexuality.sexDrive = pawnSexDrive;
-    //        PsycheHelper.Comp(pawn).Sexuality.romanticDrive = pawnRomanticDrive;
-    //        PsycheCardUtility.Ticker = -1;
-    //    }
-    //}
-
     if (Widgets.ButtonText(resetRect, ResetButtonText, true, true, true))
     {
       pt.RandomizeRatings();
@@ -321,20 +261,6 @@ public static class EditPsycheUtility
       {
         st.GenerateSexuality(Mathf.CeilToInt(1e+7f * Rand.Value));
       }
-      //for (int i = 0; i < CachedList.Count; i++)
-      //{
-      //    string nodeLabel = CachedList[i].First;
-      //    PersonalityNode node = Nodes[nodeLabel];
-      //    CachedList[i] = new Pair<string, float>(nodeLabel, node.rawRating);
-      //}
-      //if (PsychologySettings.enableKinsey)
-      //{
-      //    PsycheHelper.Comp(pawn).Sexuality.GenerateSexuality(Mathf.CeilToInt(1e+7f * Rand.Value));
-      //    pawnKinseyRating = PsycheHelper.Comp(pawn).Sexuality.kinseyRating;
-      //    pawnSexDrive = PsycheHelper.Comp(pawn).Sexuality.sexDrive;
-      //    pawnRomanticDrive = PsycheHelper.Comp(pawn).Sexuality.romanticDrive;
-      //}
-      //PsycheCardUtility.Ticker = -1;
     }
     PsycheCardUtility.Ticker = -1;
     GUI.EndGroup();

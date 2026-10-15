@@ -37,12 +37,10 @@ namespace Psychology
             ThoughtDef def = new ThoughtDef();
             def.defName = this.topic;
             def.label = "conversation";
-            //def.durationDays = 60f; 
             def.durationDays = PsychologySettings.conversationDuration; // ToDo: check if this change does anything
             def.thoughtClass = typeof(Thought_MemorySocialDynamic);
             ThoughtStage stage = new ThoughtStage();
             stage.label = this.label;
-            //stage.baseOpinionOffset = this.baseOpinionOffset; 
             stage.baseOpinionOffset = opinionOffset; // ToDo: check if this change does anything
             def.stages.Add(stage);
             this.def = def;

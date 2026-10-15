@@ -1,9 +1,4 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-using UnityEngine;
-//using RimWorld;
+﻿using UnityEngine;
 using Verse;
 
 namespace Psychology;
@@ -14,8 +9,6 @@ public class Dialog_ViewPsyche : Window
     public Pawn pawn;
     public bool EditAllowedBool;
     public float editWidth;
-    //public Rect psycheRect;
-    //public override float Margin => 0f;
 
     public Dialog_ViewPsyche(Pawn editFor, bool editBool = false)
     {
@@ -37,7 +30,6 @@ public class Dialog_ViewPsyche : Window
         }
     }
 
-    
     public override void DoWindowContents(Rect inRect)
     {
         Rect oldInRect = inRect;
@@ -77,18 +69,5 @@ public class Dialog_ViewPsyche : Window
 
         GUI.BeginGroup(oldInRect);
 
-        //doCloseX = false;
-        //doCloseButton = false;
-        //Rect psycheRect = PsycheCardUtility.PsycheRect;
-        //psycheRect.position = inRect.position;
-        //PsycheCardUtility.DrawPsycheCard(psycheRect, pawn, true);
-        //if (EditAllowedBool)
-        //{
-        //    Rect editRect = new Rect(psycheRect.xMax, psycheRect.y, editWidth, psycheRect.height);
-        //    EditPsycheUtility.DrawEditPsyche(editRect, pawn);
-        //    GUI.color = UIAssets.LineColor;
-        //    Widgets.DrawLineVertical(editRect.x, editRect.y, editRect.height);
-        //    GUI.color = Color.white;
-        //}
     }
 }

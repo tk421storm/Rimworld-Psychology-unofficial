@@ -10,5 +10,4 @@ public static class DutyDefOfPsychology
     public static DutyDef Meeting;
     public static DutyDef HangOut;
     public static DutyDef Funeral;
-    //public static DutyDef FollowWarden;
 }

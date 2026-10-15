@@ -23,22 +23,12 @@ namespace Psychology
             {
                 return null;
             }
-            //if (!PsychologySettings.enableHookups)
-            //{
-            //    return null;
-            //}
             if (PsychologySettings.hookupRateMultiplier == 0f)
             {
                 return null;
             }
-            //float percentRate = pawn.HookupRate() / 2;
             float percentRate = 50f * PsychologySettings.hookupRateMultiplier;
-
             //Asexual pawns will never initiate sex
-            //if (pawn.story.traits.HasTrait(TraitDefOf.Asexual))
-            //{
-            //    return null;
-            //}
             if (PsychologySettings.enableKinsey)
             {
                 if (PsycheHelper.Comp(pawn).Sexuality.IsAsexual)

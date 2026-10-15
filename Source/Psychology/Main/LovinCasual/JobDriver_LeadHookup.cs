@@ -68,22 +68,14 @@ namespace Psychology
                         //Make hearts and add correct string to the log
                         FleckMaker.ThrowMetaIcon(TargetPawn.Position, TargetPawn.Map, FleckDefOf.Heart);
                         Find.HistoryEventsManager.RecordEvent(new HistoryEvent(HistoryEventDefOf.InitiatedLovin, pawn.Named(HistoryEventArgsNames.Doer)));
-                        //list.Add(RomanceDefOf.HookupSucceeded);
                         list.Add(RulePackDefOfPsychology.HookupSucceeded);
                     }
                     else
                     {//Remove the person from the list here
-                        //Make ! mote, add rebuffed memories, and add correct string to the log
-                        //FleckMaker.ThrowMetaIcon(TargetPawn.Position, TargetPawn.Map, FleckDefOf.IncapIcon);
-                        //Actor.needs.mood.thoughts.memories.TryGainMemory(RomanceDefOf.RebuffedMyHookupAttempt, TargetPawn);
-                        //TargetPawn.needs.mood.thoughts.memories.TryGainMemory(RomanceDefOf.FailedHookupAttemptOnMe, Actor);
-                        //list.Add(RomanceDefOf.HookupFailed);
-                        //Actor.GetComp<Comp_PartnerList>().Hookup.list.Remove(TargetPawn);
                         FleckMaker.ThrowMetaIcon(TargetPawn.Position, TargetPawn.Map, FleckDefOf.IncapIcon);
                         Actor.needs.mood.thoughts.memories.TryGainMemory(ThoughtDefOfPsychology.RebuffedMyHookupAttempt, TargetPawn);
                         TargetPawn.needs.mood.thoughts.memories.TryGainMemory(ThoughtDefOfPsychology.FailedHookupAttemptOnMe, Actor);
                         list.Add(RulePackDefOfPsychology.HookupFailed);
-                        //Actor.GetComp<Comp_PartnerList>().Hookup.list.Remove(TargetPawn);
                     }
                     //Add "tried hookup with" to the log, with the result
                     //Find.PlayLog.Add(new PlayLogEntry_Interaction(RomanceDefOf.TriedHookupWith, pawn, TargetPawn, list));

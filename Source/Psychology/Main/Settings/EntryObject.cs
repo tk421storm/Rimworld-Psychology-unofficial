@@ -70,7 +70,6 @@ public abstract class EntryObject<T, T2>
   internal virtual void Initialize(T2 instance, string fieldName, bool alwaysOpen = false, string controlName = null)
   {
     this.alwaysOpen = alwaysOpen;
-    //this.Open = initialOpen;
     this.controlName = !controlName.NullOrEmpty() ? controlName : $"EntryObject_{instanceCounter++}" + (fieldName.NullOrEmpty() ? "" : "_" + fieldName);
     UpdateInstanceAndField(instance, fieldName);
   }
@@ -137,33 +136,16 @@ public abstract class EntryObject<T, T2>
     {
       result = true;
       ticker--;
-      //if (!activeFlag)
-      //{
-      //  activeFlag = true;
-      //  SetBufferToValue();
-      //}
     }
     else
     {
       result = alwaysOpen;
-      //if (activeFlag)
-      //{
-      //  activeFlag = false;
-      //  SetBufferToValue();
-      //  //TryParseBuffer(true, min, max);
-      //}
-      //SetBufferToValue();
     }
     return result;
   }
 
   internal void EntryObjectTextField(Rect rectTextField, T min = default(T), T max = default(T))
   {
-    //if (!openFlag)
-    //{
-    //  openFlag = true;
-    //  SetBufferToValue();
-    //}
     GUI.SetNextControlName(controlName);
     buffer = Widgets.TextField(rectTextField, buffer);
     TryParseBuffer(true, min, max);
@@ -187,20 +169,15 @@ public abstract class EntryNumeric<T, T2> : EntryObject<T, T2> where T : IConver
 
   public void NumericTextField(float x, float y, float w, float h, T min, T max, bool useArrows = true, bool useCycle = false)
   {
-    //Log.Message("NumericTextField, start");
-    //Rect rectTotal = new Rect(x, y, w + (useArrows ? 40f : 0f), h);
     Rect rectTotal = new Rect(x - (useArrows ? 20f : 0f), y, w + (useArrows ? 40f : 0f), h);
     bool controlBoxIntro = ControlBoxIntro(rectTotal, min, max);
     if (!controlBoxIntro && !alwaysOpen)
     {
       return;
     }
-    //Rect rectField = new Rect(x + (useArrows ? 20f : 0f), y, w, h);
     Rect rectField = new Rect(x, y, w, h);
     if (useArrows)
     {
-      //Rect rectBack = new Rect(x, y, 25f, h);
-      //Rect rectForw = new Rect(x + w + 15f, y, 25f, h);
       Rect rectBack = new Rect(x - 20f, y, 25f, h);
       Rect rectForw = new Rect(x + w - 5f, y, 25f, h);
       if (Widgets.ButtonImage(rectBack, ContentFinder<Texture2D>.Get("bbackward", true), true))
@@ -219,40 +196,22 @@ public abstract class EntryNumeric<T, T2> : EntryObject<T, T2> where T : IConver
   {
     float minSlider = FloatFromType(min);
     float maxSlider = FloatFromType(max);
-    //Log.Message("Value: " + Value);
     float clampedValue = Mathf.Clamp(FloatFromType(Value), minSlider, maxSlider);
-    //Log.Message("clampedValue: " + clampedValue);
     clampedValue = Round(clampedValue, roundToDigit);
-    //Log.Message("clampedValue rounded: " + clampedValue);
     float sliderValue = vertical ? GUI.VerticalSlider(rect, clampedValue, maxSlider, minSlider) : Widgets.HorizontalSlider(rect, clampedValue, minSlider, maxSlider);
-    //Log.Message("sliderValue: " + sliderValue);
     sliderValue = Round(sliderValue, roundToDigit);
-    //Log.Message("sliderValue rounded: " + sliderValue);
-    //if (roundTo > 0f)
-    //{
-    //  sliderValue = (float)Math.Round(clampedValue / roundTo) * roundTo;
-    //}
     if (!TypeFromFloat(sliderValue).Equals(TypeFromFloat(clampedValue)))
     {
-      //Log.Message("UpdateValueAndBuffer");
       UpdateValueAndBuffer(TypeFromFloat(sliderValue));
       return true;
     }
     return false;
   }
 
-  //internal static int SigDigits(float roundTo) => Mathf.CeilToInt(-Mathf.Log10(roundTo));
-
   internal static float Round(float value, int roundToDigits)
   {
     return (float)Math.Round(value, roundToDigits);
-    //if (roundTo < 0f)
-    //{
-    //  return value;
-    //}
-    //int digits = SigDigits(roundTo);
 
-    //return roundTo > 0f ? (float)(Math.Round(value / roundTo, 1) * roundTo) : value;
   }
 
   internal abstract void BackwardButtonAction(T min, T max, bool useCycle);
@@ -366,14 +325,6 @@ public class EntryFloat<T2> : EntryNumeric<float, T2>
     {
       format = "F" + roundToDigits.ToString();
     }
-    //if (roundTo > 0f)
-    //{
-    //  int digits = Mathf.CeilToInt(-Mathf.Log10(roundTo));
-    //  for (int i = 0; i < digits; i++)
-    //  {
-    //    format += "0";
-    //  }
-    //}
   }
 
   internal override void SetBufferToValue() => buffer = roundToDigits < 0 ? Value.ToString() : Value.ToString(format);
@@ -416,11 +367,6 @@ public class EntryFloat<T2> : EntryNumeric<float, T2>
     SetBufferToValue();
   }
 
-  //internal void SetValueRounded(float rawValue)
-  //{
-  //  Value = roundToDigits > 0f ? (float)Math.Round(rawValue / roundToDigits) * roundToDigits : rawValue;
-  //}
-
   internal void SetValueRounded(float rawValue)
   {
     Value = roundToDigits < 0 ? rawValue : (float)Math.Round(rawValue, roundToDigits);
@@ -428,7 +374,6 @@ public class EntryFloat<T2> : EntryNumeric<float, T2>
 
   internal override float TypeFromFloat(float floatVal) => floatVal;
   internal override float FloatFromType(float value) => value;
-
 
 }
 

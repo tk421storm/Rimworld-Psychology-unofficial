@@ -8,7 +8,6 @@ using Verse.AI.Group;
 using HarmonyLib;
 using UnityEngine;
 
-
 namespace Psychology.Harmony;
 
 // Opening the caravan dialog disbands Psychology's hang-out and date lords so those pawns can be selected.
@@ -28,13 +27,6 @@ public static class Dialog_FormCaravan_AddPawnsToTransferables_Patch
         {
             ___map.lordManager.RemoveLord(l2);
         }
-        //foreach (Lord l in ___map.lordManager.lords)
-        //{
-        //    if (l.LordJob is LordJob_HangOut || l.LordJob is LordJob_Date)
-        //    {
-        //        ___map.lordManager.RemoveLord(l);
-        //    }
-        //}
         return true;
     }
 }

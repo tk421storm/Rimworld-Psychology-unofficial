@@ -775,10 +775,6 @@
 			<li>0</li>
 		</bigFiveModifiers>
 		<tenAspects>
-			<!--<li>
-				<aspect>Openness</aspect>
-				<weight>0.61</weight>
-            </li>-->
 			<li>
 				<aspect>Intellect</aspect>
 				<weight>0.87</weight>
@@ -2153,26 +2149,6 @@
 		</parents>
 		<traitModifiers>
 			<!-- Beauty is now accounted for in general in PersonalityNode.AdjustForCircumstances -->
-			<!--<li>
-				<trait>Beauty</trait>
-				<degree>2</degree>
-				<modifier>0.7</modifier>
-			</li>
-			<li>
-				<trait>Beauty</trait>
-				<degree>1</degree>
-				<modifier>0.4</modifier>
-			</li>
-			<li>
-				<trait>Beauty</trait>
-				<degree>-1</degree>
-				<modifier>-0.4</modifier>
-			</li>
-			<li>
-				<trait>Beauty</trait>
-				<degree>-2</degree>
-				<modifier>-0.7</modifier>
-			</li>-->
 			<li>
 				<trait>Socialite</trait>
 				<modifier>0.4</modifier>
@@ -2986,10 +2962,6 @@
 				<aspect>Compassion</aspect>
 				<weight>0.7</weight>
 			</li>
-			<!--<li>
-				<aspect>Volatility</aspect>
-				<weight>0</weight>
-            </li>-->
 		</tenAspects>
 		<preceptCertaintyModifiers>
 			<li>

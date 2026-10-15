@@ -48,19 +48,13 @@ public class ThoughtWorker_Individuality : ThoughtWorker
             IEnumerable<int> stagesList = from t in tmpThoughts
                                           where t.def.defName == "Expectations"
                                           select t.CurStageIndex;
-            //Log.Message(p.LabelShort + ": stagesList.Count() = " + stagesList.Count());
             if (stagesList.Count() > 0)
             {
-                //Log.Message(p.LabelShort + ": stagesList.First() = " + stagesList.First());
                 if (stagesList.First() < 4)
                 {
                     return ThoughtState.Inactive;
                 }
             }
-            //if (tmpThoughts.Find(t => t.def.defName == "LowExpectations") != null)
-            //{
-            //    return ThoughtState.Inactive;
-            //}
 
             // Might be faster to find the opposite
             Func<Apparel, bool> identical = delegate (Apparel x)
@@ -109,6 +103,5 @@ public class ThoughtWorker_Individuality : ThoughtWorker
         }
         return ThoughtState.Inactive;
     }
-
 
 }

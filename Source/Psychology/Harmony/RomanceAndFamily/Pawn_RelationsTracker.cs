@@ -20,7 +20,6 @@ public static class Notify_RescuedBy_BleedingHeartPatch
     {
         if (rescuer.needs.mood != null && __instance.canGetRescuedThought)
         {
-            //rescuer.needs.mood.thoughts.memories.TryGainMemory(ThoughtDefOfPsychology.RescuedBleedingHeart, Traverse.Create(__instance).Field("pawn").GetValue<Pawn>());
             rescuer.needs.mood.thoughts.memories.TryGainMemory(ThoughtDefOfPsychology.RescuedBleedingHeart, ___pawn);
         }
     }
@@ -52,12 +51,9 @@ public static class Pawn_RelationsTracker_LovinChancePatch
         // However, should we use the vanilla formula or just diable all dating?
         if (!PsycheHelper.PsychologyEnabled(pawn) || !PsycheHelper.PsychologyEnabled(otherPawn))
         {
-            //Log.Message("SecondaryLovinChanceFactor, Psychology not enabled for pawn and/or otherPawn");
             __result = 0f; // Disable all dating for pawns with no psyche
             return false;
-            //return true // Use the vanilla formula
         }
-        
 
         /* SEXUAL PREFERENCE FACTOR */
         float sexualityFactor = 1f;
@@ -97,7 +93,6 @@ public static class Pawn_RelationsTracker_LovinChancePatch
         float ageFactor = CalculateAgeFactor(pawn, otherPawn);
         if (ageFactor == 0f)
         {
-            //Log.Message("SecondaryLovinChanceFactor, ageFactor = 0");
             __result = 0f;
             return false;
         }
@@ -132,7 +127,6 @@ public static class Pawn_RelationsTracker_LovinChancePatch
 
         /*  MULTIPLY TO GET RESULT */
         __result = sexualityFactor * ageFactor * beautyFactor * pawnDriveFactor;
-        //Log.Message("SecondaryLovinChanceFactor between " + pawn.LabelShort + " and " + otherPawn.LabelShort + ", sexualityFactor = " + sexualityFactor + ", ageFactor = " + ageFactor + ", beautyFactor = " + beautyFactor + ", pawnDriveFactor = " + pawnDriveFactor + ", result = " + __result);
         return false;
     }
 
@@ -188,7 +182,6 @@ public static class Pawn_RelationsTracker_LovinChancePatch
             float pawnOpenMinded = pawn.story.traits.HasTrait(TraitDefOfPsychology.OpenMinded) ? 1f : 0f;
             float pawnExperimental = PsycheHelper.Comp(pawn).Psyche.GetPersonalityRating(PersonalityNodeDefOf.Experimental);
             float pawnPure = PsycheHelper.Comp(pawn).Psyche.GetPersonalityRating(PersonalityNodeDefOf.Pure);
-            //float minY = Mathf.Clamp01(0.2f + 0.8f * Mathf.Pow(pawnExperimental, 2) - 0.4f * pawnPure + 0.5f * pawnOpenMinded);
             float minY = Mathf.Clamp01(Mathf.Pow(0.5f * (pawnExperimental + 1f - pawnPure), 2.3f) + 0.5f * pawnOpenMinded);
 
             float pawnKinseyFactor = Mathf.InverseLerp(6f, 0f, PsycheHelper.Comp(pawn).Sexuality.kinseyRating);
@@ -196,12 +189,10 @@ public static class Pawn_RelationsTracker_LovinChancePatch
             // Maybe one day other genders will come to the Rim...
             float pawnGenderFactor = pawn.gender == Gender.Female ? 1f : pawn.gender == Gender.Male ? -1f : 0f;
 
-
             float smallShift = 3.5f * pawnKinseyFactor * pawnGenderFactor;
             float largeShift = 10f * pawnKinseyFactor * pawnGenderFactor;
 
             List<float> offsets = new List<float>() { -20f + largeShift, -6.5f + smallShift, 6.5f + smallShift, 20f + largeShift };
-            //Log.Message("Age factor for pawn1 = " + pawn.LabelShort + ", pawn2 = " + otherPawn.LabelShort);
             ageFactor *= AgeGapFactor(scaledAge1, scaledAge2, minY, pawnLecher, offsets);
         }
         return ageFactor;
@@ -224,161 +215,10 @@ public static class Pawn_RelationsTracker_LovinChancePatch
         float upper = age1 + offsets[2] * olderAgeGapFactor;
         float max = age1 + offsets[3] * olderAgeGapFactor;
         float result = GenMath.FlatHill(minY, min, lower, upper, max, minY, age2);
-        //Log.Message("age1 = " + age1 + ", age2 = " + age2 + ", min = " + min + ", lower = " + lower + ", upper = " + upper + ", max = " + max + ", minY = " + minY + ", result = " + result);
         return result;
     }
 
 }
-
-//[HarmonyPatch(typeof(Pawn_RelationsTracker), nameof(Pawn_RelationsTracker.AddDirectRelation))]
-//public static class Pawn_RelationsTracker_AddDirectRelationPatch
-//{
-//    [HarmonyPrefix]
-//    public void CheckState(PawnRelationDef def, Pawn otherPawn, Pawn ___pawn, out int __state)
-//    {
-//        if (def == PawnRelationDefOf.ExLover)
-//        {
-//            ___pawn.relations.DirectRelationExists(def, otherPawn);
-//        }
-//    }
-
-//    [HarmonyPostfix]
-//    public void PostFix()
-//    {
-
-//    }
-
-//}
-
-
-//[HarmonyPatch(typeof(Pawn_RelationsTracker), nameof(Pawn_RelationsTracker.SecondaryRomanceChanceFactor))]
-//public static class Pawn_RelationsTracker_RomanceChancePatch
-//{
-//    
-//    [HarmonyPostfix]
-//    public static void PsychologyFormula(Pawn_RelationsTracker __instance, ref float __result, Pawn otherPawn)
-//    {
-//        Pawn pawn = Traverse.Create(__instance).Field("pawn").GetValue<Pawn>();
-//        if (PsycheHelper.PsychologyEnabled(pawn))
-//        {
-//            /* Throw away the existing result and substitute our own formula. */
-//            /* This formula is now used to determine dating chance. Loving frequency is determined by additional calculations  */
-//            if (pawn.def != otherPawn.def || pawn == otherPawn || otherPawn.AnimalOrWildMan())
-//            {
-//                __result = 0f;
-//                return;
-//            }
-
-//            /* SEXUAL PREFERENCE FACTOR */
-//            float sexualityFactor = 1f;
-//            /* Psychology result */
-//            if (PsychologySettings.enableKinsey)
-//            {
-//                float kinsey = 3 - PsycheHelper.Comp(pawn).Sexuality.kinseyRating;
-//                float homo = (pawn.gender == otherPawn.gender) ? 1f : -1f;
-//                sexualityFactor = Mathf.InverseLerp(3f, 0f, kinsey * homo);
-//            }
-//            /* Vanilla result */
-//            // Vanilla Asexual, Bisexual, and Gay traits
-//            else if (pawn.story != null && pawn.story.traits != null)
-//            {
-//                if (pawn.story.traits.HasTrait(TraitDefOf.Asexual))
-//                {
-//                    __result = 0f;
-//                    return;
-//                }
-//                if (otherPawn.gender == pawn.gender)
-//                {
-//                    if (!pawn.story.traits.HasTrait(TraitDefOf.Gay) && !pawn.story.traits.HasTrait(TraitDefOf.Bisexual))
-//                    {
-//                        __result = 0f;
-//                        return;
-//                    }
-//                    // Vanilla: pawns are less likely to hit recipients who are the same gender and not Gay nor Bisexual
-//                    if (!otherPawn.story.traits.HasTrait(TraitDefOf.Gay) && !otherPawn.story.traits.HasTrait(TraitDefOf.Bisexual))
-//                    {
-//                        sexualityFactor = 0.15f;
-//                    }
-//                }
-//                else
-//                {
-//                    if (pawn.story.traits.HasTrait(TraitDefOf.Gay))
-//                    {
-//                        __result = 0f;
-//                        return;
-//                    }
-//                    // Vanilla: pawns are less likely to hit recipients who are not the same gender and Gay
-//                    if (otherPawn.story.traits.HasTrait(TraitDefOf.Gay))
-//                    {
-//                        sexualityFactor = 0.15f;
-//                    }
-//                }
-//            }
-
-
-//            /* GET PAWN PERSONALITY VALUES */
-//            //float pawnEmpathetic = PsycheHelper.Comp(pawn).Psyche.GetPersonalityRating(PersonalityNodeDefOf.Empathetic);
-//            float pawnExperimental = PsycheHelper.Comp(pawn).Psyche.GetPersonalityRating(PersonalityNodeDefOf.Experimental);
-//            float pawnPure = PsycheHelper.Comp(pawn).Psyche.GetPersonalityRating(PersonalityNodeDefOf.Pure);
-//            float pawnSexDrive = PsycheHelper.Comp(pawn).Sexuality.AdjustedSexDrive;
-//            float pawnRomanceDrive = PsycheHelper.Comp(pawn).Sexuality.AdjustedRomanticDrive;
-//            float otherPawnCool = PsycheHelper.Comp(otherPawn).Psyche.GetPersonalityRating(PersonalityNodeDefOf.Cool);
-//            float pawnOpenMinded = pawn.story.traits.HasTrait(TraitDefOfPsychology.OpenMinded) ? 1f : 0f;
-//            bool pawnLecher = pawn.story.traits.HasTrait(TraitDefOfPsychology.Lecher);
-
-//            /* AGE FACTORS */
-//            float ageFactor = 1f;
-//            float ageBiologicalYearsFloat = pawn.ageTracker.AgeBiologicalYearsFloat;
-//            float ageBiologicalYearsFloat2 = otherPawn.ageTracker.AgeBiologicalYearsFloat;
-//            float minDatingAge1 = 13f;
-//            float minDatingAge2 = ageBiologicalYearsFloat - Mathf.Max(1f, 4f + 6f * (pawnExperimental - pawnPure + pawnOpenMinded));
-//            minDatingAge2 = Mathf.Clamp(minDatingAge2, minDatingAge1, 18f);
-//            float maxDatingAge2 = ageBiologicalYearsFloat + Mathf.Max(1f, 4f + 6f * (pawnExperimental - pawnPure + pawnOpenMinded));
-//            if (pawnLecher)
-//            {
-//                minDatingAge2 = minDatingAge1;
-//                maxDatingAge2 = 10000f;
-//            }
-//            if (ageBiologicalYearsFloat < minDatingAge1 || ageBiologicalYearsFloat2 < minDatingAge2)
-//            {
-//                __result = 0f;
-//                return;
-//            }
-//            if (ageBiologicalYearsFloat < 18f && ageBiologicalYearsFloat2 > maxDatingAge2)
-//            {
-//                __result = 0f;
-//                return;
-//            }
-//            if (pawn.gender == Gender.Male)
-//            {
-//                float min = ageBiologicalYearsFloat - 30f;
-//                float lower = ageBiologicalYearsFloat - 10f;
-//                float upper = ageBiologicalYearsFloat + 3f;
-//                float max = ageBiologicalYearsFloat + 10f;
-//                float minY = Mathf.Clamp01(0.2f + 0.8f * Mathf.Pow(pawnExperimental, 2) - 0.4f * pawnPure + 0.5f * pawnOpenMinded);
-//                float maxY = minY;
-//                if (pawn.story.traits.HasTrait(TraitDefOfPsychology.Lecher))
-//                {
-//                    minY = 1f;
-//                    maxY = 1f;
-//                }
-//                ageFactor = GenMath.FlatHill(minY, min, lower, upper, max, maxY, ageBiologicalYearsFloat2);
-//            }
-//            else if (pawn.gender == Gender.Female)
-//            {
-//                float min2 = ageBiologicalYearsFloat - 10f;
-//                float lower2 = ageBiologicalYearsFloat - 3f;
-//                float upper2 = ageBiologicalYearsFloat + 10f;
-//                float max2 = ageBiologicalYearsFloat + 30f;
-//                float minY2 = Mathf.Clamp01(0.2f + 0.8f * Mathf.Pow(pawnExperimental, 2) - 0.4f * pawnPure + 0.5f * pawnOpenMinded);
-//                float maxY2 = minY2;
-//                if (pawn.story.traits.HasTrait(TraitDefOfPsychology.Lecher))
-//                {
-//                    minY2 = 1f;
-//                    maxY2 = 1f;
-//                }
-//                ageFactor = GenMath.FlatHill(minY2, min2, lower2, upper2, max2, maxY2, ageBiologicalYearsFloat2);
-//            }
 
 //            /* BEAUTY FACTOR */
 //            float pawnBeauty = pawn.GetStatValue(StatDefOf.PawnBeauty);
@@ -421,122 +261,3 @@ public static class Pawn_RelationsTracker_LovinChancePatch
 //            //disabilityFactor *= 1f - 0.9f * pawnOpenMinded;
 //            ///* Turn into multiplicative factor */
 //            //disabilityFactor = Mathf.Pow(2, disabilityFactor);
-
-
-//            /*  MULTIPLY TO GET RESULT */
-//            __result = sexualityFactor * ageFactor * beautyFactor * pawnDriveFactor;
-//        }
-//    }
-//}
-
-//[HarmonyPostfix]
-//public static void PsychologyFormula(Pawn_RelationsTracker __instance, ref float __result, Pawn ___pawn, Pawn otherPawn)
-//{
-//    //Pawn pawn = Traverse.Create(__instance).Field("pawn").GetValue<Pawn>();
-//    Pawn pawn = ___pawn;
-//    if (!PsycheHelper.PsychologyEnabled(pawn) || __result == 0f)
-//    {
-//        return;
-//    }
-
-//    /* SEXUAL PREFERENCE FACTOR */
-//    if (PsychologySettings.enableKinsey)
-//    {
-//        float kinsey = 3 - PsycheHelper.Comp(pawn).Sexuality.kinseyRating;
-//        float homo = (pawn.gender == otherPawn.gender) ? 1f : -1f;
-//        __result *= Mathf.InverseLerp(3f, 0f, kinsey * homo);
-//    }
-
-//    /* GET PAWN PERSONALITY VALUES */
-//    float pawnAggressive = PsycheHelper.Comp(pawn).Psyche.GetPersonalityRating(PersonalityNodeDefOf.Aggressive);
-//    float pawnConfident = PsycheHelper.Comp(pawn).Psyche.GetPersonalityRating(PersonalityNodeDefOf.Confident);
-//    float pawnJudgmental = PsycheHelper.Comp(pawn).Psyche.GetPersonalityRating(PersonalityNodeDefOf.Judgmental);
-//    float pawnExperimental = PsycheHelper.Comp(pawn).Psyche.GetPersonalityRating(PersonalityNodeDefOf.Experimental);
-//    float pawnPure = PsycheHelper.Comp(pawn).Psyche.GetPersonalityRating(PersonalityNodeDefOf.Pure);
-//    float pawnSexDrive = PsycheHelper.Comp(pawn).Sexuality.AdjustedSexDrive;
-//    float pawnRomanceDrive = PsycheHelper.Comp(pawn).Sexuality.AdjustedRomanticDrive;
-//    float otherPawnCool = PsycheHelper.Comp(otherPawn).Psyche.GetPersonalityRating(PersonalityNodeDefOf.Cool);
-//    float pawnOpenMinded = pawn.story.traits.HasTrait(TraitDefOfPsychology.OpenMinded) ? 1f : 0f;
-//    bool pawnLecher = pawn.story.traits.HasTrait(TraitDefOfPsychology.Lecher);
-
-//    /* AGE FACTORS */
-//    float ageBiologicalYearsFloat = pawn.ageTracker.AgeBiologicalYearsFloat;
-//    float ageBiologicalYearsFloat2 = otherPawn.ageTracker.AgeBiologicalYearsFloat;
-//    //float minDatingAge1 = 13f;
-//    //float minDatingAge2 = ageBiologicalYearsFloat - Mathf.Max(1f, 4f + 6f * (pawnExperimental - pawnPure + pawnOpenMinded));
-//    //minDatingAge2 = Mathf.Clamp(minDatingAge2, minDatingAge1, 18f);
-//    //float maxDatingAge2 = ageBiologicalYearsFloat + Mathf.Max(1f, 4f + 6f * (pawnExperimental - pawnPure + pawnOpenMinded));
-//    //if (pawnLecher)
-//    //{
-//    //    minDatingAge2 = minDatingAge1;
-//    //    maxDatingAge2 = 10000f;
-//    //}
-//    //if (ageBiologicalYearsFloat < minDatingAge1 || ageBiologicalYearsFloat2 < minDatingAge2)
-//    //{
-//    //    __result = 0f;
-//    //    return;
-//    //}
-//    //if (ageBiologicalYearsFloat < 18f && ageBiologicalYearsFloat2 > maxDatingAge2)
-//    //{
-//    //    __result = 0f;
-//    //    return;
-//    //}
-//    float min = 16f;
-//    float lower = 18f;
-//    float upper = 1e+3f;
-//    float max = 1e+4f;
-//    // if (ModIsActive("Androids") ...
-//    if (pawn.gender == Gender.Male)
-//    {
-//        min = ageBiologicalYearsFloat - 30f;
-//        lower = ageBiologicalYearsFloat - 10f;
-//        upper = ageBiologicalYearsFloat + 3f;
-//        max = ageBiologicalYearsFloat + 10f;
-//        // Undo Vanilla result
-//        __result /= GenMath.FlatHill(0.2f, min, lower, upper, max, 0.2f, ageBiologicalYearsFloat2);
-//    }
-//    else if (pawn.gender == Gender.Female)
-//    {
-//        min = ageBiologicalYearsFloat - 10f;
-//        lower = ageBiologicalYearsFloat - 3f;
-//        upper = ageBiologicalYearsFloat + 10f;
-//        max = ageBiologicalYearsFloat + 30f;
-//        // Undo Vanilla result
-//        __result /= GenMath.FlatHill(0.2f, min, lower, upper, max, 0.2f, ageBiologicalYearsFloat2);
-//    }
-//    // Psychology result
-//    float minY = pawnLecher ? 1f : Mathf.Clamp01(0.2f + 0.8f * Mathf.Pow(pawnExperimental, 2) - 0.4f * pawnPure + 0.5f * pawnOpenMinded);
-//    __result *= GenMath.FlatHill(minY, min, lower, upper, max, minY, ageBiologicalYearsFloat2);
-
-//    // Romance and sex drive factors already account for age
-//    __result /= Mathf.InverseLerp(16f, 18f, ageBiologicalYearsFloat);
-//    __result /= Mathf.InverseLerp(16f, 18f, ageBiologicalYearsFloat);
-//    /* PAWN SEX AND ROMANCE DRIVE FACTORS */
-//    __result *= 0.01f + 1.25f * Mathf.Pow(pawnRomanceDrive, 2) + 0.25f * pawnSexDrive;
-
-//    /* BEAUTY FACTOR */
-//    float pawnBeauty = 0f;
-//    if (otherPawn.RaceProps.Humanlike)
-//    {
-//        pawnBeauty = pawn.GetStatValue(StatDefOf.PawnBeauty);
-//    }
-//    float otherPawnBeauty = 0f;
-//    if (otherPawn.RaceProps.Humanlike)
-//    {
-//        otherPawnBeauty = otherPawn.GetStatValue(StatDefOf.PawnBeauty);
-//    }
-//    // Undo vanilla factor
-//    __result /= otherPawnBeauty < 0f ? 0.3f : otherPawnBeauty > 0f ? 2.3f : 1f;
-//    /* Beautiful pawns will have higher beauty standards. Everyone wants to date out of league */
-//    float beautyAdditiveFactor = otherPawnBeauty - 0.75f * pawnBeauty;
-//    /* Cool pawns are more attractive */
-//    beautyAdditiveFactor += otherPawnCool - 0.5f;
-//    /* Open Minded pawns don't care about beauty */
-//    beautyAdditiveFactor *= 1f - pawnOpenMinded;
-//    /* Pawns who can't see as well can't determine beauty as well. */
-//    beautyAdditiveFactor *= 0.1f + 0.9f * pawn.health.capacities.GetLevel(PawnCapacityDefOf.Sight);
-//    /* Judgmental pawns will care more either way */
-//    beautyAdditiveFactor *= 2f * pawnJudgmental;
-//    /* Turn into multiplicative factor */
-//    __result *= Mathf.Pow(2f, beautyAdditiveFactor);
-//}

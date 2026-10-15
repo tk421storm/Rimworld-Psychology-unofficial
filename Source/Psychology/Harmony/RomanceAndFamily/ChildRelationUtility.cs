@@ -8,7 +8,6 @@ using RimWorld;
 using HarmonyLib;
 using System.Linq;using System.Reflection.Emit;
 
-
 namespace Psychology.Harmony;
 
 //[HarmonyPatch(typeof(ChildRelationUtility), nameof(ChildRelationUtility.ChanceOfBecomingChildOf))]
@@ -16,17 +15,13 @@ namespace Psychology.Harmony;
 // psyche pawns and the discount with a factor that falls linearly from Kinsey 0 (1x) to Kinsey 6 (0x).
 public static class ChildRelationUtility_ManualPatches
 {
-    //[HarmonyTranspiler]
     public static IEnumerable<CodeInstruction> ChanceOfBecomingChildOf_Transpiler(IEnumerable<CodeInstruction> codes)
     {
-        //Log.Message("ChanceOfBecomingChildOf_Transpiler, start");
         List<CodeInstruction> clist = codes.ToList();
-        //List<OpCode> opcodesBreakTrueList = new List<OpCode> { OpCodes.Brtrue, OpCodes.Brtrue_S };
         List<OpCode> opcodesBreakFalseList = new List<OpCode> { OpCodes.Brfalse, OpCodes.Brfalse_S };
         int max = codes.Count();
         int success = 0;
         int pawnLoadIndex = 0;
-        //object operandBreakFalsePointer = new object();
         bool searchingForBreak = false;
         bool searchingForMultiplier = false;
 
@@ -37,7 +32,6 @@ public static class ChildRelationUtility_ManualPatches
             {
                 if (opcodesBreakFalseList.Contains(clist[i].opcode))
                 {
-                    //Log.Message("Found break");
                     searchingForBreak = false;
                     searchingForMultiplier = true;
                 }
@@ -47,7 +41,6 @@ public static class ChildRelationUtility_ManualPatches
             {
                 if (clist[i].opcode == OpCodes.Ldc_R4)
                 {
-                    //Log.Message("Found multiplier");
                     searchingForMultiplier = false;
                     // Load pawn
                     yield return clist[pawnLoadIndex];
@@ -66,7 +59,6 @@ public static class ChildRelationUtility_ManualPatches
             {
                 continue;
             }
-            //Log.Message("Found HasTrait(Gay)");
             searchingForBreak = true;
             yield return CodeInstruction.Call(typeof(ChildRelationUtility_ManualPatches), nameof(HasTraitGayKinseyEnabled));
             pawnLoadIndex = i;
@@ -74,7 +66,6 @@ public static class ChildRelationUtility_ManualPatches
             i += 4;   
         }
 
-        //Log.Message("ChanceOfBecomingChildOf_Transpiler, end");
         if (success < 2 || searchingForBreak || searchingForMultiplier)
         {
             Log.Error("ChildRelationUtility.ChanceOfBecomingChildOf not patched properly, success < 2: " + (success < 2) + ", searchingForBreak: " + searchingForBreak + ", searchingForMultiplier: " + searchingForMultiplier);
@@ -118,33 +109,9 @@ public static class ChildRelationUtility_ManualPatches
             Log.Error("ChanceOfBecomingChildOf.KinseyEnabledMultiplier, using old multiplier because PsychologyEnabled(parent) != true");
             return oldMultiplier;
         }
-        //Log.Message("ChanceOfBecomingChildOf, KinseyEnabledMultiplier successfully fired");
         return Mathf.InverseLerp(6f, 0f, PsycheHelper.Comp(parent).Sexuality.kinseyRating);
     }
 
-    //[HarmonyPostfix]
-    //public static void ChanceOfBecomingChildOf(ref float __result, Pawn father, Pawn mother, Pawn child)
-    //{
-    //    if (!PsychologySettings.enableKinsey)
-    //    {
-    //        return;
-    //    }
-    //    /* Kinsey-enabled pawns shouldn't have the Gay trait, so we can just apply the sexuality modifier here. */
-    //    if (father != null && child != null && child.GetFather() == null && PsycheHelper.TryGetPawnSeed(father))
-    //    {
-    //        if (PsycheHelper.PsychologyEnabled(father))
-    //        {
-    //            __result *= Mathf.InverseLerp(6f, 0f, PsycheHelper.Comp(father).Sexuality.kinseyRating);
-    //        }
-    //    }
-    //    if (mother != null && child != null && child.GetMother() == null && PsycheHelper.TryGetPawnSeed(mother))
-    //    {
-    //        if (PsycheHelper.PsychologyEnabled(mother))
-    //        {
-    //            __result *= Mathf.InverseLerp(6f, 0f, PsycheHelper.Comp(mother).Sexuality.kinseyRating);
-    //        }
-    //    }
-    //}
 }
 
 // Parent age window in species ages; pawns of species without a psyche/romance or in a non-reproductive life stage
@@ -175,4 +142,3 @@ public static class ChildRelationUtility_GetParentAgeFactor_Patch
         return true;
     }
 }
-

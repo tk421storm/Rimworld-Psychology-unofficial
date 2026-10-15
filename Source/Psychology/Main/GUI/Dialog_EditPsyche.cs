@@ -1,9 +1,4 @@
-﻿//using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-using UnityEngine;
-//using RimWorld;
+﻿using UnityEngine;
 using Verse;
 
 namespace Psychology;
@@ -12,7 +7,6 @@ namespace Psychology;
 public class Dialog_EditPsyche : Window
 {
     public Pawn pawn;
-    //public override float Margin => 0f;
     public override Vector2 InitialSize
     {
         get
@@ -28,7 +22,6 @@ public class Dialog_EditPsyche : Window
         pawn = editFor;
     }
 
-    
     public override void DoWindowContents(Rect inRect)
     {
         bool flag = false;
@@ -52,6 +45,6 @@ public class Dialog_EditPsyche : Window
         {
             this.Close(true);
         }
-        
+
     }
 }

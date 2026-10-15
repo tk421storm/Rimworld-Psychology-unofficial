@@ -11,51 +11,6 @@ using System.Reflection.Emit;
 
 namespace Psychology.Harmony;
 
-//[HarmonyPatch(typeof(InteractionWorker_MarriageProposal), nameof(InteractionWorker_MarriageProposal.RandomSelectionWeight), new[] { typeof(Pawn), typeof(Pawn) })]
-//public static class InteractionWorker_MarriageProposal_SelectionWeightPatch
-//{
-//    [HarmonyPostfix]
-//    [HarmonyPriority(Priority.Last)]
-//    public static void _RandomSelectionWeight(InteractionWorker_MarriageProposal __instance, Pawn initiator, Pawn recipient, ref float __result)
-//    {
-//        if (__result == 0f)
-//        {
-//            return;
-//        }
-//        if (!PsycheHelper.PsychologyEnabled(initiator) || !PsycheHelper.PsychologyEnabled(recipient))
-//        {
-//            __result = 0f;
-//            return;
-//        }
-//        if (initiator.relations.GetDirectRelation(PawnRelationDefOf.Lover, recipient) == null)
-//        {
-//            __result = 0f;
-//            return;
-//        }
-//        if (!SpeciesHelper.RomanceLifestageAgeCheck(initiator, false) || !SpeciesHelper.RomanceLifestageAgeCheck(recipient, false))
-//        {
-//            __result = 0f;
-//            return;
-//        }
-//        CompPsychology initiatorComp = PsycheHelper.Comp(initiator);
-//        __result *= initiatorComp.Psyche.GetPersonalityRating(PersonalityNodeDefOf.Adventurous) + initiatorComp.Psyche.GetPersonalityRating(PersonalityNodeDefOf.Romantic);
-//        if (PsychologySettings.enableKinsey)
-//        {
-//            if (initiator.gender == Gender.Female)
-//            {
-//                __result /= 0.2f; // Undo vanilla effect
-//                __result *= Mathf.Lerp(0.2f, 1f, initiatorComp.Sexuality.kinseyRating / 3f);
-//            }
-//            __result *= 1.2f * Mathf.Sqrt(initiatorComp.Sexuality.AdjustedRomanticDrive);
-//        }
-//        if (initiator.story.traits.HasTrait(TraitDefOfPsychology.Codependent))
-//        {
-//            __result *= 2f;
-//        }
-//        __result *= PsychologySettings.romanceChanceMultiplier;
-//    }
-//}
-
 // Proposal acceptance: Codependent recipients always say yes; otherwise vanilla's chance is shifted by
 // 0.8 x (Romantic + Pure - 1) using relativistic addition in the -1..1 space (romantic, traditional pawns accept more).
 // NOTE: the Kinsey romantic-drive factor is applied to `num` after __result has been computed, so it has no effect.
@@ -98,25 +53,6 @@ public static class InteractionWorker_MarriageProposal_AcceptanceChancePatch
         }
         __result = Mathf.Clamp01(__result);
     }
-
-    //[HarmonyPrefix]
-    //public static bool PsychologyException(InteractionWorker_MarriageProposal __instance, ref float __result, Pawn initiator, Pawn recipient)
-    //{
-    //    if (PsycheHelper.PsychologyEnabled(recipient))
-    //    {
-    //        float num = 1.2f;
-    //        num *= Mathf.InverseLerp(0f, 0.75f, PsycheHelper.Comp(recipient).Psyche.GetPersonalityRating(PersonalityNodeDefOf.Romantic));
-    //        if (PsychologySettings.enableKinsey)
-    //        {
-    //            num *= PsycheHelper.Comp(recipient).Sexuality.AdjustedRomanticDrive;
-    //        }
-    //        num *= Mathf.Clamp01(GenMath.LerpDouble(-20f, 60f, 0f, 1f, (float)recipient.relations.OpinionOf(initiator)));
-    //        __result = Mathf.Clamp01(num);
-    //        return false;
-    //        /* If the recipient is a PsychologyPawn, the mod takes over AcceptanceChance for them and the normal method will be ignored. */
-    //    }
-    //    return true;
-    //}
 }
 
 // DISABLED since 1.5 (dropped from the 1.5/1.6 builds), presumably because vanilla's Interacted() changed and the
@@ -135,5 +71,3 @@ public static class InteractionWorker_MarriageProposal_InteractedPatch
     }
 }
 #endif
-
-

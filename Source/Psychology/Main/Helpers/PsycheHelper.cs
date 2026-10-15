@@ -40,7 +40,6 @@ public static class PsycheHelper
   public static Dictionary<Pair<TraitDef, int>, Dictionary<int, float>> TraitModifierNodeDefDict = new Dictionary<Pair<TraitDef, int>, Dictionary<int, float>>();
   public static Dictionary<WorkTypeDef, Dictionary<int, float>> IncapableModifierNodeDefDict = new Dictionary<WorkTypeDef, Dictionary<int, float>>();
 
-  //public static HashSet<string> SkillDefNamesThatAffectPsyche = new HashSet<string>();
   public static int seed;
   // Certainty per day per unit of (2 * rating - 1) * modifier; scaled by the "ideology/psyche" setting.
   public static float DailyCertaintyChangeScale => 0.0015f * PsychologySettings.ideoPsycheMultiplier;
@@ -51,9 +50,6 @@ public static class PsycheHelper
   public static float[] CircumstanceTimings = new float[25];
   public static int CircumstanceCount = 0;
 
-  //public static int countPsychologyEnabled;
-  //public static float msPsychologyEnabled;
-
   /// <summary>
   /// The master switch used before touching a pawn's psyche: true if the pawn has a CompPsychology (adding it on the fly
   /// for species registered late), psychology is enabled for its species in the mod settings, and the species counts as
@@ -61,11 +57,8 @@ public static class PsycheHelper
   /// </summary>
   public static bool PsychologyEnabled(Pawn pawn)
   {
-    //Stopwatch stopwatch = new Stopwatch();
-    //stopwatch.Start();
     if (HasLatentPsyche(pawn) != true)
     {
-      //Log.Message("PsychologyEnabled, HasLatentPsyche != true, pawn = " + pawn.Label + ", species label = " + pawn.def.label);
       return false;
     }
     if (SpeciesSettingsEnablePsyche(pawn) != true)
@@ -74,14 +67,8 @@ public static class PsycheHelper
     }
     if (IsSapient(pawn) != true)
     {
-      //Log.Message("PsychologyEnabled, IsSapient != true, pawn = " + pawn.Label + ", species label = " + pawn.def.label);
       return false;
     }
-    //stopwatch.Stop();
-    //TimeSpan ts = stopwatch.Elapsed;
-    //countPsychologyEnabled++;
-    //msPsychologyEnabled += (float)ts.TotalMilliseconds;
-    //Log.Message("PsychologyEnabled, total time: " + msPsychologyEnabled + " ms, average time: " + msPsychologyEnabled / countPsychologyEnabled + " ms");
     return true;
   }
 
@@ -89,16 +76,13 @@ public static class PsycheHelper
   {
     if (pawn == null)
     {
-      //Log.Warning("PsychologyEnabled, pawn == null");
       return false;
     }
-    //Log.Message("PsychologyEnabled, pawn != null");
     comp = Comp(pawn);
     if (comp == null)
     {
       if (SpeciesHelper.CheckIntelligenceAndAddEverythingToSpeciesDef(pawn.def) != true)
       {
-        //Log.Message("PsychologyEnabled, Comp(pawn) == null, pawn = " + pawn + ", species = " + pawn.def);
         return false;
       }
       comp = Comp(pawn);
@@ -108,10 +92,8 @@ public static class PsycheHelper
         return false;
       }
     }
-    //Log.Message("PsychologyEnabled, Comp(pawn) != null");
     if (comp.IsPsychologyPawn != true)
     {
-      //Log.Message("PsychologyEnabled, IsPsychologyPawn != true, pawn = " + pawn + ", species = " + pawn.def);
       return false;
     }
     return true;
@@ -121,13 +103,7 @@ public static class PsycheHelper
   {
     settings = SpeciesHelper.GetOrMakeSpeciesSettingsFromThingDef(pawn.def);
     return settings.enablePsyche == true;
-    //if (settings.enablePsyche != true)
-    //{
-    //  //Log.Message("PsychologyEnabled, settings.enablePsyche != true, " + pawn + ", species = " + pawn.def);
-    //  return false;
-    //}
     ////Log.Message("PsychologyEnabled, settings.enablePsyche == true");
-    //return true;
   }
 
   public static bool IsSapient(Pawn pawn)
@@ -426,70 +402,12 @@ public static class PsycheHelper
     int thingIDSeed = pawn.thingIDNumber;
     int worldIDSeed = Find.World.info.Seed;
     return Gen.HashCombineInt(thingIDSeed, worldIDSeed);
-    //if (TryGetPawnSeed(pawn) != true)
-    //{
-    //    string thingID = pawn?.ThingID != null ? pawn?.ThingID : "null";
-    //    string label = pawn?.Label != null ? pawn?.Label : "null";
-    //    string defName = pawn?.def?.defName != null ? pawn?.def?.defName : "null";
-    //    Log.Error("Used random pawn seed, would prefer this is not happen, thingID = " + thingID + ", + pawn.Label = " + label + ", pawn.def.defName = " + defName);
-    //}
-    //return seed;
   }
 
   public static bool TryGetPawnSeed(Pawn pawn)
   {
     return true;
-    //bool success = true;
-    //int thingIDSeed;
-    //int worldIDSeed;
     ////int childhoodSeed;
-    //List<string> exceptions = new List<string>();
-    //try
-    //{
-    //    thingIDSeed = pawn.thingIDNumber;
-    //}
-    //catch (Exception ex)
-    //{
-    //    exceptions.Add("thingIDSeed: " + ex);
-    //    thingIDSeed = Mathf.CeilToInt(1e7f * Rand.Value);
-    //    success = false;
-    //}
-    //try
-    //{
-    //    worldIDSeed = Find.World.info.Seed;
-    //}
-    //catch (Exception ex)
-    //{
-    //    exceptions.Add("worldIDSeed: " + ex);
-    //    worldIDSeed = Mathf.CeilToInt(1e7f * Rand.Value);
-    //    success = false;
-    //}
-    //try
-    //{
-    //    childhoodSeed = GenText.StableStringHash(pawn.story.Childhood.untranslatedTitle);
-    //}
-    //catch (Exception ex)
-    //{
-    //    exceptions.Add("childhoodSeed: " + ex);
-    //    childhoodSeed = 23;
-    //    //success = false;
-    //}
-    //try
-    //{
-    //    firstNameSeed = GenText.StableStringHash((pawn.Name as NameTriple).First);
-    //}
-    //catch (Exception ex)
-    //{
-    //    exceptions.Add("(pawn.Name as NameTriple).First: " + ex);
-    //    firstNameSeed = Mathf.CeilToInt(1e7f * Rand.Value);
-    //    success = false;
-    //}
-    //seed = Gen.HashCombineInt(thingIDSeed, worldIDSeed);
-    //if (success != true)
-    //{
-    //    Log.Warning("TryGetPawnSeed errors: " + string.Join(" | ", exceptions));
-    //}
-    //return success;
   }
 
   public static void TryGainMemoryReplacedPartBleedingHeart(Pawn pawn, Pawn billDoer)
@@ -500,31 +418,6 @@ public static class PsycheHelper
     }
   }
 
-  //public static float[] KinseyProbabilities()
-  //{
-  //    float[] pList = new float[7];
-  //    KinseyMode kinseyMode = PsychologySettings.kinseyFormula;
-  //    if (kinseyMode != KinseyMode.Custom)
-  //    {
-  //        KinseyModeWeightDict[kinseyMode].CopyTo(pList, 0);
-  //    }
-  //    else
-  //    {
-  //        PsychologySettings.kinseyWeightCustom.ToArray().CopyTo(pList, 0);
-  //    }
-  //    float sum = pList.Sum();
-  //    if (sum == 0f)
-  //    {
-  //        pList = new float[] { 1f, 1f, 1f, 1f, 1f, 1f, 1f };
-  //        sum = 7f;
-  //    }
-  //    for (int i = 0; i < 7; i++)
-  //    {
-  //        pList[i] = pList[i] / sum;
-  //    }
-  //    return pList;
-  //}
-
   // Combines two modifiers in (-1, 1) like relativistic velocities: (u + v) / (1 + uv). The result stays inside (-1, 1),
   // so any number of trait/skill modifiers can be stacked without overshooting, and stacking has diminishing returns.
   public static float RelativisticAddition(float u, float v)
@@ -532,6 +425,4 @@ public static class PsycheHelper
     return (u + v) / (1f + u * v);
   }
 
-
 }
-

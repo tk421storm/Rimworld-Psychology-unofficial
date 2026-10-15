@@ -101,26 +101,13 @@ public static class RomanceHelperMethods
     // loaded 4 instructions before `memories`, otherPawn right after the def, so this is tied to vanilla's IL shape.
     public static IEnumerable<CodeInstruction> InterdictTryGainAndRemoveMemories(IEnumerable<CodeInstruction> codes)
     {
-        //Log.Message("InterdictTryGainAndRemoveMemories, start");
         List<CodeInstruction> clist = codes.ToList();
-        //bool success = false;
-
 
         FieldInfo fieldInfoMemories = AccessTools.Field(typeof(ThoughtHandler), nameof(ThoughtHandler.memories));
         MethodInfo methodInfoTryGainMemory = AccessTools.Method(typeof(MemoryThoughtHandler), nameof(MemoryThoughtHandler.TryGainMemory), new Type[] { typeof(ThoughtDef), typeof(Pawn), typeof(Precept) });
         MethodInfo methodInfoRemoveMemories = AccessTools.Method(typeof(MemoryThoughtHandler), nameof(MemoryThoughtHandler.RemoveMemoriesOfDefWhereOtherPawnIs));
-        //Log.Message("InterdictTryGainAndRemoveMemories, test");
-        //FieldInfo fieldInfo = AccessTools.Field(typeof(ThoughtDefOf), ThoughtDefOf.BrokeUpWithMe.defName);
-        //Log.Message("InterdictTryGainAndRemoveMemories, OpinionThoughtDefs NullOrEmpty: " + OpinionThoughtDefs.NullOrEmpty());
-        //Log.Message("InterdictTryGainAndRemoveMemories, OpinionThoughtDefs count: " + OpinionThoughtDefs.Count());
         List<Pair<int, FieldInfo>> fieldInfos = (from ThoughtDef def in OpinionThoughtDefs
                                                  select new Pair<int, FieldInfo>(OpinionThoughtDefs.IndexOf(def), AccessTools.Field(typeof(ThoughtDefOf), def.defName))).ToList();
-
-        //int memoriesIndexInClist = -1;
-        //int thoughtDefIndexInClist = -1;
-        //int thoughtDefIndexInOpinionThoughtDefs = -1;
-        //int tryGainOrRemoveIndexInClist = -1;
-        //int gainVsRemoveBit = -1;
 
         List<int> listTryGainOrRemoveIndexInClist = new List<int>();
         List<int> listGainVsRemoveBit = new List<int>();
@@ -130,9 +117,6 @@ public static class RomanceHelperMethods
         List<int> listMemoriesIndexInClist = new List<int>();
         List<int> listPawnIndexInClist = new List<int>();
 
-        //List<CodeInstruction> listPawnCode = new List<CodeInstruction>();
-        //List<CodeInstruction> listOtherPawnCode = new List<CodeInstruction>();
-        //Log.Message("InterdictTryGainAndRemoveMemories, search clist for matches");
         int searchMode = 0;
         for (int i = clist.Count() - 1; i >= 0; i--)
         {
@@ -145,7 +129,6 @@ public static class RomanceHelperMethods
                         searchMode++;
                         listTryGainOrRemoveIndexInClist.Add(i);
                         listGainVsRemoveBit.Add(gainVsRemoveBit);
-                        //Log.Message("InterdictTryGainAndRemoveMemories, found TryGainOrRemove");
                     }
                     break;
                 case 1:
@@ -154,7 +137,6 @@ public static class RomanceHelperMethods
                         searchMode++;
                         listMemoriesIndexInClist.Add(i);
                         listPawnIndexInClist.Add(i - 4);
-                        //Log.Message("InterdictTryGainAndRemoveMemories, found memories");
                     }
                     break;
                 default:
@@ -169,7 +151,6 @@ public static class RomanceHelperMethods
                                 listOtherPawnIndexInClist.Add(j + 1);
                                 listThoughtDefIndexInClist.Add(j);
                                 listThoughtDefIndexInOpinionThoughtDefs.Add(pair.First);
-                                //Log.Message("InterdictTryGainAndRemoveMemories, found ThoughtDef");
                                 break;
                             }
                         }
@@ -199,8 +180,6 @@ public static class RomanceHelperMethods
             }
             yield break;
         }
-        //Log.Message("InterdictTryGainThoughtAndRemoveMemories, found this number of matches: " + listPawnIndexInClist.Count());
-        //Log.Message("InterdictTryGainAndRemoveMemories, start yield return");
         for (int i = 0; i < clist.Count(); i++)
         {
             yield return clist[i];
@@ -212,10 +191,9 @@ public static class RomanceHelperMethods
                 yield return CodeInstruction.Call(typeof(RomanceHelperMethods), PsychologyMethodNameDict[thoughtDef][listGainVsRemoveBit[matchNum]]);
                 i = listTryGainOrRemoveIndexInClist[matchNum];
 
-               
             }
         }
-       
+
     }
 
     /* Gain memories */
@@ -247,7 +225,6 @@ public static class RomanceHelperMethods
 
     public static void GainCheatedOnMe(Pawn pawn, Pawn otherPawn)
     {
-        //TryGainOpinion(pawn, otherPawn, ThoughtDefOf.CheatedOnMe);
         pawn.needs.mood.thoughts.memories.TryGainMemory(ThoughtDefOf.CheatedOnMe, otherPawn);
         pawn.needs.mood.thoughts.memories.TryGainMemory(ThoughtDefOfPsychology.CheatedOnMeCodependent, otherPawn);
         TryGainMood(pawn, otherPawn, CheatedOnMeMoodDef);
@@ -357,7 +334,6 @@ public static class RomanceHelperMethods
         pawn.needs.mood.thoughts.memories.RemoveMemoriesOfDefWhereOtherPawnIs(CheatedOnMeMoodDef, otherPawn);
         pawn.needs.mood.thoughts.memories.RemoveMemoriesOfDefWhereOtherPawnIs(ThoughtDefOfPsychology.CheatedOnMeCodependent, otherPawn);
         pawn.needs.mood.thoughts.memories.RemoveMemoriesOfDefWhereOtherPawnIs(ThoughtDefOfPsychology.CheatedOnMeCodependentMood, otherPawn);
-        //pawn.needs.mood.thoughts.memories.RemoveMemoriesOfDefWhereOtherPawnIs(ThoughtDefOfPsychology.ICheatedOnThemMood, otherPawn);
     }
 
     public static void RemoveIRejectedTheirProposal(Pawn pawn, Pawn otherPawn)
@@ -367,4 +343,3 @@ public static class RomanceHelperMethods
     }
 
 }
-

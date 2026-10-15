@@ -8,8 +8,10 @@ using Verse;
 namespace Psychology;
 
 // ToDo: fix this with patch or class extension
-// Result of treating chemical interest/fascination: ends any drug binge immediately (binges also can't start, see
-// MentalStateWorker_BingingDrugPatch).
+// Meant for the DrugFree hediff (result of treating chemical interest/fascination): end any drug binge immediately.
+// BUG (pre-existing): not wired up. The DrugFree HediffDef uses HediffWithComps (TreatmentBase), so this class is never
+// instantiated; new binges are still blocked by MentalStateWorker_BingingDrugPatch, but one already running isn't ended.
+// Calling PostEnd() directly also wouldn't clear the mental state; RecoverFromState() would.
 public class Hediff_DrugFree : Hediff
 {
     public override void PostTick()

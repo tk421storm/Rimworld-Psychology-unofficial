@@ -10,10 +10,9 @@ namespace Psychology
     // A room containing the active office table is an Office (huge score so it wins over other roles).
     class RoomRoleWorker_Office : RoomRoleWorker
     {
-        
+
         public override float GetScore(Room room)
         {
-            //int num = 0;
             List<Thing> containedAndAdjacentThings = room.ContainedAndAdjacentThings;
             for (int i = 0; i < containedAndAdjacentThings.Count; i++)
             {

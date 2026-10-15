@@ -13,7 +13,6 @@ namespace Psychology;
 // their recovery is.
 public class MentalState_FireStartingSpreePsychology : MentalState_FireStartingSpree
 {
-    //Hediff_RecoveringPyromaniac hediff_RecoveringPyromaniac = null;
     Hediff hediff = null;
 
     public override void PreStart()
@@ -21,23 +20,6 @@ public class MentalState_FireStartingSpreePsychology : MentalState_FireStartingS
         hediff = this.pawn.health.hediffSet.GetFirstHediffOfDef(HediffDefOfPsychology.RecoveringPyromaniac);
         base.PreStart();
     }
-
-    //public override void PostEnd()
-    //{
-    //    base.PostEnd();
-    //    hediff_RecoveringPyromaniac = this.pawn.health.hediffSet.GetFirstHediffOfDef(HediffDefOfPsychology.RecoveringPyromaniac);
-    //    CheckRecoveringPyromaniac(false);
-    //}
-
-    //public void CheckRecoveringPyromaniac(bool starting)
-    //{
-    //    Hediff hediff = this.pawn.health.hediffSet.GetFirstHediffOfDef(HediffDefOfPsychology.RecoveringPyromaniac);
-    //    hediff_RecoveringPyromaniac = hediff as Hediff_RecoveringPyromaniac;
-    //    if (hediff_RecoveringPyromaniac != null)
-    //    {
-    //        hediff_RecoveringPyromaniac.inFireStarterMentalState = starting;
-    //    }
-    //}
 
     public override void MentalStateTick(int delta)
     {
@@ -60,4 +42,3 @@ public class MentalState_FireStartingSpreePsychology : MentalState_FireStartingS
         }
     }
 }
-

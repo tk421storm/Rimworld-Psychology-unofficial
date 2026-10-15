@@ -1,12 +1,7 @@
 ﻿using System;
-//using System.Collections.Generic;
-//using System.Linq;
-//using System.Text;
-//using System.Reflection;
 using RimWorld;
 using Verse;
 using UnityEngine;
-//using Verse.Sound;
 
 namespace Psychology;
 
@@ -24,32 +19,8 @@ public class ITab_Pawn_Psyche : ITab
     {
         get
         {
-            //Log.Message("IsVisible");
             Pawn pawn = IsVisiblePawnHook(PawnToShowInfoAbout);
             return PsycheHelper.HasLatentPsyche(pawn);
-            //if (pawn == null)
-            //{
-            //    //Log.Message("IsVisible, PawnToShowInfoAbout == null");
-            //    return false;
-            //}
-            //CompPsychology comp = pawn.GetComp<CompPsychology>();
-            //if (comp == null)
-            //{
-            //    //Log.Message("IsVisible, comp == null");
-            //    return false;
-            //}
-            //SpeciesSettings settings = SpeciesHelper.GetOrMakeSpeciesSettingsFromThingDef(pawn.def, noDating: true);
-            //if (settings?.enablePsyche != true)
-            //{
-            //    //Log.Message("IsVisible, enablePsyche != true");
-            //    return false;
-            //}
-            //if (comp.IsPsychologyPawn != true)
-            //{
-            //    //Log.Message("IsVisible, comp.IsPsychologyPawn != true");
-            //    return false;
-            //}
-            //return true;
         }
     }
 
@@ -57,15 +28,12 @@ public class ITab_Pawn_Psyche : ITab
     {
         get
         {
-            //Log.Message("Inside PawnToShowInfoAbout");
             if (base.SelPawn != null)
             {
-                //Log.Message("Selected pawn label = " + base.SelPawn?.Label);
                 return base.SelPawn;
             }
             if (base.SelThing is Corpse corpse)
             {
-                //Log.Message("Selected corpse label = " + corpse?.InnerPawn?.Label);
                 return corpse.InnerPawn;
             }
             throw new InvalidOperationException("Psyche tab found no selected pawn to display.");

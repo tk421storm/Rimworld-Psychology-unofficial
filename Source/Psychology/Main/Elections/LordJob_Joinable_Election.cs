@@ -76,7 +76,6 @@ namespace Psychology
             Scribe_Collections.Look(ref this.votes, "votes", LookMode.Value, new object[0]);
         }
 
-        
         private void Finished()
         {
             List<Pair<Pawn, int>> voteTally = new List<Pair<Pawn, int>>();
@@ -97,12 +96,10 @@ namespace Psychology
             {
                 foreach (Pair<Pawn, int> t in orderedTally)
                 {
-                    //Log.Message("Psychology :: Votes for " + t.First + ": " + t.Second);
                 }
             }
             Pair<Pawn, int> winningCandidate = orderedTally.First();
             Pawn newMayor = winningCandidate.First;
-
 
             if (orderedTally.Count() > 1 && orderedTally.First().Second == orderedTally.ElementAt(1).Second)
             {
@@ -120,9 +117,7 @@ namespace Psychology
             }
             int mapTile = this.map.Tile;
 
-
             PsycheHelper.GameComp.RemoveMayorOfThisColony(mapTile);
-
 
             Hediff hediffMayor = HediffMaker.MakeHediff(HediffDefOfPsychology.Mayor, newMayor);
             (hediffMayor as Hediff_Mayor).worldTileElectedOn = map.Tile;
@@ -155,7 +150,6 @@ namespace Psychology
             return !GatheringsUtility.AcceptableGameConditionsToContinueGathering(base.Map) || candidates.Count < 1;
         }
 
-        
         private bool ShouldPawnKeepVoting(Pawn p)
         {
             if (!PsycheHelper.PsychologyEnabled(p))
@@ -187,10 +181,8 @@ namespace Psychology
             {
                 return 0f;
             }
-            //return 30f;
             return 100f;
         }
-
 
     }
 }

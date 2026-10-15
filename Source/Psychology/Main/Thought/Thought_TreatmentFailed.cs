@@ -11,7 +11,6 @@ namespace Psychology;
 // "Treatment for X failed" memory; remembers which treatment so Recipe_Treatment can block retrying it while it lasts.
 public class Thought_TreatmentFailed : Thought_Memory
 {
-    //public string traitName;
     public TreatmentRecipeDef treatmentRecipe;
 
     string IllnessNameTranslated => treatmentRecipe == null ? "MentalIllness".Translate() : treatmentRecipe.illnessName;

@@ -36,16 +36,6 @@ public class PlayLogEntry_InteractionConversation : PlayLogEntry_Interaction
             Scribe_Values.Look(ref ruleText, "rulesInit" + i, "r_logentry->" + "ConversationEnd".Translate());
             this.rulesInit[i] = ruleText;
         }
-        /*for (int i = 0; i < rulesRecip.Capacity; i++)
-        {
-            if (i+1 > this.rulesRecip.Count)
-            {
-                this.rulesRecip.Add("logentry->" + "ConversationEnd".Translate() + " [other_nameShortIndef].");
-            }
-            string ruleText = this.rulesRecip[i];
-            Scribe_Values.Look(ref ruleText, "rulesRecip" + i, "logentry->" + "ConversationEnd".Translate() + " [other_nameShortIndef].");
-            this.rulesRecip[i] = ruleText;
-        }*/
         FieldInfo IntDef = typeof(PlayLogEntry_Interaction).GetField("intDef", BindingFlags.Instance | BindingFlags.NonPublic);
         InteractionDef newIntDef = new InteractionDef();
         newIntDef.defName = "EndConversation";
@@ -56,12 +46,8 @@ public class PlayLogEntry_InteractionConversation : PlayLogEntry_Interaction
         RulePack initPack = new RulePack();
         RuleStrings.SetValue(initPack, this.rulesInit);
         newIntDef.logRulesInitiator = initPack;
-        /*RulePack recipPack = new RulePack();
-        RuleStrings.SetValue(recipPack, this.rulesRecip);
-        newIntDef.logRulesRecipient = recipPack;*/
         IntDef.SetValue(this, newIntDef);
     }
 
     protected List<string> rulesInit = new List<string>(1);
-    //protected List<string> rulesRecip = new List<string>(1);
 }

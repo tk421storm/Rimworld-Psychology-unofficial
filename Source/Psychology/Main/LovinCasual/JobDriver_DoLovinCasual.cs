@@ -110,11 +110,6 @@ namespace Psychology
                         ticksLeftThisToil = ticksOtherwise;
                     }
 
-
-                    //if (RomanceUtilities.IsThisCheating(Actor, Partner, out List<Pawn> cheatedOnList))
-                    //{
-                    //    //This is really just to grab the list, separate if statement since it can return false even if the list is not empty
-                    //}
                     RomanceUtility.IsThisCheating(Actor, Partner, out List<Pawn> cheatedOnList);
 
                     //If they're in a relationship with target, then this list will be empty

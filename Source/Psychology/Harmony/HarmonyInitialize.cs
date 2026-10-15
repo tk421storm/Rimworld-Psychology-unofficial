@@ -99,11 +99,6 @@ public static class HarmonyInitialize
     {
       ManualPatches.KinseyEnabledPatches(harmonyInstance);
     }
-    //if (ModsConfig.IdeologyActive)
-    //{
-    //    ManualPatches.IdeoPatches(harmonyInstance);
-    //    //Log.Message("Psychology: implemented all ideology patches");
-    //}
     Log.Message("Psychology: implemented all vanilla patches");
 
     harmonyInstance.PatchAll();
@@ -210,13 +205,4 @@ public class ManualPatches
       Log.Error("Psychology: failed to patch RelationsUtility.AttractedToGender, " + ex);
     }
   }
-
-  //public static void IdeoPatches(HarmonyLib.Harmony harmonyInstance)
-  //{
-  //    //originalInfo = AccessTools.Method(typeof(PawnGenerator), nameof(PawnGenerator.GeneratePawn), new Type[] { typeof(PawnGenerationRequest) });
-  //    //harmonyMethod = new HarmonyMethod(typeof(PawnGenerator_ManualPatches), nameof(PawnGenerator_ManualPatches.GeneratePawn_IdeoCache_Postfix));
-  //    //harmonyInstance.Patch(originalInfo, postfix: harmonyMethod);
-  //}
 }
-
-

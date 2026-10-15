@@ -61,17 +61,7 @@ public class PsychologyGameComponent : GameComponent
     BuildMayorDictionary();
     ImplementSexualOrientation();
     visitMayorChanceFactor = 2f * constituentTicksPerInterval / (GenDate.TicksPerHour * PsychologySettings.visitMayorMtbHours);
-    //FirstTimeLoadingNewPsychology();
   }
-
-  //public override void StartedNewGame()
-  //{
-  //    //Log.Message("Psychology: started new game");
-  //    this.firstTimeWithUpdate = false;
-  //    InitializeRegisteredSpecies();
-  //    BuildMayorDictionary();
-  //    ImplementSexualOrientation();
-  //}
 
   public override void GameComponentTick()
   {
@@ -101,36 +91,8 @@ public class PsychologyGameComponent : GameComponent
     return certaintyChange;
   }
 
-  //public virtual void FirstTimeLoadingNewPsychology()
-  //{
-  //    if (!this.firstTimeWithUpdate)
-  //    {
-  //        return;
-  //    }
-  //    Find.WindowStack.Add(new Dialog_UpdateIntro());
-  //    this.firstTimeWithUpdate = false;
-  //}
-
-  //public virtual void InitializeCachedIdeoCertaintyChange()
-  //{
-  //    foreach (Pawn pawn in Find.WorldPawns.AllPawnsAlive)
-  //    {
-  //        AddPawnToCachedIdeoCertaityChange(pawn);
-  //    }
-  //}
-
-  //public virtual void AddPawnToCachedIdeoCertaityChange(Pawn pawn)
-  //{
-  //    if (PsycheHelper.PsychologyEnabled(pawn))
-  //    {
-  //        float ideoCertaintyChange = PsycheHelper.Comp(pawn).Psyche.CalculateCertaintyChangePerDay();
-  //        CachedCertaintyChangePerDayDict.AddDistinct(pawn.thingIDNumber, ideoCertaintyChange);
-  //    }
-  //}
-
   public virtual void BuildMayorDictionary()
   {
-    //Log.Message("BuildMayorDictionary, start");
     Mayors = new Dictionary<int, Pair<Pawn, Hediff>>();
     int mapTile;
     foreach (Pawn pawn in PawnsFinder.All_AliveOrDead)
@@ -163,7 +125,6 @@ public class PsychologyGameComponent : GameComponent
     {
       DeleteAllMayorHediffs();
     }
-    //Log.Message("BuildMayorDictionary, end");
   }
 
   public virtual void RemoveMayorOfThisColony(int mapTile)
@@ -202,8 +163,6 @@ public class PsychologyGameComponent : GameComponent
     kvp.Value.First.health.RemoveHediff(kvp.Value.Second);
   }
 
-
-
   public virtual void ImplementSexualOrientation()
   {
     if (PsychologySettings.enableKinsey)
@@ -222,24 +181,6 @@ public class PsychologyGameComponent : GameComponent
     }
   }
 
-
-
-  //public virtual void RandomizeRatingsForAllPawns()
-  //{
-  //    foreach (Pawn pawn in PawnsFinder.All_AliveOrDead)
-  //    {
-  //        if (PsycheHelper.TryGetPawnSeed(pawn) != true)
-  //        {
-  //            continue;
-  //        }
-  //        if (PsycheHelper.PsychologyEnabled(pawn) != true)
-  //        {
-  //            continue;
-  //        }
-  //        PsycheHelper.Comp(pawn).Psyche.RandomizeRatings();
-  //    }
-  //}
-
   public virtual void ConstituentTick()
   {
     if (constituentTick > 0)
@@ -247,7 +188,6 @@ public class PsychologyGameComponent : GameComponent
       constituentTick--;
       return;
     }
-    //Log.Message("ConstituentTick, Step 1");
     constituentTick = constituentTicksPerInterval;
     if (Mayors == null)
     {
@@ -255,15 +195,10 @@ public class PsychologyGameComponent : GameComponent
       BuildMayorDictionary();
       return;
     }
-    //Log.Message("ConstituentTick, Mayors != null");
 
     List<Settlement> playerSettlements = Find.WorldObjects.Settlements.FindAll(b => b.Faction.IsPlayer);
-    //List<Settlement> playerSettlements = Find.WorldObjects.SettlementBases.FindAll(b => b.Faction.IsPlayer);
-    //Log.Message("ConstituentTick, Step 2, length of playerSettlements = " + playerSettlements.Count());
     foreach (Settlement settlement in playerSettlements)
     {
-      //Log.Message("settlement.Map.Tile = " + settlement?.Map?.Tile);
-      //Log.Message("ConstituentTick, Step 3");
       if (settlement?.Map?.Tile == null)
       {
         Log.Warning("playerSettlement.Map.Tile was null");
@@ -272,10 +207,8 @@ public class PsychologyGameComponent : GameComponent
 
       if (Mayors.TryGetValue(settlement.Map.Tile, out Pair<Pawn, Hediff> mayorPair) != true)
       {
-        //Log.Message("ConstituentTick, end settlement");
         continue;
       }
-      //Log.Message("ConstituentTick, Step 4");
       Pawn mayor = mayorPair.First;
       IEnumerable<Pawn> constituents = from p in settlement.Map.mapPawns.FreeColonistsSpawned
                                        where !p.health.hediffSet.HasHediff(HediffDefOfPsychology.Mayor)
@@ -314,8 +247,6 @@ public class PsychologyGameComponent : GameComponent
         gather = mayor.ownership.OwnedBed.Position;
         found = "bed";
       }
-      //if (PsycheHelper.PsychologyEnabled(potentialConstituent) && Rand.Chance((1f - PsycheHelper.Comp(potentialConstituent).Psyche.GetPersonalityRating(PersonalityNodeDefOf.Independent)) / 5f) && (found != null || RCellFinder.TryFindGatheringSpot(mayor, GatheringDefOf.Party, true, out gather)) // 1.3 - added ignoreRequiredColonistCount = true
-      //    && (!mayor.Drafted && !mayor.Downed && mayor.health.summaryHealth.SummaryHealthPercent >= 1f && mayor.GetTimeAssignment() != TimeAssignmentDefOf.Work && (mayor.CurJob == null || mayor.CurJob.def != JobDefOf.TendPatient || mayor.CurJob.RecipeDef.workerClass.IsAssignableFrom(typeof(Recipe_Surgery)))))
       float independent = PsycheHelper.Comp(potentialConstituent).Psyche.GetPersonalityRating(PersonalityNodeDefOf.Independent);
       if (Rand.Chance((1f - independent) * visitMayorChanceFactor) && (found != null || RCellFinder.TryFindGatheringSpot(mayor, GatheringDefOf.Party, true, out gather)))
       {
@@ -356,11 +287,6 @@ public class PsychologyGameComponent : GameComponent
         continue;
       }
       ////If the base is not at least a year old, no election will be held.
-      //if ((Find.TickManager.TicksGame - settlement.creationGameTicks) < GenDate.TicksPerYear)
-      //{
-      //    continue;
-      //}
-      //A base must have at least 7 people in it to hold an election.
       if (settlement.Map.mapPawns.FreeColonistsSpawnedCount < 7)
       {
         continue;
