@@ -8,13 +8,10 @@ using System.Diagnostics;
 namespace Psychology.Harmony;
 
 // Applies all of Psychology's Harmony patches at startup.
-//   1. Unpatches seven vanilla methods that Psychology replaces outright (romance selection weight/success chance,
-//      BreakLoverAndFianceRelations, lover generation chance, GetLovinMtbHours, IdeoTrackerTickInterval,
-//      SecondaryLovinChanceFactor).
-//      NOTE: Unpatch(method, HarmonyPatchType.All) defaults to harmonyID "*", so this removes EVERY mod's patches on
-//      those methods, not just ours. Mods that patched them before this static constructor ran are silently undone.
-//   2. With the Kinsey system on, applies the manual Kinsey patches (ManualPatches.KinseyEnabledPatches).
-//   3. PatchAll() for every attribute-based patch. PatchAll only picks up methods marked [HarmonyPrefix]/[HarmonyPostfix]/...
+//   (Until 1.6 this also Unpatch()ed seven vanilla methods Psychology replaces, with no Harmony ID, which stripped
+//   every other mod's patches from them. Removed: other mods now coexist with ours as Harmony intends.)
+//   1. With the Kinsey system on, applies the manual Kinsey patches (ManualPatches.KinseyEnabledPatches).
+//   2. PatchAll() for every attribute-based patch. PatchAll only picks up methods marked [HarmonyPrefix]/[HarmonyPostfix]/...
 //      or named Prefix/Postfix/Transpiler/...; a few classes in Harmony/ have neither and are silently inactive (see the
 //      notes on MapParent_Abandon_Patch and the ConvertIdeoAttempt patches).
 [StaticConstructorOnStartup]
@@ -27,74 +24,6 @@ public static class HarmonyInitialize
     Stopwatch stopwatch = new Stopwatch();
     stopwatch.Start();
 
-    // It might be a bit extreme to undo all other patches...
-    try
-    {
-      harmonyInstance.Unpatch(AccessTools.Method(typeof(InteractionWorker_RomanceAttempt), nameof(InteractionWorker_RomanceAttempt.RandomSelectionWeight)), HarmonyPatchType.All);
-    }
-    catch (Exception ex)
-    {
-      Log.Error("InteractionWorker_RomanceAttempt.RandomSelectionWeight unpatch, " + ex);
-    }
-
-    try
-    {
-      harmonyInstance.Unpatch(AccessTools.Method(typeof(InteractionWorker_RomanceAttempt), nameof(InteractionWorker_RomanceAttempt.SuccessChance)), HarmonyPatchType.All);
-    }
-    catch (Exception ex)
-    {
-      Log.Error("InteractionWorker_RomanceAttempt.SuccessChance unpatch, " + ex);
-    }
-
-    try
-    {
-      harmonyInstance.Unpatch(AccessTools.Method(typeof(InteractionWorker_RomanceAttempt), "BreakLoverAndFianceRelations"), HarmonyPatchType.All);
-    }
-    catch (Exception ex)
-    {
-      Log.Error("InteractionWorker_RomanceAttempt.BreakLoverAndFianceRelations unpatch, " + ex);
-    }
-
-    try
-    {
-      harmonyInstance.Unpatch(AccessTools.Method(typeof(LovePartnerRelationUtility), nameof(LovePartnerRelationUtility.LovePartnerRelationGenerationChance)), HarmonyPatchType.All);
-    }
-    catch (Exception ex)
-    {
-      Log.Error("LovePartnerRelationUtility.LovePartnerRelationGenerationChance unpatch, " + ex);
-    }
-
-    try
-    {
-      harmonyInstance.Unpatch(AccessTools.Method(typeof(LovePartnerRelationUtility), nameof(LovePartnerRelationUtility.GetLovinMtbHours)), HarmonyPatchType.All);
-    }
-    catch (Exception ex)
-    {
-      Log.Error("LovePartnerRelationUtility.GetLovinMtbHours unpatch, " + ex);
-    }
-
-    try
-    {
-      harmonyInstance.Unpatch(AccessTools.Method(typeof(Pawn_IdeoTracker), nameof(Pawn_IdeoTracker.IdeoTrackerTickInterval)), HarmonyPatchType.All);
-    }
-    catch (Exception ex)
-    {
-      Log.Error("Pawn_IdeoTracker.IdeoTrackerTick unpatch, " + ex);
-    }
-
-    try
-    {
-      harmonyInstance.Unpatch(AccessTools.Method(typeof(Pawn_RelationsTracker), nameof(Pawn_RelationsTracker.SecondaryLovinChanceFactor)), HarmonyPatchType.All);
-    }
-    catch (Exception ex)
-    {
-      Log.Error("Pawn_RelationsTracker.SecondaryLovinChanceFactor unpatch, exception = " + ex);
-    }
-
-    
-    
-    Log.Message("Time for all patches: " + stopwatch.Elapsed.TotalMilliseconds);
-
     if (PsychologySettings.enableKinsey)
     {
       ManualPatches.KinseyEnabledPatches(harmonyInstance);
@@ -103,6 +32,7 @@ public static class HarmonyInitialize
 
     harmonyInstance.PatchAll();
     stopwatch.Stop();
+    Log.Message("Time for all patches: " + stopwatch.Elapsed.TotalMilliseconds);
   }
 }
 
