@@ -327,7 +327,8 @@ public static class PsycheHelper
   }
 
   // With the Kinsey system off, the vanilla traits are the source of truth again; this tries to give pawns the traits
-  // that match their stored Kinsey rating. NOTE: see the bug in TryGainTraitDef below, it currently never adds a trait.
+  // that match their stored Kinsey rating. The orientation traits are mutually exclusive in vanilla, so an asexual pawn
+  // gets no other.
   public static void CorrectTraitsForPawnKinseyDisabled(Pawn pawn)
   {
     if (!PsycheHelper.PsychologyEnabled(pawn) || pawn?.story?.traits == null)
@@ -337,7 +338,10 @@ public static class PsycheHelper
     int kinseyRating = PsycheHelper.Comp(pawn).Sexuality.kinseyRating;
     if (PsycheHelper.Comp(pawn).Sexuality.sexDrive < 0.1f)
     {
+      TryRemoveTraitDef(pawn, TraitDefOf.Bisexual);
+      TryRemoveTraitDef(pawn, TraitDefOf.Gay);
       TryGainTraitDef(pawn, TraitDefOf.Asexual);
+      return;
     }
     if (kinseyRating < 2)
     {
@@ -371,11 +375,10 @@ public static class PsycheHelper
     return false;
   }
 
-  // BUG (pre-existing, not fixed yet): the condition is inverted. It returns early when the pawn does NOT have the trait,
-  // and otherwise adds a duplicate. Should be `if (HasTraitDef(pawn, traitDef)) return false;`.
+  // Adds the trait unless the pawn already has it.
   public static bool TryGainTraitDef(Pawn pawn, TraitDef traitDef)
   {
-    if (HasTraitDef(pawn, traitDef) != true)
+    if (HasTraitDef(pawn, traitDef))
     {
       return false;
     }
