@@ -10,7 +10,14 @@ namespace Psychology;
 // same outfit. Re-evaluated every ~250 calls per pawn.
 public class ThoughtWorker_Individuality : ThoughtWorker
 {
-    Dictionary<Pawn, int[]> lastTick = new Dictionary<Pawn, int[]>();
+    private class Check
+    {
+        public int countdown;
+        public int stage = -1;
+    }
+
+    // One ThoughtWorker serves every pawn, so each pawn's countdown and last result are kept per pawn.
+    private readonly PawnStateCache<Check> checks = new PawnStateCache<Check>();
 
     protected override ThoughtState CurrentStateInternal(Pawn p)
     {
@@ -25,35 +32,27 @@ public class ThoughtWorker_Individuality : ThoughtWorker
         if (p.apparel.PsychologicallyNude)
             return ThoughtState.Inactive;
 
-        bool flag = false;
-        if (!lastTick.ContainsKey(p))
-        {
-            lastTick.Add(p, new[] { p.GetHashCode() % 250, -1 });
-            flag = true;
-        }
-        lastTick[p][0]--;
-        if (lastTick[p][0] < 0)
-        {
-            lastTick[p][0] = 250;
-            flag = true;
-        }
-        
+        Check check = checks.For(p, out bool flag);
         if (flag)
         {
-            List<Thought> tmpThoughts = new List<Thought>();
-            p.needs.mood.thoughts.GetAllMoodThoughts(tmpThoughts);
+            check.countdown = p.GetHashCode() % 250;
+        }
+        check.countdown--;
+        if (check.countdown < 0)
+        {
+            check.countdown = 250;
+            flag = true;
+        }
 
-            // Added fix to disable for low expectations
-            
-            IEnumerable<int> stagesList = from t in tmpThoughts
-                                          where t.def.defName == "Expectations"
-                                          select t.CurStageIndex;
-            if (stagesList.Count() > 0)
+        if (flag)
+        {
+            // Disabled below high expectations. Read the expectation directly (as vanilla's Expectations thought does):
+            // asking for the pawn's mood thoughts here would rebuild the situational thought list while it's being
+            // enumerated.
+            if (!p.IsSlave && ExpectationsUtility.CurrentExpectationFor(p) is ExpectationDef expectation && expectation.thoughtStage < 4)
             {
-                if (stagesList.First() < 4)
-                {
-                    return ThoughtState.Inactive;
-                }
+                check.stage = -1;
+                return ThoughtState.Inactive;
             }
 
             // Might be faster to find the opposite
@@ -78,28 +77,28 @@ public class ThoughtWorker_Individuality : ThoughtWorker
             int colonistsCount = colonists.Count();
             if (sameClothesCount == colonistsCount && colonistsCount > 5)
             {
-                lastTick[p][1] = 3;
+                check.stage = 3;
             }
             else if (sameClothesCount >= (colonistsCount / 2) && colonistsCount > 5)
             {
-                lastTick[p][1] = 2;
+                check.stage = 2;
             }
             else if (sameClothesCount > 1)
             {
-                lastTick[p][1] = 1;
+                check.stage = 1;
             }
             else if (sameClothesCount > 0)
             {
-                lastTick[p][1] = 0;
+                check.stage = 0;
             }
             else
             {
-                lastTick[p][1] = -1;
+                check.stage = -1;
             }
         }
-        if (lastTick[p][1] >= 0)
+        if (check.stage >= 0)
         {
-            return ThoughtState.ActiveAtStage(lastTick[p][1]);
+            return ThoughtState.ActiveAtStage(check.stage);
         }
         return ThoughtState.Inactive;
     }
