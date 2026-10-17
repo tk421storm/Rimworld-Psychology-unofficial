@@ -323,8 +323,6 @@ public static class InteractionWorker_RomanceAttempt_OpinionFactor_Patches
 // Replaces vanilla's "recipient already has a partner" factor: Polygamous recipients don't care; otherwise lover 0.6,
 // fiance 0.1, spouse 0.3, times how unhappy they are with that partner (Romantic pawns are loyal to a partner they like
 // but leave a disliked one faster) and how little that partner still attracts them.
-// NOTE: the first check tests initiator twice (should be initiator || recipient), then reads the recipient's psyche,
-// which throws if the recipient has none.
 [HarmonyPatch(typeof(InteractionWorker_RomanceAttempt), "PartnerFactor")]
 public static class InteractionWorker_RomanceAttempt_PartnerFactor_Patches
 {
@@ -333,7 +331,7 @@ public static class InteractionWorker_RomanceAttempt_PartnerFactor_Patches
   [HarmonyPrefix]
   public static bool PartnerFactorPrefix(Pawn initiator, Pawn recipient, ref float __result)
   {
-    if (!PsycheHelper.PsychologyEnabled(initiator) || !PsycheHelper.PsychologyEnabled(initiator))
+    if (!PsycheHelper.PsychologyEnabled(initiator) || !PsycheHelper.PsychologyEnabled(recipient))
     {
       __result = 0f;
       return false;
