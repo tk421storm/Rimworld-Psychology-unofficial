@@ -9,13 +9,11 @@ using Verse.AI;
 namespace Psychology;
 
 // Fell plotting: pick up the best reachable melee weapon before going after the target.
-// NOTE: the Log.Warning below fires on every think cycle while this node runs.
 public class JobGiver_ArmSelf : ThinkNode_JobGiver
 {
     // ToDo: include ranged weapons?
     protected override Job TryGiveJob(Pawn pawn)
     {
-        Log.Warning("JobGiver_ArmSelf, TryGiveJob fired!");
         if (pawn.equipment == null)
         {
             return null;

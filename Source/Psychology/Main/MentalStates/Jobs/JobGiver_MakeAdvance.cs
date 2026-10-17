@@ -9,14 +9,13 @@ using Verse.AI;
 namespace Psychology;
 
 // Histrionic break: hang around the nearest colonist and occasionally (0.5%) make a pass at them if they could
-// possibly say yes. NOTE: the Log.Warning below fires on every think cycle while this node runs.
+// possibly say yes.
 public class JobGiver_MakeAdvance : ThinkNode_JobGiver
 {
     int lastRomanceTick = -9999;
 
     protected override Job TryGiveJob(Pawn pawn)
     {
-        Log.Warning("JobGiver_MakeAdvance, TryGiveJob fired!");
         if (pawn.interactions.InteractedTooRecentlyToInteract() || lastRomanceTick > Find.TickManager.TicksGame - 1000)
         {
             return null;

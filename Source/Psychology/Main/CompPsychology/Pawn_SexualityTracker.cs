@@ -71,8 +71,6 @@ public class Pawn_SexualityTracker : IExposable
   // Age-adjusted drive: 0 below the species' romance age; otherwise the raw drive times an age curve evaluated at the
   // "human-equivalent" age (RomanticDriveCurve for dating, the gender-specific sex-drive curves for lovin), or the raw
   // drive for species without age gaps / with a minimum age of 0.
-  // NOTE: the two Log.Message calls below run on every attraction check for such pawns (e.g. android races), which can
-  // spam the log. Shipped this way in 1.6.
   private float AdjustedDrive(bool isDating)
   {
     // Pawns can still have drive even if they are underage from the user species settings. Hence no check on species settings.
@@ -96,7 +94,6 @@ public class Pawn_SexualityTracker : IExposable
     }
     if (minSettingsAge == 0f)
     {
-      Log.Message("AdjustedDrive, minLovinAge == 0f, pawn: " + pawn + ", minSettingsAge: " + minSettingsAge);
       return drive;
     }
     float scaledAge = isDating ? PsycheHelper.DatingBioAgeToVanilla(age, minSettingsAge) : PsycheHelper.LovinBioAgeToVanilla(age, minSettingsAge);
@@ -120,10 +117,6 @@ public class Pawn_SexualityTracker : IExposable
           ageFactor = 0.5f * (FemaleSexDriveCurve.Evaluate(scaledAge) + MaleSexDriveCurve.Evaluate(scaledAge));
           break;
       }
-    }
-    if (ageFactor == 0f)
-    {
-      Log.Message("AdjustedDrive, ageFactor == 0f, pawn: " + pawn + ", minSettingsAge: " + minSettingsAge);
     }
     return ageFactor * drive;
 

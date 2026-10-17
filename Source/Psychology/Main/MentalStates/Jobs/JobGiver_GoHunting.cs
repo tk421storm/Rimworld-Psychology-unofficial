@@ -9,12 +9,10 @@ using Verse.AI;
 namespace Psychology
 {
     // Hunting trip: grab a good ranged weapon, drop shields, then hunt the assigned (or a random wild) animal.
-    // NOTE: the Log.Warning below fires on every think cycle while this node runs.
     public class JobGiver_GoHunting : ThinkNode_JobGiver
     {
         protected override Job TryGiveJob(Pawn pawn)
         {
-            Log.Warning("JobGiver_GoHunting, TryGiveJob fired!");
             if (pawn.Map == null)
             {
                 return null;

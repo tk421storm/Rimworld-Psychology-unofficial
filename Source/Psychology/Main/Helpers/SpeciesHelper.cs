@@ -384,8 +384,6 @@ public class SpeciesHelper
   /// <param name="isDating">Checks dating if true, and lovin if false.</param>
   /// <returns>True or False, with True meaning that the <paramref name="pawn"/> can participate in dating/lovin.</returns>
   // Life-stage half of RomanceEnabled: no psyche / juvenile / below the stage age -> false.
-  // NOTE: the two Log.Message calls below fire on every check for pawns that fail them (e.g. every child or teenager each
-  // time romance weights are evaluated), which can flood the log in colonies with children. Shipped this way in 1.6.
   public static bool RomanceLifestageAgeCheck(Pawn pawn, bool isDating)
   {
     if (!PsycheHelper.PsychologyEnabled(pawn))
@@ -399,12 +397,10 @@ public class SpeciesHelper
     // Allow teenagers to date but not do lovin
     if (!MinLifestageAge(pawn.def, isDating, out float minLifestageAge))
     {
-      Log.Message("RomanceLifestageAgeCheck, !MinLifestageAge, pawn: " + pawn + ", isDating: " + isDating + ", minLifestageAge: " + minLifestageAge);
       return false;
     }
     if (pawn?.ageTracker?.AgeBiologicalYearsFloat is float bioAge && bioAge < minLifestageAge)
     {
-      Log.Message("RomanceLifestageAgeCheck, ageBio < minLifestageAge, pawn: " + pawn + ", ageBio: " + pawn.ageTracker.AgeBiologicalYearsFloat + ", minLifestageAge: " + minLifestageAge);
       return false;
     }
     if (pawn?.ageTracker?.CurLifeStage is LifeStageDef lifeStageDef && lifeStageDef == LifeStageDefOf.HumanlikeAdult)
