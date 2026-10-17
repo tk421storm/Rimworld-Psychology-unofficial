@@ -81,7 +81,7 @@ public class Pawn_SexualityTracker : IExposable
       return 0f;
     }
     float age = pawn.ageTracker.AgeBiologicalYearsFloat;
-    SpeciesSettings settings = PsychologySettings.speciesDict[pawn.def.defName];
+    SpeciesSettings settings = SpeciesHelper.GetOrMakeSpeciesSettingsFromThingDef(pawn.def);
     float minSettingsAge = isDating ? settings.minDatingAge : settings.minLovinAge;
     float drive = isDating ? romanticDrive : sexDrive;
     if (!settings.enablePsyche || minSettingsAge < 0f)

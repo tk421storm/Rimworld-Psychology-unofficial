@@ -134,7 +134,6 @@ public static class Pawn_RelationsTracker_LovinChancePatch
     // plus 7 (in human-equivalent years), and an optional age-gap preference curve. That curve is a flat hill around the
     // pawn's own age; how far it drops off depends on Experimental (wider), Pure (narrower) and Open-Minded (wider), and it
     // is shifted older for straight women and younger for straight men, scaled by how straight they are.
-    // NOTE: reads PsychologySettings.speciesDict[defName] directly, so an unregistered species would throw here.
     public static float CalculateAgeFactor(Pawn pawn, Pawn otherPawn)
     {
         if (!SpeciesHelper.RomanceEnabled(pawn, true) || !SpeciesHelper.RomanceEnabled(otherPawn, true))
@@ -145,10 +144,10 @@ public static class Pawn_RelationsTracker_LovinChancePatch
 
         float age1 = pawn.ageTracker.AgeBiologicalYearsFloat;
         float age2 = otherPawn.ageTracker.AgeBiologicalYearsFloat;
-        SpeciesSettings settings1 = PsychologySettings.speciesDict[pawn.def.defName];
-        SpeciesSettings settings2 = PsychologySettings.speciesDict[otherPawn.def.defName];
+        SpeciesSettings settings1 = SpeciesHelper.GetOrMakeSpeciesSettingsFromThingDef(pawn.def);
+        SpeciesSettings settings2 = SpeciesHelper.GetOrMakeSpeciesSettingsFromThingDef(otherPawn.def);
         float minAge1 = settings1.minDatingAge;
-        float minAge2 = PsychologySettings.speciesDict[otherPawn.def.defName].minDatingAge;
+        float minAge2 = settings2.minDatingAge;
         bool pawnLecher = pawn.story.traits.HasTrait(TraitDefOfPsychology.Lecher);
         if (minAge1 < 0f || age1 < minAge1)
         {
