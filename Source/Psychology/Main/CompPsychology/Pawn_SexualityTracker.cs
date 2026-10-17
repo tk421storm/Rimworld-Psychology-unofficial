@@ -140,10 +140,10 @@ public class Pawn_SexualityTracker : IExposable
     return false;
   }
 
-  // NOTE: checks PsychologyEnabled on this pawn, not on p, and then reads p's comp. If p has no psyche this NREs.
+  // Records p's Kinsey rating as known to this pawn (only if p has a psyche to read it from).
   public virtual void LearnSexuality(Pawn p)
   {
-    if (p != null && PsycheHelper.PsychologyEnabled(pawn) && !knownSexualities.Keys.Contains(p))
+    if (p != null && PsycheHelper.PsychologyEnabled(p) && !knownSexualities.Keys.Contains(p))
     {
       knownSexualities.Add(p, PsycheHelper.Comp(p).Sexuality.kinseyRating);
     }
