@@ -16,7 +16,6 @@ using Unity;
 namespace Psychology;
 
 // ToDo:
-// - Add a "Electoral debate" ritual, to accelerate the vote
 // - Make indoctrination texture with hands hovering over a brain
 // - Make setting to control magnitude of the conversation opinion offsets
 // - Make panic attack a mental break

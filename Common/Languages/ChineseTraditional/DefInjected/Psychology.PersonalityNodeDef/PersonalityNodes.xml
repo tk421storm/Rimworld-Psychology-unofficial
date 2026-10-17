@@ -41,8 +41,6 @@
   <Independent.conversationTopics.8>社会</Independent.conversationTopics.8>
   <Independent.conversationTopics.9>依靠</Independent.conversationTopics.9>
   <Independent.conversationTopics.10>依赖</Independent.conversationTopics.10>
-  <Independent.platformIssueHigh>我们的殖民地由我们自己来守护。</Independent.platformIssueHigh>
-  <Independent.platformIssueLow>团结就是力量。</Independent.platformIssueLow>
   
 
   <Aggressive.label>好斗</Aggressive.label>
@@ -58,8 +56,6 @@
   <Aggressive.conversationTopics.6>顽固</Aggressive.conversationTopics.6>
   <Aggressive.conversationTopics.7>文明</Aggressive.conversationTopics.7>
   <Aggressive.conversationTopics.8>体谅</Aggressive.conversationTopics.8>
-  <Aggressive.platformIssueHigh>我们应该更加支持言论自由。</Aggressive.platformIssueHigh>
-  <Aggressive.platformIssueLow>我们应该多想想对方的感受。</Aggressive.platformIssueLow>
 	
   <Adventurous.label>冒险精神</Adventurous.label>
   <Adventurous.antonymLabel>謹慎</Adventurous.antonymLabel>
@@ -76,8 +72,6 @@
   <Adventurous.conversationTopics.8>新奇的食物</Adventurous.conversationTopics.8>
   <Adventurous.conversationTopics.9>坐下休憩</Adventurous.conversationTopics.9>
   <Adventurous.conversationTopics.10>回到故乡</Adventurous.conversationTopics.10>
-  <Adventurous.platformIssueHigh>走南闯北才不负生命啊。</Adventurous.platformIssueHigh>
-  <Adventurous.platformIssueLow>还是家里好啊。</Adventurous.platformIssueLow>
 
   <DrugFriendly.label>成瘾品亲和</DrugFriendly.label>
   <DrugFriendly.antonymLabel>禁慾</DrugFriendly.antonymLabel>
@@ -94,8 +88,6 @@
   <DrugFriendly.conversationTopics.8>活力水</DrugFriendly.conversationTopics.8>
   <DrugFriendly.conversationTopics.9>清醒丸</DrugFriendly.conversationTopics.9>
   <DrugFriendly.conversationTopics.10>精神茶</DrugFriendly.conversationTopics.10>
-  <DrugFriendly.platformIssueHigh>没事儿整点儿成瘾品也没什么不好的嘛。</DrugFriendly.platformIssueHigh>
-  <DrugFriendly.platformIssueLow>成瘾品就不应该存在于这片土地上。</DrugFriendly.platformIssueLow>
 
   <Spontaneous.label>莽撞</Spontaneous.label>
   <Spontaneous.antonymLabel>自律</Spontaneous.antonymLabel>
@@ -108,8 +100,6 @@
   <Spontaneous.conversationTopics.4>反思</Spontaneous.conversationTopics.4>
   <Spontaneous.conversationTopics.5>惊喜派对</Spontaneous.conversationTopics.5>
   <Spontaneous.conversationTopics.6>礼物</Spontaneous.conversationTopics.6>
-  <Spontaneous.platformIssueHigh>要是我来领导这个殖民地，这里一定会欣欣向荣。</Spontaneous.platformIssueHigh>
-  <Spontaneous.platformIssueLow>要是我来领导这个殖民地，事无巨细一定都会被我处理得井井有条。</Spontaneous.platformIssueLow>
 
   <Rational.label>理性</Rational.label>
   <Rational.antonymLabel>非理性</Rational.antonymLabel>
@@ -122,8 +112,6 @@
   <Rational.conversationTopics.4>因果关系</Rational.conversationTopics.4>
   <Rational.conversationTopics.5>认知偏差</Rational.conversationTopics.5>
   <Rational.conversationTopics.6>信念坚定</Rational.conversationTopics.6>
-  <Rational.platformIssueHigh>实践是检验真理的唯一标准。</Rational.platformIssueHigh>
-  <Rational.platformIssueLow>历史由胜利者书写，真理由强大者定义。</Rational.platformIssueLow>
 
   <Logical.label>逻辑思维</Logical.label>
   <Logical.antonymLabel>不合邏輯</Logical.antonymLabel>
@@ -140,8 +128,6 @@
   <Logical.conversationTopics.8>工程学</Logical.conversationTopics.8>
   <Logical.conversationTopics.9>生物学</Logical.conversationTopics.9>
   <Logical.conversationTopics.10>技术</Logical.conversationTopics.10>
-  <Logical.platformIssueHigh>什么都难不倒一个善于思考的大脑。</Logical.platformIssueHigh>
-  <Logical.platformIssueLow>我会试着解决问题。</Logical.platformIssueLow>
   
   <Creative.label>创造思维</Creative.label>
   <Creative.antonymLabel>沒有創意</Creative.antonymLabel>
@@ -158,8 +144,6 @@
   <Creative.conversationTopics.8>有趣的书</Creative.conversationTopics.8>
   <Creative.conversationTopics.9>有趣的电影</Creative.conversationTopics.9>
   <Creative.conversationTopics.10>异形</Creative.conversationTopics.10>
-  <Creative.platformIssueHigh>我们将创造出一个从未有过的殖民地。</Creative.platformIssueHigh>
-  <Creative.platformIssueLow>我们应该注重实事求是。</Creative.platformIssueLow>
   
   <Passionate.label>激情</Passionate.label>
   <Passionate.antonymLabel>冷漠</Passionate.antonymLabel>
@@ -171,8 +155,6 @@
   <Passionate.conversationTopics.3>学习</Passionate.conversationTopics.3>
   <Passionate.conversationTopics.4>强硬</Passionate.conversationTopics.4>
   <Passionate.conversationTopics.5>冷漠</Passionate.conversationTopics.5>
-  <Passionate.platformIssueHigh>我会竭尽全力投入工作。</Passionate.platformIssueHigh>
-  <Passionate.platformIssueLow>我已经做好了自己分内的事。</Passionate.platformIssueLow>
 
   <Nostalgic.label>恋旧</Nostalgic.label>
   <Nostalgic.antonymLabel>不恋旧</Nostalgic.antonymLabel>
@@ -186,8 +168,6 @@
   <Nostalgic.conversationTopics.5>目标</Nostalgic.conversationTopics.5>
   <Nostalgic.conversationTopics.6>历史</Nostalgic.conversationTopics.6>
   <Nostalgic.conversationTopics.7>纪念品</Nostalgic.conversationTopics.7>
-  <Nostalgic.platformIssueHigh>以史为鉴，可以知兴替。</Nostalgic.platformIssueHigh>
-  <Nostalgic.platformIssueLow>没有未来，我们来创造未来。</Nostalgic.platformIssueLow>
   
   <Empathetic.label>共情</Empathetic.label>
   <Empathetic.antonymLabel>不善解人意</Empathetic.antonymLabel>
@@ -202,8 +182,6 @@
   <Empathetic.conversationTopics.6>仁慈</Empathetic.conversationTopics.6>
   <Empathetic.conversationTopics.7>珍惜生命</Empathetic.conversationTopics.7>
   <Empathetic.conversationTopics.8>自私</Empathetic.conversationTopics.8>
-  <Empathetic.platformIssueHigh>镇长应该确保每一位殖民者都被照料到。</Empathetic.platformIssueHigh>
-  <Empathetic.platformIssueLow>镇长不应该干涉人们的私事。</Empathetic.platformIssueLow>
 
   <Competitive.label>争强好胜</Competitive.label>
   <Competitive.antonymLabel>合作社</Competitive.antonymLabel>
@@ -216,8 +194,6 @@
   <Competitive.conversationTopics.4>天才</Competitive.conversationTopics.4>
   <Competitive.conversationTopics.5>其他定居点</Competitive.conversationTopics.5>
   <Competitive.conversationTopics.6>自我能力</Competitive.conversationTopics.6>
-  <Competitive.platformIssueHigh>物竞天择，强者为王。</Competitive.platformIssueHigh>
-  <Competitive.platformIssueLow>人人都应该有平等的资格。</Competitive.platformIssueLow>
   
   <Polite.label>礼貌</Polite.label>
   <Polite.antonymLabel>無禮</Polite.antonymLabel>
@@ -233,8 +209,6 @@
   <Polite.conversationTopics.7>粗鲁</Polite.conversationTopics.7>
   <Polite.conversationTopics.8>咒骂</Polite.conversationTopics.8>
   <Polite.conversationTopics.9>辱骂</Polite.conversationTopics.9>
-  <Polite.platformIssueHigh>我们应该尊重彼此。</Polite.platformIssueHigh>
-  <Polite.platformIssueLow>我们应该认清自己的优劣。</Polite.platformIssueLow>
 
   <Cool.label>酷</Cool.label>
   <Cool.antonymLabel>不酷</Cool.antonymLabel>
@@ -247,8 +221,6 @@
   <Cool.conversationTopics.4>假发</Cool.conversationTopics.4>
   <Cool.conversationTopics.5>派对</Cool.conversationTopics.5>
   <Cool.conversationTopics.6>玩梗</Cool.conversationTopics.6>
-  <Cool.platformIssueHigh>把票投给你玩得最好的人。</Cool.platformIssueHigh>
-  <Cool.platformIssueLow>把票投给最适合这份工作的人。</Cool.platformIssueLow>
 
   <Romantic.label>浪漫</Romantic.label>
   <Romantic.antonymLabel>不浪漫</Romantic.antonymLabel>
@@ -265,8 +237,6 @@
   <Romantic.conversationTopics.8>脱单</Romantic.conversationTopics.8>
   <Romantic.conversationTopics.9>承诺</Romantic.conversationTopics.9>
   <Romantic.conversationTopics.10>出轨</Romantic.conversationTopics.10>
-  <Romantic.platformIssueHigh>我会认认真真的对待这个岗位。</Romantic.platformIssueHigh>
-  <Romantic.platformIssueLow>我不会惦记着这个岗位，但是如果人们需要我，我也绝不会推辞。</Romantic.platformIssueLow>
 
   <Thoughtful.label>深思熟虑</Thoughtful.label>
   <Thoughtful.antonymLabel>粗心</Thoughtful.antonymLabel>
@@ -283,8 +253,6 @@
   <Thoughtful.conversationTopics.8>拖延</Thoughtful.conversationTopics.8>
   <Thoughtful.conversationTopics.9>准时</Thoughtful.conversationTopics.9>
   <Thoughtful.conversationTopics.10>责任</Thoughtful.conversationTopics.10>
-  <Thoughtful.platformIssueHigh>我们应该做好未来的打算。</Thoughtful.platformIssueHigh>
-  <Thoughtful.platformIssueLow>我们应该立足当下。</Thoughtful.platformIssueLow>
 
   <Geeky.label>极客</Geeky.label>
   <Geeky.antonymLabel>普通</Geeky.antonymLabel>
@@ -306,8 +274,6 @@
   <Geeky.conversationTopics.13>AI人格核心</Geeky.conversationTopics.13>
   <Geeky.conversationTopics.14>仿生学</Geeky.conversationTopics.14>
   <Geeky.conversationTopics.15>超人类主义</Geeky.conversationTopics.15>
-  <Geeky.platformIssueHigh>我们的目标是星辰大海。</Geeky.platformIssueHigh>
-  <Geeky.platformIssueLow>我们要把注意力放在实际的事物上。</Geeky.platformIssueLow>
 
   <Cultured.label>有教养</Cultured.label>
   <Cultured.antonymLabel>無知</Cultured.antonymLabel>
@@ -325,8 +291,6 @@
   <Cultured.conversationTopics.9>老师</Cultured.conversationTopics.9>
   <Cultured.conversationTopics.10>远古历史</Cultured.conversationTopics.10>
   <Cultured.conversationTopics.11>精致食物</Cultured.conversationTopics.11>
-  <Cultured.platformIssueHigh>后人哀之而不鉴之，亦使后人而复哀后人也。</Cultured.platformIssueHigh>
-  <Cultured.platformIssueLow>我像大家一样，是个普通人。</Cultured.platformIssueLow>
 
   <Organized.label>整洁</Organized.label>
   <Organized.antonymLabel>雜亂無章</Organized.antonymLabel>
@@ -340,8 +304,6 @@
   <Organized.conversationTopics.5>在桌子上吃饭</Organized.conversationTopics.5>
   <Organized.conversationTopics.6>污秽</Organized.conversationTopics.6>
   <Organized.conversationTopics.7>新奇动物</Organized.conversationTopics.7>
-  <Organized.platformIssueHigh>越简单越好。</Organized.platformIssueHigh>
-  <Organized.platformIssueLow>世界是复杂的，我们的问题也是。</Organized.platformIssueLow>
 
   <Naive.label>天真</Naive.label>
   <Naive.antonymLabel>持懷疑態度</Naive.antonymLabel>
@@ -357,8 +319,6 @@
   <Naive.conversationTopics.8>占星术</Naive.conversationTopics.8>
   <Naive.conversationTopics.9>算命</Naive.conversationTopics.9>
   <Naive.conversationTopics.10>幸运</Naive.conversationTopics.10>
-  <Naive.platformIssueHigh>我向上苍起誓，我会成为一个好镇长。</Naive.platformIssueHigh>
-  <Naive.platformIssueLow>我拥有成为一个合格的镇长所需要的所有经验。</Naive.platformIssueLow>
 
   <Upbeat.label>积极向上</Upbeat.label>
   <Upbeat.antonymLabel>陰沉</Upbeat.antonymLabel>
@@ -373,8 +333,6 @@
   <Upbeat.conversationTopics.6>积极性</Upbeat.conversationTopics.6>
   <Upbeat.conversationTopics.7>看到积极的一面</Upbeat.conversationTopics.7>
   <Upbeat.conversationTopics.8>怀孕</Upbeat.conversationTopics.8>
-  <Upbeat.platformIssueHigh>小镇将会走上正轨。</Upbeat.platformIssueHigh>
-  <Upbeat.platformIssueLow>小镇正面临灾难。</Upbeat.platformIssueLow>
 
   <Outspoken.label>直言不讳</Outspoken.label>
   <Outspoken.antonymLabel>保留</Outspoken.antonymLabel>
@@ -393,8 +351,6 @@
   <Outspoken.conversationTopics.10>镇长</Outspoken.conversationTopics.10>
   <Outspoken.conversationTopics.11>争论</Outspoken.conversationTopics.11>
   <Outspoken.conversationTopics.12>他们的朋友</Outspoken.conversationTopics.12>
-  <Outspoken.platformIssueHigh>小镇需要一个强有力的领袖。</Outspoken.platformIssueHigh>
-  <Outspoken.platformIssueLow>我们需要一个爱民如子的镇长。</Outspoken.platformIssueLow>
 
   <Ambitious.label>志向远大</Ambitious.label>
   <Ambitious.antonymLabel>内容</Ambitious.antonymLabel>
@@ -408,8 +364,6 @@
   <Ambitious.conversationTopics.5>赚大钱</Ambitious.conversationTopics.5>
   <Ambitious.conversationTopics.6>崇高的目标</Ambitious.conversationTopics.6>
   <Ambitious.conversationTopics.7>豪华</Ambitious.conversationTopics.7>
-  <Ambitious.platformIssueHigh>我们应该志存高远，面向未来。</Ambitious.platformIssueHigh>
-  <Ambitious.platformIssueLow>我们应该立足于我们自身的情况。</Ambitious.platformIssueLow>
 
   <LaidBack.label>悠闲</LaidBack.label>
   <LaidBack.antonymLabel>焦虑</LaidBack.antonymLabel>
@@ -423,8 +377,6 @@
   <LaidBack.conversationTopics.5>外在</LaidBack.conversationTopics.5>
   <LaidBack.conversationTopics.6>假期</LaidBack.conversationTopics.6>
   <LaidBack.conversationTopics.7>完美的星期天</LaidBack.conversationTopics.7>
-  <LaidBack.platformIssueHigh>你需要一个关心选民的镇长。</LaidBack.platformIssueHigh>
-  <LaidBack.platformIssueLow>你需要一个能产生压力的镇长。</LaidBack.platformIssueLow>
 
   <Pure.label>纯洁</Pure.label>
   <Pure.antonymLabel>放荡</Pure.antonymLabel>
@@ -441,8 +393,6 @@
   <Pure.conversationTopics.8>家庭</Pure.conversationTopics.8>
   <Pure.conversationTopics.9>亲属</Pure.conversationTopics.9>
   <Pure.conversationTopics.10>同性恋</Pure.conversationTopics.10>
-  <Pure.platformIssueHigh>我们应该坚守传统的价值观。</Pure.platformIssueHigh>
-  <Pure.platformIssueLow>我们应该拥有先进的价值观。</Pure.platformIssueLow>
 
   <Moralistic.label>道德主义</Moralistic.label>
   <Moralistic.antonymLabel>不道德</Moralistic.antonymLabel>
@@ -459,8 +409,6 @@
   <Moralistic.conversationTopics.8>战犯</Moralistic.conversationTopics.8>
   <Moralistic.conversationTopics.9>战争罪</Moralistic.conversationTopics.9>
   <Moralistic.conversationTopics.10>牺牲</Moralistic.conversationTopics.10>
-  <Moralistic.platformIssueHigh>勿以善小而不为，勿以恶小而为之。</Moralistic.platformIssueHigh>
-  <Moralistic.platformIssueLow>我们只要做对我们有利的事。</Moralistic.platformIssueLow>
 
   <Trusting.label>信任</Trusting.label>
   <Trusting.antonymLabel>愤世嫉俗</Trusting.antonymLabel>
@@ -476,8 +424,6 @@
   <Trusting.conversationTopics.7>生存</Trusting.conversationTopics.7>
   <Trusting.conversationTopics.8>腐败</Trusting.conversationTopics.8>
   <Trusting.conversationTopics.9>新的殖民者</Trusting.conversationTopics.9>
-  <Trusting.platformIssueHigh>只有品德优秀的良好公民配得上这个殖民地。</Trusting.platformIssueHigh>
-  <Trusting.platformIssueLow>这个殖民地应该包容各种各样的人。</Trusting.platformIssueLow>
 
   <Judgmental.label>妄下评判</Judgmental.label>
   <Judgmental.antonymLabel>宽容</Judgmental.antonymLabel>
@@ -496,8 +442,6 @@
   <Judgmental.conversationTopics.8>冲动判断</Judgmental.conversationTopics.8>
   <Judgmental.conversationTopics.9>后悔药</Judgmental.conversationTopics.9>
   <Judgmental.conversationTopics.10>人们能否改变</Judgmental.conversationTopics.10>
-  <Judgmental.platformIssueHigh>没有人比我更懂镇长。</Judgmental.platformIssueHigh>
-  <Judgmental.platformIssueLow>我会是最好的镇长。</Judgmental.platformIssueLow>
 
   <Friendly.label>友善</Friendly.label>
   <Friendly.antonymLabel>不友好</Friendly.antonymLabel>
@@ -510,8 +454,6 @@
   <Friendly.conversationTopics.4>彼此的意见</Friendly.conversationTopics.4>
   <Friendly.conversationTopics.5>赞扬</Friendly.conversationTopics.5>
   <Friendly.conversationTopics.6>能否留意</Friendly.conversationTopics.6>
-  <Friendly.platformIssueHigh>我们是一个集体，我们应该把这里当成我们共同的家。</Friendly.platformIssueHigh>
-  <Friendly.platformIssueLow>我们只是为了活下去才凑在一起。</Friendly.platformIssueLow>
 
   <Optimistic.label>乐观</Optimistic.label>
   <Optimistic.antonymLabel>悲观</Optimistic.antonymLabel>
@@ -525,8 +467,6 @@
   <Optimistic.conversationTopics.5>度过一天</Optimistic.conversationTopics.5>
   <Optimistic.conversationTopics.6>未来会怎样</Optimistic.conversationTopics.6>
   <Optimistic.conversationTopics.7>离开这个星球</Optimistic.conversationTopics.7>
-  <Optimistic.platformIssueHigh>有些事已经很好了，但还可以更好。</Optimistic.platformIssueHigh>
-  <Optimistic.platformIssueLow>有些事已经很坏了，但还会更坏。</Optimistic.platformIssueLow>
 
   <Compassionate.label>慈悲</Compassionate.label>
   <Compassionate.antonymLabel>无情</Compassionate.antonymLabel>
@@ -541,8 +481,6 @@
   <Compassionate.conversationTopics.6>别人的问题</Compassionate.conversationTopics.6>
   <Compassionate.conversationTopics.7>干预</Compassionate.conversationTopics.7>
   <Compassionate.conversationTopics.8>忧心他人</Compassionate.conversationTopics.8>
-  <Compassionate.platformIssueHigh>我们应该根据社会中的弱者来评价一个社会的好坏。</Compassionate.platformIssueHigh>
-  <Compassionate.platformIssueLow>我们应该根据社会中的强者来评价一个社会的好坏。</Compassionate.platformIssueLow>
 
   <Generous.label>慷慨</Generous.label>
   <Generous.antonymLabel>慷慨</Generous.antonymLabel>
@@ -555,8 +493,6 @@
   <Generous.conversationTopics.4>分享</Generous.conversationTopics.4>
   <Generous.conversationTopics.5>人道主义</Generous.conversationTopics.5>
   <Generous.conversationTopics.6>利他主义</Generous.conversationTopics.6>
-  <Generous.platformIssueHigh>每个人都应该得到同样的机会。</Generous.platformIssueHigh>
-  <Generous.platformIssueLow>每个人拥有的都是他应得的。</Generous.platformIssueLow>
 
 
 

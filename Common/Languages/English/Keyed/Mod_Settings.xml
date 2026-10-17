@@ -56,14 +56,8 @@
 	<RomanceOpinionThresholdTitle>Minimum romance opinion</RomanceOpinionThresholdTitle>
 	<RomanceOpinionThresholdTooltip>Minimum opinion one colonist must have of another in order to be romanced.</RomanceOpinionThresholdTooltip>
 
-	<EnableElectionsTitle>Enable elections</EnableElectionsTitle>
-	 <EnableElectionsTooltip>Turn this off to prevent your colonists from having yearly elections. It will not stop an election in progress, and any existing mayor will be reverted to a normal colonist. This will not affect compatibility with other mods. Requires restart for full effect.</EnableElectionsTooltip> 
 
-	<MayorAgeTitle>Mayor age</MayorAgeTitle>
-	<MayorAgeTooltip>Minimum age required for someone to be able to become a mayor.</MayorAgeTooltip>
 
-	<VisitMayorMtbHoursTitle>Hours between mayor visits</VisitMayorMtbHoursTitle>
-	<VisitMayorMtbHoursTooltip>This controls the expected time in hours between constituents meeting with their mayor. Lower values will increase the frequency of visits.</VisitMayorMtbHoursTooltip>
 
 	<MentalBreakAnxietyChanceTitle>Mental break anxiety chance</MentalBreakAnxietyChanceTitle>
 	<MentalBreakAnxietyChanceTooltip>This sets the mean chance a pawn will develop anxiety after having a major mental break. For minor breaks, the chance is halved and for extreme breaks the chance is doubled. The chance will also depend on colonist's psyche. Note that you might still see it as random disease due to aging. Requires restart for full effect.</MentalBreakAnxietyChanceTooltip>

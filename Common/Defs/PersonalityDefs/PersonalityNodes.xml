@@ -77,8 +77,6 @@
 			<li>ambrosia</li>
 			<li>psychoid tea</li>
 		</conversationTopics>
-		<platformIssueHigh>Drugs can make our lives easier and better.</platformIssueHigh>
-		<platformIssueLow>Drugs have no place in this colony.</platformIssueLow>
 		<parents>
 			<li>
 				<node>Experimental</node>
@@ -215,8 +213,6 @@
 			<li>their favorite movies</li>
 			<li>xenohumans</li>
 		</conversationTopics>
-		<platformIssueHigh>I'll bring innovative solutions to the table.</platformIssueHigh>
-		<platformIssueLow>We need to look at things as they are.</platformIssueLow>
 		<parents>
 			<li>
 				<node>Experimental</node>
@@ -343,8 +339,6 @@
 			<li>kinship</li>
 			<li>homosexuality</li>
 		</conversationTopics>
-		<platformIssueHigh>Traditional values are our values.</platformIssueHigh>
-		<platformIssueLow>We need to advance as a people.</platformIssueLow>
 		<parents>
 			<li>
 				<node>Experimental</node>
@@ -536,8 +530,6 @@
 			<li>confirmation bias</li>
 			<li>belief perseverance</li>
 		</conversationTopics>
-		<platformIssueHigh>We need a facts-based approach to the issues.</platformIssueHigh>
-		<platformIssueLow>We need to trust our instincts.</platformIssueLow>
 		<parents>
 			<li>
 				<node>Experimental</node>
@@ -650,8 +642,6 @@
 			<li>biology</li>
 			<li>technology</li>
 		</conversationTopics>
-		<platformIssueHigh>Our problems are solveable.</platformIssueHigh>
-		<platformIssueLow>I will solve our problems.</platformIssueLow>
 		<parents>
 			<li>
 				<node>Intelligent</node>
@@ -755,8 +745,6 @@
 			<li>ancient history</li>
 			<li>fine foods</li>
 		</conversationTopics>
-		<platformIssueHigh>Those who do not learn history are doomed to repeat it.</platformIssueHigh>
-		<platformIssueLow>I'm just a regular person like all of you.</platformIssueLow>
 		<parents>
 			<li>
 				<node>Intelligent</node>
@@ -812,8 +800,6 @@
 			<li>bionics</li>
 			<li>transhumanism</li>
 		</conversationTopics>
-		<platformIssueHigh>Think of the possibilities we can pursue.</platformIssueHigh>
-		<platformIssueLow>Let's focus on what's practical.</platformIssueLow>
 		<parents>
 			<li>
 				<node>Intelligent</node>
@@ -898,8 +884,6 @@
 			<li>fortune telling</li>
 			<li>luck</li>
 		</conversationTopics>
-		<platformIssueHigh>My commitment to ideals would make me a good leader.</platformIssueHigh>
-		<platformIssueLow>My experience and know-how would make me a good leader.</platformIssueLow>
 		<parents>
 			<li>
 				<node>Experimental</node>
@@ -986,8 +970,6 @@
 			<li>lofty goals</li>
 			<li>luxury</li>
 		</conversationTopics>
-		<platformIssueHigh>We need to dream big.</platformIssueHigh>
-		<platformIssueLow>Let's ground ourselves in reality.</platformIssueLow>
 		<traitModifiers>
 			<li>
 				<trait>Neurotic</trait>
@@ -1069,8 +1051,6 @@
 			<li>dependence</li>
 			<li>addiction</li>
 		</conversationTopics>
-		<platformIssueHigh>This colony is burdened by takers.</platformIssueHigh>
-		<platformIssueLow>We're stronger when we're united.</platformIssueLow>
 		<parents>
 			<li>
 				<node>Ambitious</node>
@@ -1299,10 +1279,6 @@
 			<li>filth</li>
 			<li>exotic animals</li>
 		</conversationTopics>
-		<!--<platformIssueHigh>Simple solutions are usually best.</platformIssueHigh>
-		<platformIssueLow>Life is complex, and so are our problems.</platformIssueLow>-->
-		<platformIssueHigh>We should focus more on cleaning and organizing.</platformIssueHigh>
-		<platformIssueLow>We shouldn't burden ourselves with too many chores.</platformIssueLow>
 		<parents>
 			<li>
 				<node>Ambitious</node>
@@ -1413,8 +1389,6 @@
 			<li>surprise parties</li>
 			<li>presents</li>
 		</conversationTopics>
-		<platformIssueHigh>As a leader, I'll get things done.</platformIssueHigh>
-		<platformIssueLow>As a leader, I'll tackle our problems carefully.</platformIssueLow>
 		<parents>
 			<li>
 				<node>Ambitious</node>
@@ -1493,8 +1467,6 @@
 			<li>punctuality</li>
 			<li>responsibility</li>
 		</conversationTopics>
-		<platformIssueHigh>We need plans for the future.</platformIssueHigh>
-		<platformIssueLow>We need to address what's happening right now.</platformIssueLow>
 		<parents>
 			<li>
 				<node>Experimental</node>
@@ -1638,8 +1610,6 @@
 			<li>being overbearing</li>
 			<li>apathy</li>
 		</conversationTopics>
-		<platformIssueHigh>I'll put all my energy into the job.</platformIssueHigh>
-		<platformIssueLow>I'll do what needs to be done.</platformIssueLow>
 		<parents>
 			<li>
 				<node>Emotional</node>
@@ -1729,8 +1699,6 @@
 			<li>looking on the bright side of life</li>
 			<li>skepticism</li>
 		</conversationTopics>
-		<platformIssueHigh>This colony is on the right track.</platformIssueHigh>
-		<platformIssueLow>This colony is headed for disaster.</platformIssueLow>
 		<parents>
 			<li>
 				<node>Extroverted</node>
@@ -1846,8 +1814,6 @@
 			<li>sitting around</li>
 			<li>returning to the stars</li>
 		</conversationTopics>
-		<platformIssueHigh>Everyone should have more opportunities.</platformIssueHigh>
-		<platformIssueLow>Our colony has everything we need.</platformIssueLow>
 		<parents>
 			<li>
 				<node>Experimental</node>
@@ -1973,8 +1939,6 @@
 			<li>arguing about things</li>
 			<li>their friends</li>
 		</conversationTopics>
-		<platformIssueHigh>We need greater support for free speech.</platformIssueHigh>
-		<platformIssueLow>We need to be more mindful of each other.</platformIssueLow>
 		<parents>
 			<li>
 				<node>Intelligent</node>
@@ -2095,8 +2059,6 @@
 			<li>partying</li>
 			<li>the newest slang</li>
 		</conversationTopics>
-		<platformIssueHigh>Vote for the person you know and respect.</platformIssueHigh>
-		<platformIssueLow>Vote for the person who will do the best job.</platformIssueLow>
 		<parents>
 			<li>
 				<node>Extroverted</node>
@@ -2216,8 +2178,6 @@
 			<li>interventionism</li>
 			<li>concern for others</li>
 		</conversationTopics>
-		<platformIssueHigh>Any society is judged on the basis of how it treats its weakest members.</platformIssueHigh>
-		<platformIssueLow>A society is only as strong as its most capable members.</platformIssueLow>
 		<parents>
 			<li>
 				<node>Ambitious</node>
@@ -2356,8 +2316,6 @@
 			<li>sparing lives</li>
 			<li>selfishness</li>
 		</conversationTopics>
-		<platformIssueHigh>A leader should ensure that every colonist is taken care of.</platformIssueHigh>
-		<platformIssueLow>A leader shouldn't meddle in the private affairs of colonists.</platformIssueLow>
 		<femaleModifier>0.25</femaleModifier>
 		<traitModifiers>
 			<li>
@@ -2442,8 +2400,6 @@
 			<li>corruption</li>
 			<li>new colonists</li>
 		</conversationTopics>
-		<platformIssueHigh>I will bring out the best in every colonist.</platformIssueHigh>
-		<platformIssueLow>I will stamp out the worst in every colonist.</platformIssueLow>
 		<parents>
 			<li>
 				<node>Aggressive</node>
@@ -2498,8 +2454,6 @@
 			<li>admiration</li>
 			<li>whatever's on their minds</li>
 		</conversationTopics>
-		<platformIssueHigh>We're all in this together.</platformIssueHigh>
-		<platformIssueLow>We do what it takes to survive.</platformIssueLow>
 		<parents>
 			<li>
 				<node>Ambitious</node>
@@ -2617,8 +2571,6 @@
 			<li>murder</li>
 			<li>human sacrifice</li>
 		</conversationTopics>
-		<platformIssueHigh>It's our responsibility to do the right thing.</platformIssueHigh>
-		<platformIssueLow>We can only do what's right for us.</platformIssueLow>
 		<parents>
 			<li>
 				<node>Empathetic</node>
@@ -2769,8 +2721,6 @@
 			<li>commitment</li>
 			<li>adultery</li>
 		</conversationTopics>
-		<platformIssueHigh>I will take the position seriously.</platformIssueHigh>
-		<platformIssueLow>This job won't go to my head.</platformIssueLow>
 		<parents>
 			<li>
 				<node>Experimental</node>
@@ -2896,8 +2846,6 @@
 			<li>humanitarianism</li>
 			<li>altruism</li>
 		</conversationTopics>
-		<platformIssueHigh>Everyone should have access to the same things.</platformIssueHigh>
-		<platformIssueLow>Everyone should earn what they have.</platformIssueLow>
 		<parents>
 			<li>
 				<node>Compassionate</node>
@@ -3000,8 +2948,6 @@
 			<li>swearing</li>
 			<li>slurs</li>
 		</conversationTopics>
-		<platformIssueHigh>We should respect those around us.</platformIssueHigh>
-		<platformIssueLow>We should be judged on our merits.</platformIssueLow>
 		<parents>
 			<li>
 				<node>Extroverted</node>
@@ -3135,8 +3081,6 @@
 			<li>other people's feelings</li>
 		</conversationTopics>
 		<femaleModifier>-0.25</femaleModifier>
-		<platformIssueHigh>We need a leader who will stand up to our enemies.</platformIssueHigh>
-		<platformIssueLow>We need a leader who will make friends and allies.</platformIssueLow>
 		<parents>
 			<li>
 				<node>Ambitious</node>
@@ -3251,8 +3195,6 @@
 			<li>other settlements</li>
 			<li>their skills</li>
 		</conversationTopics>
-		<platformIssueHigh>Our colony should reward innovators.</platformIssueHigh>
-		<platformIssueLow>Everyone in our colony should be able to succeed.</platformIssueLow>
 		<parents>
 			<li>
 				<node>Empathetic</node>
@@ -3455,8 +3397,6 @@
 			<li>vacations</li>
 			<li>their perfect Sunday</li>
 		</conversationTopics>
-		<platformIssueHigh>You need a leader that can handle the stress.</platformIssueHigh>
-		<platformIssueLow>You need a leader that cares about performance.</platformIssueLow>
 		<parents>
 			<li>
 				<node>Emotional</node>
@@ -3597,8 +3537,6 @@
 			<li>second chances</li>
 			<li>whether people can change</li>
 		</conversationTopics>
-		<platformIssueHigh>Only good citizens deserve to be part of this colony.</platformIssueHigh>
-		<platformIssueLow>People in this colony come from all walks of life.</platformIssueLow>
 		<parents>
 			<li>
 				<node>Emotional</node>
@@ -3772,8 +3710,6 @@
 			<li>what the future holds</li>
 			<li>leaving the planet</li>
 		</conversationTopics>
-		<platformIssueHigh>Things are good, but they could be better.</platformIssueHigh>
-		<platformIssueLow>Things are bad, but they could get worse.</platformIssueLow>
 		<traitModifiers>
 			<li>
 				<trait>NaturalMood</trait>
@@ -3863,8 +3799,6 @@
 			<li>history</li>
 			<li>mementos</li>
 		</conversationTopics>
-		<platformIssueHigh>Things were better in the old days.</platformIssueHigh>
-		<platformIssueLow>We can create a bright future.</platformIssueLow>
 		<parents>
 			<li>
 				<node>Optimistic</node>

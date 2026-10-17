@@ -86,7 +86,6 @@ public static class SettingsWindowUtility{
   public static Rect buttonRect;
 
   public static bool romanceOpen = false;
-  public static bool electionsOpen = false;
   public static bool conversationsOpen = false;
   public static bool opinionChangesOpen = false;
   public static bool otherSettingsOpen = false;
@@ -303,22 +302,6 @@ public static class SettingsWindowUtility{
       CheckboxEntry(nameof(PsychologySettings.enableDateLetters));
       FloatEntry(nameof(PsychologySettings.romanceChanceMultiplier), 0f, 1E+09f);
       FloatEntry(nameof(PsychologySettings.romanceOpinionThreshold), -99f, 99f);
-    }
-
-    if (Widgets.ButtonText(buttonRect, "Elections"))
-    {
-      electionsOpen = !electionsOpen;
-    }
-    ShiftRectsDown(RowHeight);
-
-    if (electionsOpen)
-    {
-      CheckboxEntry(nameof(PsychologySettings.enableElections));
-      if (PsychologySettings.enableElections)
-      {
-        FloatEntry(nameof(PsychologySettings.mayorAge), 0f, 1E+09f);
-        FloatEntry(nameof(PsychologySettings.visitMayorMtbHours), 0f, 1E+09f);
-      }
     }
 
     if (Widgets.ButtonText(buttonRect, "Conversations"))

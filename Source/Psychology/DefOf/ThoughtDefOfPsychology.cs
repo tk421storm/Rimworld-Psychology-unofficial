@@ -45,11 +45,6 @@ public static class ThoughtDefOfPsychology
   public static ThoughtDef PanicAttack;
   public static ThoughtDef DynamicSocial;
 
-  /* Election related thoughts */
-  public static ThoughtDef WonElection;
-  public static ThoughtDef MayorNoOffice;
-  public static ThoughtDef MayorNoBedroom;
-
   /* Dating related thoughts */
   public static ThoughtDef WentOnDate;
   public static ThoughtDef MissedDate;

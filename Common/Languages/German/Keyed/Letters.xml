@@ -1,16 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
 
-	<LetterLabelNewElection>Die Wahlen finden statt in {0}</LetterLabelNewElection>
-	<LetterNewElection>Die Wahlen für einen Bürgermeister finden statt in {0}. Einige Kolonisten haben ihre Kandidatur bekanntgegeben.</LetterNewElection>
-	<LetterLabelElectionHeld>Die Wahl ist im Gange in {0}</LetterLabelElectionHeld>
-	<LetterElectionHeld>Die Wahl in {0} ist jetzt im Gange. Deine Kolonisten haben vor einem verfügbaren Versammlungsplatz einen Wahllokal eröffnet, wo sie nun hingehen und ihre Stimme abgeben.</LetterElectionHeld>
-	<LetterLabelElectionCandidate>Kandidat: {0_labelShort}</LetterLabelElectionCandidate>
-	<LetterElectionCandidate>{0_labelShort} ist ein Kandidat für den Bürgermeister-Posten von {1}. Das sind {0_possessive} Grundsätze:\n{2}</LetterElectionCandidate>
-	<LetterLabelTieSettled>Wahlkampf setzte sich für {0_labelShort}</LetterLabelTieSettled>
-	<LetterTieSettled>Die Bürgermeisterwahlen führten zu einem Unentschieden, und nach einer Weile war {0} die einzige Person, die bereit war, weiter zu kandidieren. Die anderen Kandidaten haben aufgegeben und haben {0_objective} den Sieg überlassen.</LetterTieSettled>
-	<LetterLabelElectionWon>{0_labelShort} hat die Wahl gewonnen.</LetterLabelElectionWon>
-	<LetterElectionWon>{0_labelShort} hat die Bürgermeister-Wahl gewonnen bei {1}. {0_pronoun} bekam {2} Stimmen.\n\nAls Erinnerung, das waren {0_possessive} Grundsätze:\n{3}\n\n{0_pronoun} wird nun Besuche von {0_possessive} Wählerschaft in {0_possessive} Zimmer bekommen, falls {0_pronoun} einen hat. Falls sie Beschwerden haben, dann werden sie sich besser fühlen, nachdem sie mit {0_objective} gesprochen haben, wenn {0_pronoun} gut im sozialen Umgang mit anderen ist. Währenddessen ein schönes Zimmer zu haben, wird allen auch nicht schaden.\n\nHalte jedoch ein Auge auf {0_objective}; {0_pronoun} kann sich nun bei niemanden beklagen, denn {0_pronoun} trägt die ganze Bürde der ganzen Kolonie auf {0_objective} Schultern. Das ist eine große Last, vor allem, wenn die Dinge nicht so laufen wie sie sollten.</LetterElectionWon>
 	<LetterLabelFuneralPlanned>Begräbnis geplant für {0}</LetterLabelFuneralPlanned>
 	<LetterFuneralPlanned>{0_labelShort} hat eine Beerdigung für {1_labelShort} geplant. Das Begräbnis wird am {2}, um {3} Uhr stattfinden.</LetterFuneralPlanned>
 	<LetterLabelFuneralStarted>Trauerfeier für {0}</LetterLabelFuneralStarted>

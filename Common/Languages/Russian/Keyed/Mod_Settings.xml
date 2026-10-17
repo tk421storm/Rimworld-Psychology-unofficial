@@ -21,8 +21,6 @@
 	<EnableIndividualityTitle>Включить индивидуальность в одежде</EnableIndividualityTitle>
 	<EnableIndividualityTooltip>Отключите это, чтобы ваши поселенцы не получали негативных мыслей от полностью совпадающей одежды. Этот параметр добавляет дополнительную сложность, поэтому необязателен, хоть и рекомендован.</EnableIndividualityTooltip>
 	
-	<EnableElectionsTitle>Включить выборы мэра</EnableElectionsTitle>
-	<EnableElectionsTooltip>Отключите это, чтобы ваши колонисты не проводили ежегодные выборы. Это не остановит выборы идущие в данный момент, а любой существующий мэр превратится обратно в обычного поселенца. Изменение параметра не влияет на совместимость с другими модификациями.</EnableElectionsTooltip>
 	
 	<ConversationDurationTitle>Память о разговорах</ConversationDurationTitle>
 	<ConversationDurationTooltip>Устанавливает период, в течение которого поселенцы будут помнить о разговорах с другими поселенцами. По-умолчанию период равняется 60 дням или одному году. Минимум — 15 дней или сезон, максимум — 180 дней или 3 года. Более низкие параметры делают память о разговорах короче, более высокие — длиннее.</ConversationDurationTooltip>
@@ -42,8 +40,6 @@
 	<RomanceOpinionThresholdTitle>Minimum romance opinion</RomanceOpinionThresholdTitle>
 	<RomanceOpinionThresholdTooltip>Minimum opinion one colonist must have of another in order to be romanced.</RomanceOpinionThresholdTooltip>
 
-	<MayorAgeTitle>Mayor age</MayorAgeTitle>
-	<MayorAgeTooltip>Age required for someone to be able to become a mayor.</MayorAgeTooltip>
 
 	<AllowAnxietyTitle>Allow post mental break anxiety</AllowAnxietyTitle>
 	<AllowAnxietyTooltip>Allow colonists to get anxiety after mental breaks (chance depends on colonist's psyche and mental breaks severity). Note that you might still see it as random disease.</AllowAnxietyTooltip>

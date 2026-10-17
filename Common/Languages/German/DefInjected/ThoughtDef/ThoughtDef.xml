@@ -49,12 +49,6 @@
     <AteRottenFoodPickyEater.stages.ate_rotten_food.label>Schimmliges Essen gegessen</AteRottenFoodPickyEater.stages.ate_rotten_food.label>
     <AteRottenFoodPickyEater.stages.ate_rotten_food.description>Ich habe ekliges, schimmliges Essen gegessen. Es zerlief richtig in meinem Mund. Aber nicht auf einer angenehmen Art und Weise!</AteRottenFoodPickyEater.stages.ate_rotten_food.description>
     <Dynamic.stages.dynamic.label>dynamisch</Dynamic.stages.dynamic.label>
-    <MayorNoOffice.stages.no_mayoral_office.label>kein Bürgermeisterbüro</MayorNoOffice.stages.no_mayoral_office.label>
-    <MayorNoOffice.stages.no_mayoral_office.description>Ich musste ein Treffen mit einem Bürger in meinem Schlafzimmer vereinbaren. Ein Büro wäre etwas professioneller.</MayorNoOffice.stages.no_mayoral_office.description>
-    <MayorNoBedroom.stages.no_mayoral_office.label>kein Bürgermeisterbüro</MayorNoBedroom.stages.no_mayoral_office.label>
-    <MayorNoBedroom.stages.no_mayoral_office.description>Ich musste ein Treffen mit einem Kolonisten an einem öffentlichem Treffpunkt vereinbaren. Gib mir wenigstens ein Schlafzimmer, damit ich diese Meetings privat durchführen kann.</MayorNoBedroom.stages.no_mayoral_office.description>
-    <WonElection.stages.won_an_election.label>eine Wahl gewonnen</WonElection.stages.won_an_election.label>
-    <WonElection.stages.won_an_election.description>Ich habs geschafft! Ich bin jetzt Bürgermeister! Ich bin allen, die für mich gestimmt haben, sehr dankbar.</WonElection.stages.won_an_election.description>
     <KilledHumanlikeEnemy.stages.adrenaline_rush.label>Adrenalinrausch</KilledHumanlikeEnemy.stages.adrenaline_rush.label>
     <KilledHumanlikeEnemy.stages.adrenaline_rush.description>Ich habe jemanden getötet, der unsere Kolonie angriff. Meine Hände zittern immer noch ... Ich kann nicht glauben, dass ich überlebt habe.</KilledHumanlikeEnemy.stages.adrenaline_rush.description>
     <KnowPrisonerSoldBleedingHeart.stages.a_prisoner_was_sold.label>Gefangener wurde verkauft</KnowPrisonerSoldBleedingHeart.stages.a_prisoner_was_sold.label>

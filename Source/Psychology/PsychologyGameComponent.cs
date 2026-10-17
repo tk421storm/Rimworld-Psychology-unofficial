@@ -15,10 +15,6 @@ namespace Psychology;
 
 /// <summary>
 /// Per-game state and periodic logic:
-///   - Mayors: one per player settlement, keyed by world tile. Rebuilt from Hediff_Mayor on load.
-///   - ConstituentTick (every 2 h): picks an unhappy, not-Independent colonist to visit the mayor (LordJob_VisitMayor).
-///   - ElectionTick (every 7 h): starts an election in a named player settlement with 7+ colonists, once per year from
-///     Septober on (IncidentWorker_Election -> GameCondition_Election -> LordJob_Joinable_Election).
 ///   - A cache of each pawn's personality-driven daily certainty change (Ideology).
 ///   - On load, syncs vanilla orientation traits with the Kinsey setting.
 /// </summary>
@@ -27,21 +23,8 @@ public class PsychologyGameComponent : GameComponent
   public bool firstTimeWithUpdate = true;
   public bool taraiSiblingsGenerated = false;
   public Dictionary<int, float> CachedCertaintyChangePerDayDict = new Dictionary<int, float>();
-  public Dictionary<int, Pair<Pawn, Hediff>> Mayors = new Dictionary<int, Pair<Pawn, Hediff>>();
-  // Countdowns, deliberately offset from each other so the checks don't all land on the same tick. Static (not saved).
-  public static int constituentTick = 156;
-  public static int electionTick = 823;
+  // Static (not saved).
   public static int certaintyTick = 12;
-  public const int constituentTicksPerInterval = 2 * GenDate.TicksPerHour;
-  public const int electionTicksPerInterval = 7 * GenDate.TicksPerHour;
-  // ToDo: add cooldown for mayors of settlement, perhaps make it a setting
-  public static Dictionary<int, float> ConstituentCooldownForSettlementDict = new Dictionary<int, float>();
-  // Chance per ConstituentTick (scaled by 1 - Independent) that a constituent visits the mayor.
-  // NOTE: only set in LoadedGame(), so it stays 0 in a newly started colony until the game is saved and reloaded.
-  public static float visitMayorChanceFactor = 0f;
-
-  public List<KeyValuePair<int, Pair<Pawn, Hediff>>> MayorList => (from kvp in Mayors
-                                                                   select kvp).ToList();
 
   public PsychologyGameComponent(Game game)
   {
@@ -58,18 +41,11 @@ public class PsychologyGameComponent : GameComponent
   {
     //Log.Message("Psychology: loading game");
     //SpeciesHelper.RegisterHumanlikeSpeciesLoadedGame(); //ToDo: figure out why this causes crash
-    BuildMayorDictionary();
     ImplementSexualOrientation();
-    visitMayorChanceFactor = 2f * constituentTicksPerInterval / (GenDate.TicksPerHour * PsychologySettings.visitMayorMtbHours);
   }
 
   public override void GameComponentTick()
   {
-    if (PsychologySettings.enableElections)
-    {
-      ConstituentTick();
-      ElectionTick();
-    }
     if (GenTicks.TicksGame % 250 == 97)
     {
       certaintyTick++;
@@ -91,78 +67,6 @@ public class PsychologyGameComponent : GameComponent
     return certaintyChange;
   }
 
-  public virtual void BuildMayorDictionary()
-  {
-    Mayors = new Dictionary<int, Pair<Pawn, Hediff>>();
-    int mapTile;
-    foreach (Pawn pawn in PawnsFinder.All_AliveOrDead)
-    {
-
-      foreach (Hediff hediff in pawn.health.hediffSet.hediffs.ListFullCopy())
-      {
-        if (hediff.def != HediffDefOfPsychology.Mayor)
-        {
-          continue;
-        }
-        if (pawn.health.Dead == true)
-        {
-          pawn.health.RemoveHediff(hediff);
-          continue;
-        }
-        mapTile = (hediff as Hediff_Mayor).worldTileElectedOn;
-        if (!Mayors.ContainsKey(mapTile))
-        {
-          Mayors.Add(mapTile, new Pair<Pawn, Hediff>(pawn, hediff));
-        }
-        else
-        {
-          // There can only be one mayor per map tile
-          pawn.health.RemoveHediff(hediff);
-        }
-      }
-    }
-    if (!PsychologySettings.enableElections)
-    {
-      DeleteAllMayorHediffs();
-    }
-  }
-
-  public virtual void RemoveMayorOfThisColony(int mapTile)
-  {
-    foreach (KeyValuePair<int, Pair<Pawn, Hediff>> kvp in MayorList)
-    {
-      if (mapTile == kvp.Key)
-      {
-        RemoveMayor(kvp);
-      }
-    }
-  }
-
-  public virtual void RemoveAllMayorshipsFromPawn(Pawn pawn)
-  {
-    foreach (KeyValuePair<int, Pair<Pawn, Hediff>> kvp in MayorList)
-    {
-      if (pawn == kvp.Value.First)
-      {
-        RemoveMayor(kvp);
-      }
-    }
-  }
-
-  public virtual void DeleteAllMayorHediffs()
-  {
-    foreach (KeyValuePair<int, Pair<Pawn, Hediff>> kvp in MayorList)
-    {
-      RemoveMayor(kvp);
-    }
-  }
-
-  public virtual void RemoveMayor(KeyValuePair<int, Pair<Pawn, Hediff>> kvp)
-  {
-    Mayors.Remove(kvp.Key);
-    kvp.Value.First.health.RemoveHediff(kvp.Value.Second);
-  }
-
   public virtual void ImplementSexualOrientation()
   {
     if (PsychologySettings.enableKinsey)
@@ -180,159 +84,4 @@ public class PsychologyGameComponent : GameComponent
       }
     }
   }
-
-  public virtual void ConstituentTick()
-  {
-    if (constituentTick > 0)
-    {
-      constituentTick--;
-      return;
-    }
-    constituentTick = constituentTicksPerInterval;
-    if (Mayors == null)
-    {
-      Log.Warning("ConstituentTick, Mayors == null");
-      BuildMayorDictionary();
-      return;
-    }
-
-    List<Settlement> playerSettlements = Find.WorldObjects.Settlements.FindAll(b => b.Faction.IsPlayer);
-    foreach (Settlement settlement in playerSettlements)
-    {
-      if (settlement?.Map?.Tile == null)
-      {
-        Log.Warning("playerSettlement.Map.Tile was null");
-        continue;
-      }
-
-      if (Mayors.TryGetValue(settlement.Map.Tile, out Pair<Pawn, Hediff> mayorPair) != true)
-      {
-        continue;
-      }
-      Pawn mayor = mayorPair.First;
-      IEnumerable<Pawn> constituents = from p in settlement.Map.mapPawns.FreeColonistsSpawned
-                                       where !p.health.hediffSet.HasHediff(HediffDefOfPsychology.Mayor)
-                                       && p.GetLord() == null //&& p.GetTimeAssignment() != TimeAssignmentDefOf.Work
-                                       && p.Awake() && !p.Downed && !p.Drafted && p.health.summaryHealth.SummaryHealthPercent >= 1f
-                                       && !p.IsSlaveOfColony && !p.IsPrisonerOfColony
-                                       && PsycheHelper.PsychologyEnabled(p)
-                                       select p;
-      if (constituents.Count() == 0)
-      {
-        continue;
-      }
-      Pawn potentialConstituent = constituents.RandomElementByWeight(p => 0.0001f + Mathf.Pow(0.7f - p.needs.mood.CurLevel, 2));
-      if (potentialConstituent == null)
-      {
-        continue;
-      }
-
-      TimeAssignmentDef timeAssDef = mayor.GetTimeAssignment();
-      bool mayorAvailable = timeAssDef != TimeAssignmentDefOf.Sleep && mayor.GetLord() == null && mayor.Tile == settlement.Map.Tile
-                            && mayor.Awake() && !mayor.Drafted && !mayor.Downed && mayor.health.summaryHealth.SummaryHealthPercent >= 1f
-                            && (mayor.CurJob == null || mayor.CurJob.def != JobDefOf.TendPatient || mayor.CurJob.RecipeDef.workerClass.IsAssignableFrom(typeof(Recipe_Surgery)));
-      if (!mayorAvailable)
-      {
-        continue;
-      }
-      IntVec3 gather = default(IntVec3);
-      string found = null;
-      if (mayor.Map.GetComponent<OfficeTableMapComponent>().officeTable != null)
-      {
-        gather = mayor.Map.GetComponent<OfficeTableMapComponent>().officeTable.parent.Position;
-        found = "office";
-      }
-      else if (mayor.ownership != null && mayor.ownership.OwnedBed != null)
-      {
-        gather = mayor.ownership.OwnedBed.Position;
-        found = "bed";
-      }
-      float independent = PsycheHelper.Comp(potentialConstituent).Psyche.GetPersonalityRating(PersonalityNodeDefOf.Independent);
-      if (Rand.Chance((1f - independent) * visitMayorChanceFactor) && (found != null || RCellFinder.TryFindGatheringSpot(mayor, GatheringDefOf.Party, true, out gather)))
-      {
-        List<Pawn> pawns = new List<Pawn>();
-        pawns.Add(mayor);
-        pawns.Add(potentialConstituent);
-        Lord meeting = LordMaker.MakeNewLord(mayor.Faction, new LordJob_VisitMayor(gather, potentialConstituent, mayor, potentialConstituent.needs.mood.CurLevel < 1.25f * potentialConstituent.mindState.mentalBreaker.BreakThresholdMinor), mayor.Map, pawns);
-        mayor.jobs.EndCurrentJob(Verse.AI.JobCondition.InterruptForced);
-        potentialConstituent.jobs.EndCurrentJob(Verse.AI.JobCondition.InterruptForced);
-        if (found == "bed")
-        {
-          mayor.needs.mood.thoughts.memories.TryGainMemory(ThoughtDefOfPsychology.MayorNoOffice);
-        }
-        else if (found == null)
-        {
-          mayor.needs.mood.thoughts.memories.TryGainMemory(ThoughtDefOfPsychology.MayorNoBedroom);
-        }
-      }
-
-    }
-  }
-
-  public virtual void ElectionTick()
-  {
-    if (electionTick > 0)
-    {
-      electionTick--;
-      return;
-    }
-    electionTick = 7 * GenDate.TicksPerHour;
-
-    List<Settlement> eligibleSettlements = new List<Settlement>();
-    foreach (Settlement settlement in Find.WorldObjects.Settlements)
-    {
-      //If the base isn't owned or named by the player, no election can be held.
-      if (!settlement.Faction.IsPlayer || !settlement.namedByPlayer)
-      {
-        continue;
-      }
-      ////If the base is not at least a year old, no election will be held.
-      if (settlement.Map.mapPawns.FreeColonistsSpawnedCount < 7)
-      {
-        continue;
-      }
-      //If an election is already being held, don't start a new one.
-      if (settlement.Map.gameConditionManager.ConditionIsActive(GameConditionDefOfPsychology.Election) || settlement.Map.lordManager.lords.Find(l => l.LordJob is LordJob_Joinable_Election) != null)
-      {
-        continue;
-      }
-
-      int settlementTile = settlement.Tile;
-      if (Mayors.TryGetValue(settlementTile, out Pair<Pawn, Hediff> mayorKVP))
-      {
-        // Don't start another election if the mayor was elected this year
-        int yearDiff = GenLocalDate.Year(settlementTile) - (mayorKVP.Second as Hediff_Mayor).yearElected;
-        if (yearDiff <= 0)
-        {
-          continue;
-        }
-        //Elections are held starting in Septober (because I guess some maps don't have fall?)
-        if (yearDiff == 1 && GenDate.Quadrum(Find.TickManager.TicksAbs, Find.WorldGrid.LongLatOf(settlementTile).x) < Quadrum.Septober)
-        {
-          continue;
-        }
-      }
-      else if (GenDate.Quadrum(Find.TickManager.TicksAbs, Find.WorldGrid.LongLatOf(settlementTile).x) < Quadrum.Septober && GenLocalDate.Year(settlementTile) < 5501)
-      {
-        continue;
-      }
-      // Start elections during the day
-      if (GenLocalDate.HourOfDay(settlement.Map) < 7 || GenLocalDate.HourOfDay(settlement.Map) > 20)
-      {
-        continue;
-      }
-      eligibleSettlements.Add(settlement);
-    }
-    if (eligibleSettlements.Count() > 0)
-    {
-      // Only pick one election at random to happen per 7 hour tick so they don't all proc at once.
-      Settlement settlement = eligibleSettlements.RandomElement();
-      IncidentParms parms = new IncidentParms();
-      parms.target = settlement.Map;
-      parms.faction = settlement.Faction;
-      FiringIncident fi = new FiringIncident(IncidentDefOfPsychology.Election, null, parms);
-      Find.Storyteller.TryFire(fi);
-    }
-  }
-
 }

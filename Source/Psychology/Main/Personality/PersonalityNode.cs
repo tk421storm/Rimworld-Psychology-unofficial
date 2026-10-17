@@ -25,9 +25,6 @@ public class PersonalityNode : IExposable
     private float cachedRating = -1f;
 
     public bool HasConvoTopics => this.def.conversationTopics.NullOrEmpty() != true;
-    // Election platform: a candidate campaigns on the high or low issue of their strongest nodes.
-    public bool HasPlatformIssue => this.def.platformIssueHigh != null && this.def.platformIssueLow != null;
-    public string PlatformIssue => this.AdjustedRating < 0.5f ? this.def.platformIssueLow : this.def.platformIssueHigh;
     public float AdjustedRating
     {
         get

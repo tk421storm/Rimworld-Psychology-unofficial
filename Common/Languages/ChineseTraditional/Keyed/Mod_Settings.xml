@@ -21,8 +21,6 @@
   <EnableIndividualityTitle>启用个性思维</EnableIndividualityTitle>
   <EnableIndividualityTooltip>如果您的小人正因撞衫而苦恼，您可以禁用这个选项来消除那些影响。这个选项会增加额外的难度，所以您可以随时禁用它，但还是建议您开着比较好。</EnableIndividualityTooltip>
 
-  <EnableElectionsTitle>启用选举</EnableElectionsTitle>
-  <EnableElectionsTooltip>禁用此选项后，殖民地将不会再举行一年一度的镇长选举活动，对当前正在进行的选举不会造成影响。现存的任何镇长都会恢复为普通殖民者的身份。您可以禁用此选项来保证mod的兼容性。</EnableElectionsTooltip>
 
   <ConversationDurationTitle>会谈延续时间</ConversationDurationTitle>
   <ConversationDurationTooltip>设定人们能记住会谈内容的时间，默认为60天，即一年。 最短可设定为15天，即一象，最长可设定为180天，即三年。 设定的时间越短，殖民者之间的互动时间也越短，反之则会越长。</ConversationDurationTooltip>
@@ -42,8 +40,6 @@
   <RomanceOpinionThresholdTitle>最低追求点</RomanceOpinionThresholdTitle>
   <RomanceOpinionThresholdTooltip>一位殖民者对另一位殖民者的看法至少要达到这个数值才能被追求。</RomanceOpinionThresholdTooltip>
 
-  <MayorAgeTitle>镇长年龄限制</MayorAgeTitle>
-  <MayorAgeTooltip>当选镇长的最低年龄限制。</MayorAgeTooltip>
 
   <AllowAnxietyTitle>允许创伤后应激性焦虑症</AllowAnxietyTitle>
   <AllowAnxietyTooltip>允许殖民者在发生精神崩溃后有可能患上难以治愈的焦虑症（几率取决于殖民者精神崩溃的严重程度）。</AllowAnxietyTooltip>

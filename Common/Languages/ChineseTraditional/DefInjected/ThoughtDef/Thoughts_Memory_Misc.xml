@@ -3,14 +3,8 @@
 
   <Dynamic.stages.0.label>活力充沛</Dynamic.stages.0.label>
 
-  <MayorNoOffice.stages.0.label>缺少镇长办公室</MayorNoOffice.stages.0.label>
-  <MayorNoOffice.stages.0.description>我不得不在自己的卧室里和选民们会面，一间办公室会让这一切显得更专业一点。</MayorNoOffice.stages.0.description>
 
-  <MayorNoBedroom.stages.0.label>缺少镇长办公室</MayorNoBedroom.stages.0.label>
-  <MayorNoBedroom.stages.0.description>不止办公室，我连自己的卧室都没有。我需要拥有一些更私有的空间和我的选民们会面。</MayorNoBedroom.stages.0.description>
 
-  <WonElection.stages.0.label>赢得选举</WonElection.stages.0.label>
-  <WonElection.stages.0.description>我做到了！我现在是这个殖民地的镇长了！感谢支持我的选民们！我一定不负众望！</WonElection.stages.0.description>
 
   <KilledHumanlikeEnemy.stages.0.label>肾上腺素</KilledHumanlikeEnemy.stages.0.label>
   <KilledHumanlikeEnemy.stages.0.description>我亲手干掉了一个攻击我们殖民地的敌人……我的手现在还在发抖……真不敢相信我还活着！</KilledHumanlikeEnemy.stages.0.description>

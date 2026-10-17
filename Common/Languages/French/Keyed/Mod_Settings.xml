@@ -21,9 +21,7 @@
 	<EnableIndividualityTitle>Activer les pensées individuelles</EnableIndividualityTitle>
 	<EnableIndividualityTooltip>Éteignez cette fonctionnalité pour désactiver le malus au moral si vos colons portent exactement les mêmes vêtements. Ceci ajoute de la difficulté, donc c'est optionnel, mais reccomandé.</EnableIndividualityTooltip>
 	
-	<EnableElectionsTitle>Autoriser les élections</EnableElectionsTitle>
 	<!-- <ÉlectionsInfo-bulle>Éteignez cette fonctionnalité pour désactiver les élections annuelles. Cela n'arrêtera pas une élection en cours, et le/la Maire perdra ses fonctions. Cela n'affecte pas la compatibilité.</ÉlectionsInfo-bulle> -->
-	<EnableElectionsTooltip>Éteignez cette fonctionnalité pour désactiver les élections annuelles pour leur chef. Cela n'affecte pas la compatibilité.</EnableElectionsTooltip>
 	
 	<ConversationDurationTitle>Durée de la mémoire des conversation</ConversationDurationTitle>
 	<ConversationDurationTooltip>Réglez le temps que metteront vos colons pour oublier une conversation. Par défaut, c'est 60 jours, soit un an. Le minimum est 15 jours, et le maximum est 180 jours (3 ans). Baissez ce temps rendra les conversations de vos colons plus éphémères, et augmenter les rendra plus durables.</ConversationDurationTooltip>
@@ -43,8 +41,6 @@
 	<RomanceOpinionThresholdTitle>Opinion minimum de séduction</RomanceOpinionThresholdTitle>
 	<RomanceOpinionThresholdTooltip>L'opinion minimum d'un colon vers un autre pour être séduit.</RomanceOpinionThresholdTooltip>
 
-	<MayorAgeTitle>Âge du Maire</MayorAgeTitle>
-	<MayorAgeTooltip>L'âge requis pour pouvoir devenir maire.</MayorAgeTooltip>
 
 	<AllowAnxietyTitle>Autopriser les anxiétés post-crise de démence</AllowAnxietyTitle>
 	<AllowAnxietyTooltip>Allow colonists to get anxiety after mental breaks (chance depends on colonist's psyche and mental breaks severity). Note that you might still see it as random disease.</AllowAnxietyTooltip>

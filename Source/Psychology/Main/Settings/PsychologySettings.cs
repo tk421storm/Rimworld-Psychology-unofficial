@@ -68,9 +68,6 @@ public class PsychologySettings : ModSettings
   public const bool enableIndividualityDefault = true;
   public static bool enableIndividuality = true;
 
-  public const bool enableElectionsDefault = true;
-  public static bool enableElections = true;
-
   public const bool enableDateLettersDefault = true;
   public static bool enableDateLetters = true;
 
@@ -100,12 +97,6 @@ public class PsychologySettings : ModSettings
 
   public const float romanceOpinionThresholdDefault = 5f; // v1.1
   public static float romanceOpinionThreshold = 5f; // v1.1
-
-  public const float mayorAgeDefault = 20f; // v1.1
-  public static float mayorAge = 20f; // v1.1
-
-  public const float visitMayorMtbHoursDefault = 10f;
-  public static float visitMayorMtbHours = 10f;
 
   public const float traitOpinionMultiplierDefault = 0.25f; // v1.3
   public static float traitOpinionMultiplier = 0.25f; // v1.3
@@ -156,9 +147,6 @@ public class PsychologySettings : ModSettings
     ScribeValueAndAddToNameList(nameof(enableEmpathy));
     ScribeValueAndAddToNameList(nameof(enableIndividuality));
     ScribeValueAndAddToNameList(nameof(enableDateLetters));
-    ScribeValueAndAddToNameList(nameof(enableElections));
-    ScribeValueAndAddToNameList(nameof(mayorAge));
-    ScribeValueAndAddToNameList(nameof(visitMayorMtbHours));
     ScribeValueAndAddToNameList(nameof(mentalBreakAnxietyChance));
     ScribeValueAndAddToNameList(nameof(imprisonedDebuff));
     ScribeValueAndAddToNameList(nameof(conversationDuration));

@@ -12,7 +12,7 @@ namespace Psychology;
 /// XML definition of one personality facet (Common/Defs/PersonalityDefs/PersonalityNodes.xml). Besides labels and
 /// colours for the Psyche tab, it describes how the facet is generated (parents, tenAspects, gender/trait/skill/
 /// incapable modifiers), how it is summarised (bigFiveModifiers) and what it does in play (conversation topics and
-/// controversiality, election platform issues, preferred date hours, Ideology certainty modifiers).
+/// controversiality, preferred date hours, Ideology certainty modifiers).
 /// </summary>
 public class PersonalityNodeDef : Def
 {
@@ -28,10 +28,6 @@ public class PersonalityNodeDef : Def
     public List<PersonalityNodeParent> parents;
     //What pawns talk about when they talk about this node.
     public List<string> conversationTopics;
-    //What pawns with a high rating in this node use as a platform issue.
-    public string platformIssueHigh;
-    //What pawns with a low rating in this node use as a platform issue.
-    public string platformIssueLow;
     //A list of the skills that modify this node.
     public List<PersonalityNodeSkillModifier> skillModifiers;
     //A list of the traits that modify this node.

@@ -19,7 +19,6 @@ public static class UIAssets
     public static readonly Color TitleColor = ColoredText.TipSectionTitleColor;
     public static readonly Color RatingColor = Color.yellow;
 
-    public static readonly Texture2D OfficeTable = ContentFinder<Texture2D>.Get("UI/Commands/MayoralTable", true);
     public static readonly Texture2D PsycheButton = ContentFinder<Texture2D>.Get("Buttons/ButtonPsyche", true);
     public static readonly Texture2D PsycheLineTex = new Texture2D(1, 3, TextureFormat.ARGB32, mipChain: false);
     public static readonly Material PsycheYellowMat = SolidColorMaterials.SimpleSolidColorMaterial(new Color(1f, 1f, 0f, 0.5f));

@@ -1,16 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8"?>
 <LanguageData>
 
-  <LetterLabelNewElection>选举正在 {0} 举办</LetterLabelNewElection>
-  <LetterNewElection>一场镇长选举正在 {0} 举办。一些殖民者已经宣布参选。</LetterNewElection>
-  <LetterLabelElectionHeld>选举正在 {0} 进行中</LetterLabelElectionHeld>
-  <LetterElectionHeld>选举正在 {0} 进行。 殖民者们将会选择殖民地中一个可用的聚会点作为投票站，投出他们宝贵的一票。</LetterElectionHeld>
-  <LetterLabelElectionCandidate>参选人: {0_labelShort}</LetterLabelElectionCandidate>
-  <LetterElectionCandidate>{0_labelShort} 正在竞选 {1} 的镇长。 这是{0_possessive}议题:\n{2}</LetterElectionCandidate>
-  <LetterLabelTieSettled>选举投票平局，最终倾向于 {0_labelShort}</LetterLabelTieSettled>
-  <LetterTieSettled>镇长投票选举的结果是平局， 但在经过一场激烈的辩论赛后, {0} 击败了其他参选者，赢得了最后的胜利。</LetterTieSettled>
-  <LetterLabelElectionWon> {0_labelShort} 选举获胜</LetterLabelElectionWon>
-  <LetterElectionWon>{0_labelShort} 在 {1} 赢得了镇长选举。{0_pronoun}最终获得了 {2} 票。\n\n请注意, 这是{0_possessive}议题:\n{3}\n\n{0_pronoun}将会在自己的房间里接受选民们的拜访， 如果{0_pronoun}有自己的房间的话。 如果选民们有所抱怨， 在和沟通能力更强或更能理解他人的镇长交谈后，选民们感觉会更好。当然，这也会受到接待室的美观度的影响。\n\n请密切注意{0_objective}; {0_pronoun}承担了整个殖民地的抱怨与压力，但{0_pronoun}没法向别的人倒苦水。如果殖民地本身就处境艰难，那{0_pronoun}会更加难受，请密切注意{0_pronoun}的精神状态。</LetterElectionWon>
   <LetterLabelFuneralPlanned>为 {0} 安排葬礼</LetterLabelFuneralPlanned>
   <LetterFuneralPlanned>{0_labelShort} 已经策划好了 {1_labelShort} 的葬礼。 葬礼将在 {2} 的 {3}时开始进行。</LetterFuneralPlanned>
   <LetterLabelFuneralStarted>为 {0} 安排的葬礼正在进行</LetterLabelFuneralStarted>

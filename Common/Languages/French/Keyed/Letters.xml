@@ -1,20 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
 
-    <LetterLabelNewElection>L'élection se prépare à {0}</LetterLabelNewElection>
-	<LetterNewElection>L'élection du maire de {0} à été annoncée. certains colons ont présenté leur candidature.</LetterNewElection>
-	<!--<LetterNewElection>Une éléction se prépare à {0}. Certains colons ont présenté leur candidatures.</LetterNewElection>-->
-	<LetterLabelElectionHeld>L'éléction est en cours à {0}</LetterLabelElectionHeld>
-	<LetterElectionHeld>L'éléction à {0} est maintenant en cours. La colonie à décidé d'un lieu de vote à partir des lieux disponibles, et les colons vont s'y rendre afin de voter.</LetterElectionHeld>
-	<LetterLabelElectionCandidate>Candidat : {0_labelShort}</LetterLabelElectionCandidate>
-	<LetterElectionCandidate>{0_labelShort} est candidat'e à l'éléction du maire de {1}. Voici sa tribune :\n{2}</LetterElectionCandidate>
-	<!--<LetterElectionCandidate>{0_labelShort} se présente pour diriger {1}. Voici se tribune :\n{2}</LetterElectionCandidate>-->
-	<LetterLabelTieSettled>Suite à une égalité, {0_labelShort} à été déclaré vainqueur.</LetterLabelTieSettled>
-	<!--<LetterTieSettled>L'élection du maire ayant résulté sur une égalité, et les autres candidats ayant abandonné le débat, {0_objective} est déclaré vainqueur.</LetterTieSettled>-->
-	<LetterTieSettled>L'élection à résulté en une égalité,et les autres candidats ayant abandonné le débat, {0_objective} est déclaré vainqueur.</LetterTieSettled>
-	<LetterLabelElectionWon>{0_labelShort} à gagné l'élection !</LetterLabelElectionWon>
-	<LetterElectionWon>{0_labelShort} à été élu'e maire de {1}. {0_pronoun} à reçu {2} votes.\n\nA titre de rappel, voici la tribune de {0} :\n{3}\n\n{0_pronoun} recevera maintenant les visites de ses compatriotes dans sa chambre si {0_pronoun} en à. Si iels ont des plaintes, iels se sentiront mieux après avoir {0_objective} avoir parlé si {0_pronoun} est doué'e pour parler aux gens et comprendre leurs sentiments. Avoir un beau bureau ne ferait pas de mal.\n\nGardez un oeil sur {0_objective}; {0_pronoun} n'a personne à qui se plaindre, et porter les fardeaux d'une colonie peut être dur, surtout si les choses se passent mal.</LetterElectionWon>
-	<!--<LetterElectionWon>{0_labelShort} won the election for {1}. {0_pronoun} à reçu {2} votes.\n\nA titre de rappel, voici la tribune de {0} :\n{3}\n\n{0_pronoun} recevera maintenant les visites de ses compatriotes dans sa chambre si {0_pronoun} en à. Si iels ont des plaintes, iels se sentiront mieux après avoir {0_objective} avoir parlé si {0_pronoun} est doué'e pour parler aux gens et comprendre leurs sentiments. Avoir un beau bureau ne ferait pas de mal.\n\nGardez un oeil sur {0_objective}; {0_pronoun} n'a personne à qui se plaindre, et porter les fardeaux d'une colonie peut être dur, surtout si les choses se passent mal.</LetterElectionWon>-->
 	<LetterLabelFuneralPlanned>Funeral planned for {0}</LetterLabelFuneralPlanned>
 	<LetterFuneralPlanned>{0_labelShort} à plannifié des funérailles pour {1_labelShort}. La cérémonie se tiendra à {2}, à {3}h.</LetterFuneralPlanned>
 	<LetterLabelFuneralStarted>La cérémonie de funéraille de {0} est prévue.</LetterLabelFuneralStarted>

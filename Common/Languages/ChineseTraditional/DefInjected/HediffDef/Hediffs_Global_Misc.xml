@@ -5,9 +5,6 @@
   <HoldingConversation.description>谈话</HoldingConversation.description>
   <HoldingConversation.stages.0.label>隐藏</HoldingConversation.stages.0.label>
 
-  <Mayor.label>镇长</Mayor.label>
-  <Mayor.description>殖民地镇长</Mayor.description>
-  <Mayor.stages.0.label>隐藏</Mayor.stages.0.label>
 
   <PlannedDate.label>约会</PlannedDate.label>
   <PlannedDate.description>计划好的约会</PlannedDate.description>

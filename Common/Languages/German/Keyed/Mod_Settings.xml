@@ -21,8 +21,6 @@
 	<EnableIndividualityTitle>Erlaube Individuelle Gedanken</EnableIndividualityTitle>
 	<EnableIndividualityTooltip>Schalte das aus, um die negativen Gedanken deiner Kolonisten zu entfernen, wenn sie identische Kleidung mit anderen Kolonisten tragen. Diese Änderung macht das Spiel schwieriger, es ist optional, aber empfohlen.</EnableIndividualityTooltip>
 	
-	<EnableElectionsTitle>Erlaube Wahlen</EnableElectionsTitle>
-	<EnableElectionsTooltip>Schalte das aus, um deinen Kolonisten zu verbieten, jährlich eine Wahl zu halten. Es wird keine Wahl, die im Gange ist, abbrechen, und der jeweils gewählte Bürgermeister wird wieder zu einem "normalen" Kolonisten konvertiert. Diese Einstellung wird die Kompatibilität mit anderen Mods nicht beeinflussen.</EnableElectionsTooltip>
 	
 	<ConversationDurationTitle>Gesprächsdauer</ConversationDurationTitle>
 	<ConversationDurationTooltip>Lege fest, für wie lange sich die Kolonisten an Gespräche erinnern. Die Standardeinstellung beträgt 60 Tage, d.h. ein Jahr. Das Minimum beträgt 15 Tage oder ein Quadrum bis maximal 180 Tage oder drei Jahre. Eine niedrigere Einstellung macht die Interaktionen der Kolonisten miteinander flüchtiger, und eine höhere Einstellung macht sie dauerhafter.</ConversationDurationTooltip>
@@ -42,8 +40,6 @@
 	<RomanceOpinionThresholdTitle>Minimum romance opinion</RomanceOpinionThresholdTitle>
 	<RomanceOpinionThresholdTooltip>Minimum opinion one colonist must have of another in order to be romanced.</RomanceOpinionThresholdTooltip>
 
-	<MayorAgeTitle>Mayor age</MayorAgeTitle>
-	<MayorAgeTooltip>Age required for someone to be able to become a mayor.</MayorAgeTooltip>
 
 	<AllowAnxietyTitle>Allow post mental break anxiety</AllowAnxietyTitle>
 	<AllowAnxietyTooltip>Allow colonists to get anxiety after mental breaks (chance depends on colonist's psyche and mental breaks severity). Note that you might still see it as random disease.</AllowAnxietyTooltip>

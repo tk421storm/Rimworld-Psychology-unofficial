@@ -49,12 +49,6 @@
     <AteRottenFoodPickyEater.stages.ate_rotten_food.label>съедена гнилая пища</AteRottenFoodPickyEater.stages.ate_rotten_food.label>
     <AteRottenFoodPickyEater.stages.ate_rotten_food.description>Мне пришлось съесть отвратительную, гнилую пищу. Лучше смерть, чем такие унижения.</AteRottenFoodPickyEater.stages.ate_rotten_food.description>
     <Dynamic.stages.dynamic.label>энергичность</Dynamic.stages.dynamic.label>
-    <MayorNoOffice.stages.no_mayoral_office.label>нет офиса</MayorNoOffice.stages.no_mayoral_office.label>
-    <MayorNoOffice.stages.no_mayoral_office.description>Мне пришлось проводить встречу с избирателем в своей спальне. Наличие офиса помогло бы мне исполнять свои обязанности более профессионально.</MayorNoOffice.stages.no_mayoral_office.description>
-    <MayorNoBedroom.stages.no_mayoral_office.label>нет офиса</MayorNoBedroom.stages.no_mayoral_office.label>
-    <MayorNoBedroom.stages.no_mayoral_office.description>Мне пришлось проводить встречу с избирателем в месте для сбора. Выделите мне хотя бы личную спальню, чтобы я мог проводить эти встречи тет-а-тет.</MayorNoBedroom.stages.no_mayoral_office.description>
-    <WonElection.stages.won_an_election.label>победа в выборах</WonElection.stages.won_an_election.label>
-    <WonElection.stages.won_an_election.description>Да! Теперь я мэр! Спасибо всем, кто голосовал за меня.</WonElection.stages.won_an_election.description>
     <KilledHumanlikeEnemy.stages.adrenaline_rush.label>прилив адреналина</KilledHumanlikeEnemy.stages.adrenaline_rush.label>
     <KilledHumanlikeEnemy.stages.adrenaline_rush.description>Моими руками убит напавший на наше поселение. Я весь трясусь... Не могу поверить, что я в живых.</KilledHumanlikeEnemy.stages.adrenaline_rush.description>
     <KnowPrisonerSoldBleedingHeart.stages.a_prisoner_was_sold.label>заключённый продан в рабство</KnowPrisonerSoldBleedingHeart.stages.a_prisoner_was_sold.label>
