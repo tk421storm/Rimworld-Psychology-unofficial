@@ -5,12 +5,16 @@ using System;
 namespace Psychology;
 
 // Sedentary trait: happy after staying in roughly the same spot for an hour (more so on a comfortable seat).
-// BUG (pre-existing): lastMovePosition/lastMoveTick are instance fields, but one ThoughtWorker is shared by all pawns,
-// so every Sedentary pawn on every map overwrites the same values.
 public class ThoughtWorker_Sedentary : ThoughtWorker
 {
-    private IntVec3 lastMovePosition = new IntVec3();
-    private int lastMoveTick = 0;
+    private class LastMove
+    {
+        public IntVec3 position;
+        public int tick;
+    }
+
+    // One ThoughtWorker serves every pawn, so where each pawn last moved is kept per pawn.
+    private readonly PawnStateCache<LastMove> lastMoves = new PawnStateCache<LastMove>();
 
     protected override ThoughtState CurrentStateInternal(Pawn p)
     {
@@ -31,12 +35,13 @@ public class ThoughtWorker_Sedentary : ThoughtWorker
             return ThoughtState.Inactive;
         }
             
-        if ((this.lastMovePosition - p.Position).LengthHorizontalSquared > 80f)
+        LastMove lastMove = lastMoves.For(p, out bool created);
+        if (created || (lastMove.position - p.Position).LengthHorizontalSquared > 80f)
         {
-            this.lastMovePosition = p.Position;
-            this.lastMoveTick = Find.TickManager.TicksGame;
+            lastMove.position = p.Position;
+            lastMove.tick = Find.TickManager.TicksGame;
         }
-        if ((Find.TickManager.TicksGame - lastMoveTick) > GenDate.TicksPerHour)
+        if ((Find.TickManager.TicksGame - lastMove.tick) > GenDate.TicksPerHour)
         {
             Building edifice = GridsUtility.GetEdifice(p.Position, p.Map);
             if (edifice != null && edifice.GetStatValue(StatDefOf.Comfort, true) >= 0.75f)
