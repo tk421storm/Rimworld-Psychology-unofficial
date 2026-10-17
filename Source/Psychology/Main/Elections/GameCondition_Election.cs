@@ -130,17 +130,10 @@ namespace Psychology
             Scribe_Collections.Look(ref this.candidates, "candidates", LookMode.Deep);
         }
 
-        // BUG (pre-existing): removes from `candidates` while iterating it, which throws if a candidate dies mid-campaign.
         public override void GameConditionTick()
         {
             base.GameConditionTick();
-            foreach (Candidate candidate in candidates)
-            {
-                if (candidate.pawn.Dead)
-                {
-                    candidates.Remove(candidate);
-                }
-            }
+            candidates.RemoveAll(candidate => candidate.pawn.Dead);
             if (candidates.Count == 0)
             {
                 End();
