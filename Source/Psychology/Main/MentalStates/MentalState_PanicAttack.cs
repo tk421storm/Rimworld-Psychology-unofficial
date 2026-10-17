@@ -19,7 +19,7 @@ public class MentalState_PanicAttack : MentalState
 
     public override void PreStart()
     {
-        if (pawn.jobs.curDriver.asleep)
+        if (pawn.jobs?.curDriver?.asleep == true)
         {
             pawn.needs.mood.thoughts.memories.TryGainMemory(ThoughtDefOfPsychology.DreamNightmare);
         }
@@ -48,7 +48,7 @@ public class MentalState_PanicAttack : MentalState
         base.MentalStateTick(delta);
         if (mentalStateTicker > 0)
         {
-            mentalStateTicker--;
+            mentalStateTicker -= delta;
             return;
         }
         mentalStateTicker = mentalStateTicksPerInterval;
@@ -66,13 +66,14 @@ public class MentalState_PanicAttack : MentalState
                     return;
                 }
                 RecoverFromState();
+                return;
             }
         }
         if (!pawn.Spawned || pawn.Downed) // || !pawn.RaceProps.Humanlike
         {
             return;
         }
-        if (pawn.jobs.curJob.def != JobDefOf.FleeAndCower)
+        if (pawn.jobs.curJob?.def != JobDefOf.FleeAndCower)
         {
             pawn.jobs.StartJob(new Job(JobDefOf.FleeAndCower, pawn.Position), JobCondition.InterruptForced, null, false, true, null);
         }

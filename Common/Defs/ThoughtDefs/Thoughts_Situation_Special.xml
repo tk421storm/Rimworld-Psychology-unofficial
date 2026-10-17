@@ -30,8 +30,12 @@
     </stages>
   </ThoughtDef>
   
+  <!-- Given when a panic attack starts and removed when it ends (MentalState_PanicAttack), so it has to be a memory.
+       The duration only matters if the removal is missed; attacks last at most 10000 ticks. -->
   <ThoughtDef>
     <defName>PanicAttack</defName>
+    <durationDays>0.5</durationDays>
+    <stackLimit>1</stackLimit>
     <stages>
       <li>
         <label>having a panic attack</label>
