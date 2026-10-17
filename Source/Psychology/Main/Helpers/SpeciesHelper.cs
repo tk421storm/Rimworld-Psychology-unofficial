@@ -189,21 +189,18 @@ public class SpeciesHelper
 
   public static void AddInspectorTabToDefAndCorpseDef(ThingDef t)
   {
-    //Log.Message("AddInspectorTabToDefAndCorpseDef to thingdef = " + t.defName);
-    // The released 1.4-1.6 builds register the tab on the def's unresolved list and re-resolve the def, rather than
-    // adding the shared instance to inspectorTabsResolved directly (the corpse def below still uses the direct route).
-    // NOTE: Add (not AddDistinct) + a full ResolveReferences() on every call; see the review notes.
-    //if (t.inspectorTabsResolved == null)
-    //{
-    //  t.inspectorTabsResolved = new List<InspectTabBase>(1);
-    //}
-    //t.inspectorTabsResolved.AddDistinct(InspectTabManager.GetSharedInstance(typeof(ITab_Pawn_Psyche)));
+    // Add to both lists: vanilla rebuilds inspectorTabsResolved from inspectorTabs when the def is resolved, and the
+    // resolved list is what's shown if the def was already resolved.
     if (t.inspectorTabs == null)
     {
       t.inspectorTabs = new List<Type>(1);
     }
-    t.inspectorTabs.Add(typeof(ITab_Pawn_Psyche));
-    t.ResolveReferences();
+    t.inspectorTabs.AddDistinct(typeof(ITab_Pawn_Psyche));
+    if (t.inspectorTabsResolved == null)
+    {
+      t.inspectorTabsResolved = new List<InspectTabBase>(1);
+    }
+    t.inspectorTabsResolved.AddDistinct(InspectTabManager.GetSharedInstance(typeof(ITab_Pawn_Psyche)));
     if (t.race?.corpseDef == null)
     {
       Log.Warning("thingDef.race?.corpseDef == null for thingDef = " + t.defName);
