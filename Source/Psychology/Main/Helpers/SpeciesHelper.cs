@@ -171,12 +171,15 @@ public class SpeciesHelper
     {
       pawnDef.recipes = new List<RecipeDef>(6);
     }
-    pawnDef.recipes.AddDistinct(RecipeDefOfPsychology.CureAnxiety);
-    pawnDef.recipes.AddDistinct(RecipeDefOfPsychology.TreatChemicalInterest);
-    pawnDef.recipes.AddDistinct(RecipeDefOfPsychology.TreatChemicalFascination);
-    pawnDef.recipes.AddDistinct(RecipeDefOfPsychology.TreatDepression);
-    pawnDef.recipes.AddDistinct(RecipeDefOfPsychology.TreatInsomnia);
-    pawnDef.recipes.AddDistinct(RecipeDefOfPsychology.TreatPyromania);
+    // AllRecipes is cached on first use, so add to it as well in case this runs after it was built (e.g. a race first
+    // registered mid-game).
+    foreach (RecipeDef recipe in new[] { RecipeDefOfPsychology.CureAnxiety, RecipeDefOfPsychology.TreatChemicalInterest,
+      RecipeDefOfPsychology.TreatChemicalFascination, RecipeDefOfPsychology.TreatDepression,
+      RecipeDefOfPsychology.TreatInsomnia, RecipeDefOfPsychology.TreatPyromania })
+    {
+      pawnDef.recipes.AddDistinct(recipe);
+      pawnDef.AllRecipes.AddDistinct(recipe);
+    }
 
     if (!pawnDef.race.hediffGiverSets.NullOrEmpty())
     {
