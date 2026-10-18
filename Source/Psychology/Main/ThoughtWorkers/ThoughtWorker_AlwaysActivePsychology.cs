@@ -4,9 +4,7 @@ using RimWorld;
 
 namespace Psychology;
 
-// Always-on trait thoughts (e.g. depressive Natural Mood) that Antidepressants should halve.
-// BUG (pre-existing, shipped in 1.6): it tests stages[0].baseOpinionOffset < 0, but these are mood thoughts with an
-// opinion offset of 0, so the halving never happens. (The unreleased Jan 2023 code tests baseMoodEffect instead.)
+// Always-on trait thoughts (e.g. depressive Natural Mood) that Antidepressants halve when they're negative.
 public class ThoughtWorker_AlwaysActivePsychology : ThoughtWorker_AlwaysActive
 {
     public override float MoodMultiplier(Pawn p)
@@ -16,7 +14,7 @@ public class ThoughtWorker_AlwaysActivePsychology : ThoughtWorker_AlwaysActive
         {
             return num;
         }
-        if (this.def.stages[0].baseOpinionOffset < 0f)
+        if (this.def.stages[0].baseMoodEffect < 0f)
         {   
             num *= 0.5f;
         }
