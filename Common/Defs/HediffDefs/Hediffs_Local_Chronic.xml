@@ -33,6 +33,7 @@
 
 	<HediffDef ParentName="TreatmentBase">
 		<defName>DrugFree</defName>
+		<hediffClass>Psychology.Hediff_DrugFree</hediffClass>
 		<label>drug free</label>
 		<description>Drug Free</description>
 	</HediffDef>
