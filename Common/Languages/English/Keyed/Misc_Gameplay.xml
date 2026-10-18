@@ -13,6 +13,10 @@
 
 	<!-- Comp text -->
 
+	<!-- Hediff tooltips -->
+	<DrugFreeDescription>{PAWN_labelShort}'s {TRAIT} has been alleviated by {PAWN_possessive} drug-free lifestyle.</DrugFreeDescription>
+	<DrugFreeDescriptionNoTrait>{PAWN_labelShort} is keeping to a drug-free lifestyle.</DrugFreeDescriptionNoTrait>
+
 	<!-- Prepare Carefully warning -->
 	<EdBPrepareCarefullyWarning>WARNING</EdBPrepareCarefullyWarning>
 	<EdBPrepareCarefullyWarningTooltip>{0} corrupts the default data structures, and interacts poorly with Psychology. The player is strongly encouraged to {1} as it achieves the same capabilities, including modifying initial item loadouts, while avoiding game-breaking problems. {2}</EdBPrepareCarefullyWarningTooltip>

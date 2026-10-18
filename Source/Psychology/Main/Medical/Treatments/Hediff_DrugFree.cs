@@ -12,6 +12,20 @@ namespace Psychology;
 // MentalStateWorker_BingingDrugPatch; this also ends one that's already running.
 public class Hediff_DrugFree : HediffWithComps
 {
+    // Tooltip text naming the pawn's drug desire (chemical interest or fascination).
+    public override string Description
+    {
+        get
+        {
+            Trait drugDesire = pawn?.story?.traits?.GetTrait(TraitDefOf.DrugDesire);
+            if (drugDesire == null || drugDesire.Degree <= 0)
+            {
+                return "DrugFreeDescriptionNoTrait".Translate(pawn.Named("PAWN"));
+            }
+            return "DrugFreeDescription".Translate(pawn.Named("PAWN"), drugDesire.Label.Named("TRAIT"));
+        }
+    }
+
     public override void PostTickInterval(int delta)
     {
         base.PostTickInterval(delta);
