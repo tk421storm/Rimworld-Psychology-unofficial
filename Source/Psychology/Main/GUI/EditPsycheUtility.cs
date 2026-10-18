@@ -83,9 +83,20 @@ public static class EditPsycheUtility
     ButtonHeight = 5f + Mathf.Max(saveButtonSize.y, resetButtonSize.y, randomButtonSize.y);
   }
 
+  // The width and title only depend on the pawn's name, so they're worked out once per pawn/name (this is called
+  // twice per GUI pass while the Psyche tab is open in dev mode).
+  private static Pawn editWidthPawn;
+  private static Name editWidthName;
+
   public static float CalculateEditWidth(Pawn pawn)
   {
-    var name = pawn.Name.ToStringFull;
+    if (pawn == editWidthPawn && pawn.Name == editWidthName && EditWidth > 0f)
+    {
+      return EditWidth;
+    }
+    editWidthPawn = pawn;
+    editWidthName = pawn.Name;
+    var name = pawn.Name?.ToStringFull;
     TitleText = (name != null && name != "") ? name : "PsycheEditorNewColonist".Translate().ToString();
     float labelWidth = Mathf.Max(SexualityWidth, NodeWidth);
     SexualityWidth = labelWidth;
@@ -106,6 +117,7 @@ public static class EditPsycheUtility
     }
     Pawn_SexualityTracker st = PsycheHelper.Comp(pawn).Sexuality;
     Pawn_PsycheTracker pt = PsycheHelper.Comp(pawn).Psyche;
+    bool changed = false;
 
     Text.Font = GameFont.Small;
     GUIStyle style = Text.fontStyles[1];
@@ -166,11 +178,17 @@ public static class EditPsycheUtility
       Widgets.Label(sexualityLabelRect, RomDriveText);
       Text.Anchor = oldAnchor;
 
-      st.kinseyRating = Mathf.RoundToInt(Widgets.HorizontalSlider(sexualitySliderRect, st.kinseyRating, 0f, 6f, true));
+      int newKinsey = Mathf.RoundToInt(Widgets.HorizontalSlider(sexualitySliderRect, st.kinseyRating, 0f, 6f, true));
+      changed |= newKinsey != st.kinseyRating;
+      st.kinseyRating = newKinsey;
       sexualitySliderRect.y += sexualityHighlightRect.height;
-      st.sexDrive = Widgets.HorizontalSlider(sexualitySliderRect, st.sexDrive, 0f, 1f, true);
+      float newSexDrive = Widgets.HorizontalSlider(sexualitySliderRect, st.sexDrive, 0f, 1f, true);
+      changed |= newSexDrive != st.sexDrive;
+      st.sexDrive = newSexDrive;
       sexualitySliderRect.y += sexualityHighlightRect.height;
-      st.romanticDrive = Widgets.HorizontalSlider(sexualitySliderRect, st.romanticDrive, 0f, 1f, true);
+      float newRomDrive = Widgets.HorizontalSlider(sexualitySliderRect, st.romanticDrive, 0f, 1f, true);
+      changed |= newRomDrive != st.romanticDrive;
+      st.romanticDrive = newRomDrive;
 
       TooltipHandler.TipRegion(sexualityTooltipRect, delegate
       {
@@ -224,7 +242,9 @@ public static class EditPsycheUtility
       Widgets.Label(labelRect, label);
       Text.Anchor = oldAnchor;
       TooltipHandler.TipRegion(tooltipRect, () => Descriptions[label], 436532 + i);
-      pt.nodeDict[def].rawRating = Widgets.HorizontalSlider(sliderRect, pt.nodeDict[def].rawRating, 0f, 1f, true);
+      float newRating = Widgets.HorizontalSlider(sliderRect, pt.nodeDict[def].rawRating, 0f, 1f, true);
+      changed |= newRating != pt.nodeDict[def].rawRating;
+      pt.nodeDict[def].rawRating = newRating;
       Widgets.DrawHighlightIfMouseover(highlightRect);
       labelRect.y += highlightRect.height;
       sliderRect.y += highlightRect.height;
@@ -243,6 +263,7 @@ public static class EditPsycheUtility
 
     if (Widgets.ButtonText(resetRect, ResetButtonText, true, true, true))
     {
+      changed = true;
       pt.RandomizeRatings();
       if (PsychologySettings.enableKinsey)
       {
@@ -256,13 +277,18 @@ public static class EditPsycheUtility
 
     if (Widgets.ButtonText(randomRect, RandomButtonText, true, true, true))
     {
+      changed = true;
       pt.RandomizeRatings(Mathf.CeilToInt(1e+7f * Rand.Value));
       if (PsychologySettings.enableKinsey)
       {
         st.GenerateSexuality(Mathf.CeilToInt(1e+7f * Rand.Value));
       }
     }
-    PsycheCardUtility.Ticker = -1;
+    // Only rebuild the psyche card when something was actually edited (this used to force it on every GUI pass).
+    if (changed)
+    {
+      PsycheCardUtility.RequestRefresh();
+    }
     GUI.EndGroup();
   }
 }

@@ -83,7 +83,7 @@ public class CompAbilityEffect_Indoctrinate : CompAbilityEffect
         Pawn_PsycheTracker pt = PsycheHelper.Comp(recipient).Psyche;
         ApplyAbilityOutcomes(pt, initiator, recipient, out float oldDailyChange, out float newDailyChange);
         pt.CalculateAdjustedRatings();
-        PsycheCardUtility.Ticker = -1;
+        PsycheCardUtility.RequestRefresh();
 
         NamedArgument text1 = initiator.Named("INITIATOR");
         NamedArgument text2 = recipient.Named("RECIPIENT");

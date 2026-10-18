@@ -11,8 +11,9 @@ namespace Psychology;
 /// Draws the psyche card: the Big Five radar (pentagon, with tooltips per axis), the personality list or word cloud
 /// (each node labelled "very/somewhat/slightly X" or its antonym from its adjusted rating, coloured by nodeHSV /
 /// antonymHSV), and the sexuality/drive description. Display options (list vs cloud, colours, antonyms, sort order) are
-/// PsychologySettings fields toggled from the card. Results are cached for MaxTicks frames per pawn (Ticker) so the
-/// adjusted ratings aren't recomputed every frame.
+/// PsychologySettings fields toggled from the card. Derived data (adjusted ratings, trait list / word cloud, Big Five,
+/// sexuality labels) is rebuilt at most once per RefreshIntervalSeconds of real time, or straight away when the pawn or
+/// a display option changes or RequestRefresh() is called, rather than on every GUI pass.
 /// </summary>
 [StaticConstructorOnStartup]
 public class PsycheCardUtility
@@ -40,8 +41,37 @@ public class PsycheCardUtility
   public static Pawn PawnCached;
   public static bool UseCachedBool = false;
   public static bool ShowNumbersBool = false;
-  public const int MaxTicks = 1000;
-  public static int Ticker = -1;
+  public const float RefreshIntervalSeconds = 1f;
+  private static float nextRefreshTime = -1f;
+
+  // Sexuality panel text, rebuilt on refresh.
+  private static string KinseyTextCached = "";
+  private static int SexDriveIntCached;
+  private static int RomDriveIntCached;
+
+  // Big Five axis labels and their sizes (depend only on language and font size), built on first use.
+  private static string[] BigFiveLabels;
+  private static Vector2[] BigFiveLabelSizes;
+
+  // Big Five radar geometry for the last centre/radius; the filled polygon also changes with the ratings.
+  private static Vector2 bigFiveGeometryCenter = new Vector2(float.NaN, float.NaN);
+  private static float bigFiveGeometryRadius = float.NaN;
+  private static readonly List<Vector2>[] bigFiveRings = new List<Vector2>[RadialCategories];
+  private static readonly List<Vector2>[] bigFiveHighlights = new List<Vector2>[5];
+  private static readonly Rect[] bigFiveLabelRects = new Rect[5];
+  private static readonly List<Vector2> bigFiveYellowVertices = new List<Vector2>(6);
+  private static readonly List<int[]> bigFiveYellowTriangles = new List<int[]> { new[] { 0, 1, 5 }, new[] { 1, 2, 5 }, new[] { 2, 3, 5 }, new[] { 3, 4, 5 }, new[] { 4, 0, 5 } };
+  private static readonly List<int[]> noTriangles = new List<int[]>();
+
+  // What the word cloud was last laid out for; the layout is only redone when this changes.
+  private static readonly List<string> CloudLayoutKey = new List<string>();
+  private static Rect CloudLayoutRect;
+
+  // Makes the next draw rebuild everything (after the pawn's psyche was edited, e.g. by the dev editor or indoctrination).
+  public static void RequestRefresh()
+  {
+    nextRefreshTime = -1f;
+  }
 
   public static Vector2 KinseyTextSize;
   public static List<string> SexDriveText = new List<string>();
@@ -249,11 +279,9 @@ public class PsycheCardUtility
     // Draw the widgets for sexuality panel
     if (PsychologySettings.enableKinsey)
     {
-      string kinseyText = "KinseyRating".Translate() + " " + PsycheHelper.Comp(pawn).Sexuality.kinseyRating;
-      float pawnSexDrive = PsycheHelper.Comp(pawn).Sexuality.AdjustedSexDrive;
-      float pawnRomDrive = PsycheHelper.Comp(pawn).Sexuality.AdjustedRomanticDrive;
-      int sexDriveInt = (pawnSexDrive > 1.30f) ? 4 : (pawnSexDrive > 0.90f) ? 3 : (pawnSexDrive > 0.50f) ? 2 : (pawnSexDrive > 0.10f) ? 1 : 0;
-      int romDriveInt = (pawnRomDrive > 1.30f) ? 4 : (pawnRomDrive > 0.90f) ? 3 : (pawnRomDrive > 0.50f) ? 2 : (pawnRomDrive > 0.10f) ? 1 : 0;
+      string kinseyText = KinseyTextCached;
+      int sexDriveInt = SexDriveIntCached;
+      int romDriveInt = RomDriveIntCached;
       //Kinsey rating
       Text.Anchor = TextAnchor.MiddleLeft;
       style.fontSize = SexualityFontSize;
@@ -418,68 +446,50 @@ public class PsycheCardUtility
 
     float pentaRadius = 0.38f * forbiddenRect.width;
     Vector2 pentaCenter = new Vector2(forbiddenRect.center.x, fiveFactorRect.yMax + 0.5f * forbiddenRect.width + BoundaryPadding);
-    for (int r = 1; r <= RadialCategories; r++)
+    bool geometryChanged = UpdateBigFiveGeometry(pentaCenter, pentaRadius);
+
+    // Lines only show up on Repaint; skip the matrix maths on Layout and input passes.
+    if (Event.current.type == EventType.Repaint)
     {
-      List<Vector2> pentaPoints = GetPentagonVerticies(pentaCenter, r * pentaRadius / RadialCategories);
-      if (r != RadialCategories)
+      for (int r = 0; r < RadialCategories; r++)
       {
+        List<Vector2> pentaPoints = bigFiveRings[r];
         for (int p = 0; p < 5; p++)
         {
           UIAssets.DrawLine(pentaPoints[p], pentaPoints[(p + 1) % 5], Color.white, 0.5f);
-
-        }
-      }
-      else
-      {
-        for (int p = 0; p < 5; p++)
-        {
-          UIAssets.DrawLine(pentaPoints[p], pentaPoints[(p + 1) % 5], Color.white, 0.5f);
-          UIAssets.DrawLine(pentaCenter, pentaPoints[p], Color.white, 0.5f);
-
+          if (r == RadialCategories - 1)
+          {
+            UIAssets.DrawLine(pentaCenter, pentaPoints[p], Color.white, 0.5f);
+          }
         }
       }
     }
 
+    bool ratingsChanged = !UseCachedBool;
     CalculateBigFiveRatings(pawn);
-
-    List<Vector2> yellowVerticies = new List<Vector2> { };
-    List<int[]> yellowTriangles = new List<int[]> { };
-    for (int p = 0; p < 5; p++)
+    if (geometryChanged || ratingsChanged || bigFiveYellowVertices.Count == 0)
     {
-      yellowVerticies.Add(RadialProjectionFromCenter(pentaCenter, Mathf.Max(0.01f, bigFiveRatings[p]) * pentaRadius, 72f * p));
-      yellowTriangles.Add(new int[] { p, (p + 1) % 5, 5 });
+      bigFiveYellowVertices.Clear();
+      for (int p = 0; p < 5; p++)
+      {
+        bigFiveYellowVertices.Add(RadialProjectionFromCenter(pentaCenter, Mathf.Max(0.01f, bigFiveRatings[p]) * pentaRadius, 72f * p));
+      }
+      bigFiveYellowVertices.Add(pentaCenter);
     }
-    yellowVerticies.Add(pentaCenter);
-    PolygonUtility.DrawPolygon(yellowVerticies, yellowTriangles, UIAssets.PsycheYellowMat);
+    PolygonUtility.DrawPolygon(bigFiveYellowVertices, bigFiveYellowTriangles, UIAssets.PsycheYellowMat);
 
     for (int p = 0; p < 5; p++)
     {
       string letter = BigFiveLetters[p];
-      string letterTranslated = ("BigFive" + letter).Translate();
-      string letterBold = "<b>" + letterTranslated + "</b>";
 
       style.fontSize = SexualityFontSize;
-      Vector2 letterSize = Text.CalcSize(letterBold);
-      letterSize.x *= 1.1f;
-      Vector2 tightSize = new Vector2(letterSize.x, 0.65f * letterSize.y);
-      float displacement = 0.61f * (tightSize * BigFiveSpacings[p]).magnitude;
-      Vector2 position = RadialProjectionFromCenter(pentaCenter, pentaRadius + displacement, 72 * p);
-
-      Rect letterRect = new Rect(position.x - 0.5f * letterSize.x, position.y - 0.46f * letterSize.y, letterSize.x, letterSize.y);
-
       Text.Anchor = TextAnchor.MiddleCenter;
-      Widgets.Label(letterRect, letterBold.Colorize(PsychologySettings.useColors ? BigFiveColors[p] : Color.white));
+      Widgets.Label(bigFiveLabelRects[p], BigFiveLabels[p].Colorize(PsychologySettings.useColors ? BigFiveColors[p] : Color.white));
       Text.Anchor = OldAnchor;
-
       style.fontSize = OldSmallFontSize;
 
-      List<Vector2> verticies = new List<Vector2> { };
-      verticies.Add(pentaCenter);
-      verticies.Add(RadialProjectionFromCenter(pentaCenter, SideScaling * HighlightRadius, 72f * (p - 0.5f)));
-      verticies.Add(RadialProjectionFromCenter(pentaCenter, HighlightRadius, 72f * p));
-      verticies.Add(RadialProjectionFromCenter(pentaCenter, SideScaling * HighlightRadius, 72f * (p + 0.5f)));
-      List<int[]> triangles = new List<int[]> { };
-      PolygonUtility.DrawPolygonHighlightIfMouseover(verticies, triangles);
+      List<Vector2> verticies = bigFiveHighlights[p];
+      PolygonUtility.DrawPolygonHighlightIfMouseover(verticies, noTriangles);
 
       Color bigFiveTitleColor = PsychologySettings.useColors ? BigFiveColors[p] : ColoredText.TipSectionTitleColor;
       float bigFiveRating = bigFiveRatings[p];
@@ -494,6 +504,53 @@ public class PsycheCardUtility
         return bigFiveDescription;
       }, 38975 + p * 237);
     }
+  }
+
+  // Builds the axis labels once, and the radar's rings, highlight wedges and label rects whenever the centre or radius
+  // changes. Returns true if the geometry was rebuilt.
+  private static bool UpdateBigFiveGeometry(Vector2 pentaCenter, float pentaRadius)
+  {
+    if (BigFiveLabels == null)
+    {
+      BigFiveLabels = new string[5];
+      BigFiveLabelSizes = new Vector2[5];
+      int oldFontSize = style.fontSize;
+      style.fontSize = SexualityFontSize;
+      for (int p = 0; p < 5; p++)
+      {
+        BigFiveLabels[p] = "<b>" + ("BigFive" + BigFiveLetters[p]).Translate() + "</b>";
+        Vector2 labelSize = Text.CalcSize(BigFiveLabels[p]);
+        labelSize.x *= 1.1f;
+        BigFiveLabelSizes[p] = labelSize;
+      }
+      style.fontSize = oldFontSize;
+    }
+    if (pentaCenter == bigFiveGeometryCenter && pentaRadius == bigFiveGeometryRadius)
+    {
+      return false;
+    }
+    bigFiveGeometryCenter = pentaCenter;
+    bigFiveGeometryRadius = pentaRadius;
+    for (int r = 0; r < RadialCategories; r++)
+    {
+      bigFiveRings[r] = GetPentagonVerticies(pentaCenter, (r + 1) * pentaRadius / RadialCategories);
+    }
+    for (int p = 0; p < 5; p++)
+    {
+      bigFiveHighlights[p] = new List<Vector2>
+      {
+        pentaCenter,
+        RadialProjectionFromCenter(pentaCenter, SideScaling * HighlightRadius, 72f * (p - 0.5f)),
+        RadialProjectionFromCenter(pentaCenter, HighlightRadius, 72f * p),
+        RadialProjectionFromCenter(pentaCenter, SideScaling * HighlightRadius, 72f * (p + 0.5f))
+      };
+      Vector2 letterSize = BigFiveLabelSizes[p];
+      Vector2 tightSize = new Vector2(letterSize.x, 0.65f * letterSize.y);
+      float displacement = 0.61f * (tightSize * BigFiveSpacings[p]).magnitude;
+      Vector2 position = RadialProjectionFromCenter(pentaCenter, pentaRadius + displacement, 72 * p);
+      bigFiveLabelRects[p] = new Rect(position.x - 0.5f * letterSize.x, position.y - 0.46f * letterSize.y, letterSize.x, letterSize.y);
+    }
+    return true;
   }
 
   public static void PersonalityTraitList(Rect personalityRect, Pawn pawn)
@@ -581,17 +638,35 @@ public class PsycheCardUtility
       DrawWordCloud();
       return;
     }
-    CloudTextRects.Clear();
-    CloudTightRects.Clear();
-    CloudTexts.Clear();
-    CloudNodes.Clear();
-    CloudFontSizes.Clear();
 
     Rect cloudRect = totalRect.ContractedBy(BoundaryPadding);
     Rect forbiddenRect1 = forbiddenRect.ExpandedBy(BoundaryPadding);
     List<PersonalityNode> allNodes = (from n in PsycheHelper.Comp(pawn).Psyche.PersonalityNodes
                                       orderby Mathf.Abs(n.AdjustedRating - 0.5f) descending, n.def.defName
                                       select n).ToList();
+
+    // Ratings drift slowly, so on most refreshes the words and their order are unchanged: keep the old layout then.
+    List<string> layoutKey = new List<string>(allNodes.Count + 1) { pawn.thingIDNumber.ToString() };
+    PsychologySettings.useAntonyms = true;
+    foreach (PersonalityNode node in allNodes)
+    {
+      layoutKey.Add(ColorizedNodeText(node.def, node.AdjustedRating - 0.5f));
+    }
+    PsychologySettings.useAntonyms = UseAntonymsCached;
+    if (totalRect == CloudLayoutRect && layoutKey.SequenceEqual(CloudLayoutKey))
+    {
+      DrawWordCloud();
+      return;
+    }
+    CloudLayoutKey.Clear();
+    CloudLayoutKey.AddRange(layoutKey);
+    CloudLayoutRect = totalRect;
+
+    CloudTextRects.Clear();
+    CloudTightRects.Clear();
+    CloudTexts.Clear();
+    CloudNodes.Clear();
+    CloudFontSizes.Clear();
     Text.Font = GameFont.Medium;
     GUIStyle style = Text.fontStyles[2];
     float lengthX = totalRect.xMax - cloudCenter.x;
@@ -804,7 +879,7 @@ public class PsycheCardUtility
 
   public static void CheckIfCachedChanged(Pawn pawn)
   {
-    bool bool0 = Ticker > 0;
+    bool bool0 = Time.realtimeSinceStartup < nextRefreshTime;
     bool bool1 = PawnCached == pawn;
     bool bool2 = DisplayOptionCached == PsychologySettings.displayOption;
     bool bool3 = UseColorsCached == PsychologySettings.useColors;
@@ -813,16 +888,26 @@ public class PsycheCardUtility
     UseCachedBool = bool0 && bool1 && bool2 && bool3 && bool4 && bool5;
     if (UseCachedBool)
     {
-      Ticker--;
       return;
     }
-    PsycheHelper.Comp(pawn).Psyche.CalculateAdjustedRatings();
-    Ticker = MaxTicks;
+    CompPsychology comp = PsycheHelper.Comp(pawn);
+    comp.Psyche.CalculateAdjustedRatings();
+    nextRefreshTime = Time.realtimeSinceStartup + RefreshIntervalSeconds;
     PawnCached = pawn;
     DisplayOptionCached = PsychologySettings.displayOption;
     UseColorsCached = PsychologySettings.useColors;
     UseAntonymsCached = PsychologySettings.useAntonyms;
     ListAlphabeticalCached = PsychologySettings.listAlphabetical;
+
+    KinseyTextCached = "KinseyRating".Translate() + " " + comp.Sexuality.kinseyRating;
+    SexDriveIntCached = DriveCategory(comp.Sexuality.AdjustedSexDrive);
+    RomDriveIntCached = DriveCategory(comp.Sexuality.AdjustedRomanticDrive);
+  }
+
+  // Index into SexDriveText / RomDriveText.
+  private static int DriveCategory(float drive)
+  {
+    return (drive > 1.30f) ? 4 : (drive > 0.90f) ? 3 : (drive > 0.50f) ? 2 : (drive > 0.10f) ? 1 : 0;
   }
 
   // Serialise / restore a pawn's psyche as a "key:value|..." string (meant for copy/paste between editors). Not called
