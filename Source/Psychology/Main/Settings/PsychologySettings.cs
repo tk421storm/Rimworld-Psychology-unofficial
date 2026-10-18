@@ -74,8 +74,11 @@ public class PsychologySettings : ModSettings
   public const float mentalBreakAnxietyChanceDefault = 0.05f;
   public static float mentalBreakAnxietyChance = 0.05f;
 
-  public const float imprisonedDebuffDefault = 40f; // v1.1
-  public static float imprisonedDebuff = 40f; // v1.1
+  // Opinion penalty a recruited prisoner gets towards each colonist; at or above the default it also replaces the
+  // rapport built by warden chats (see PatchOperationRapportBuilt and the recruit patch). Slider range 0-40.
+  public const float imprisonedDebuffDefault = 20f;
+  public static float imprisonedDebuff = 20f;
+  public const float imprisonedDebuffMax = 40f;
 
   public const float conversationDurationDefault = 60f;
   public static float conversationDuration = 60f;
@@ -97,6 +100,12 @@ public class PsychologySettings : ModSettings
 
   public const float romanceOpinionThresholdDefault = 5f; // v1.1
   public static float romanceOpinionThreshold = 5f; // v1.1
+
+  // Divides the time between a couple's lovin (2 = twice as often). Slider range lovinFrequencyMin-lovinFrequencyMax.
+  public const float lovinFrequencyDefault = 1f;
+  public static float lovinFrequency = 1f;
+  public const float lovinFrequencyMin = 0.1f;
+  public const float lovinFrequencyMax = 5f;
 
   public const float traitOpinionMultiplierDefault = 0.25f; // v1.3
   public static float traitOpinionMultiplier = 0.25f; // v1.3
@@ -156,6 +165,7 @@ public class PsychologySettings : ModSettings
     ScribeValueAndAddToNameList(nameof(convoPersonalityEffectMultiplier));
     ScribeValueAndAddToNameList(nameof(romanceChanceMultiplier));
     ScribeValueAndAddToNameList(nameof(romanceOpinionThreshold));
+    ScribeValueAndAddToNameList(nameof(lovinFrequency));
     ScribeValueAndAddToNameList(nameof(traitOpinionMultiplier));
     ScribeValueAndAddToNameList(nameof(personalityExtremeness));
     ScribeValueAndAddToNameList(nameof(ideoPsycheMultiplier));
@@ -176,6 +186,9 @@ public class PsychologySettings : ModSettings
     Scribe_Values.Look(ref convoOpinionMultiplier, "Psychology_ConvoOpinionMultiplier", convoOpinionMultiplierDefault);
     enableAnxiety = enableAnxietyDefault;
 
+    /* Keep values saved by older versions (text boxes, wider ranges) inside the sliders' ranges */
+    imprisonedDebuff = Mathf.Clamp(imprisonedDebuff, 0f, imprisonedDebuffMax);
+    lovinFrequency = Mathf.Clamp(lovinFrequency, lovinFrequencyMin, lovinFrequencyMax);
   }
 
   // Saves/loads the static field called settingName (bool or float) and registers it in the name lists.

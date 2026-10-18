@@ -66,7 +66,7 @@ namespace Psychology
     {
       LovinMtbSinglePawnFactorPsychology(pawn, out float yMean1);
       LovinMtbSinglePawnFactorPsychology(partner, out float yMean2);
-      return 0.5f * Mathf.Sqrt(yMean1 * yMean2) / 12f;
+      return 0.5f * Mathf.Sqrt(yMean1 * yMean2) / 12f / PsychologySettings.lovinFrequency;
     }
 
     // One pawn's lovin-interval factor: 1 / (1 - pain), 1 / (2 x consciousness) below 50% consciousness, Biotech gene

@@ -302,6 +302,7 @@ public static class SettingsWindowUtility{
       CheckboxEntry(nameof(PsychologySettings.enableDateLetters));
       FloatEntry(nameof(PsychologySettings.romanceChanceMultiplier), 0f, 1E+09f);
       FloatEntry(nameof(PsychologySettings.romanceOpinionThreshold), -99f, 99f);
+      FloatSliderEntry(nameof(PsychologySettings.lovinFrequency), PsychologySettings.lovinFrequencyMin, PsychologySettings.lovinFrequencyMax, 2);
     }
 
     if (Widgets.ButtonText(buttonRect, "Conversations"))
@@ -328,7 +329,7 @@ public static class SettingsWindowUtility{
     if (opinionChangesOpen)
     {
       FloatEntry(nameof(PsychologySettings.traitOpinionMultiplier), 0f, 2f);
-      FloatEntry(nameof(PsychologySettings.imprisonedDebuff), 0f, 100f);
+      FloatSliderEntry(nameof(PsychologySettings.imprisonedDebuff), 0f, PsychologySettings.imprisonedDebuffMax, 0);
     }
 
     if (Widgets.ButtonText(buttonRect, "Other settings"))
@@ -562,6 +563,47 @@ public static class SettingsWindowUtility{
       Find.WindowStack.Add(new FloatMenu(list));
     }
 
+    entryFloat.NumericTextField(entryRect, min, max, false);
+
+    ShiftRectsDown(RowHeight);
+  }
+
+  // Like FloatEntry, with a slider in the space between the title and the number box.
+  public static void FloatSliderEntry(string floatSettingName, float min, float max, int roundToDigits)
+  {
+    Rect highlightRect = titleRect;
+    highlightRect.xMin -= HighlightPadding;
+    highlightRect.xMax = entryRect.xMax + HighlightPadding;
+    Widgets.DrawHighlightIfMouseover(highlightRect);
+    TooltipHandler.TipRegion(highlightRect, delegate
+    {
+      return TooltipDict[floatSettingName];
+    }, TooltipDict[floatSettingName].GetHashCode());
+
+    if (!FloatEntryDict.TryGetValue(floatSettingName, out EntryFloat<PsychologySettings> entryFloat))
+    {
+      entryFloat = new EntryFloat<PsychologySettings>(null, floatSettingName, alwaysOpen: true);
+      FloatEntryDict[floatSettingName] = entryFloat;
+    }
+
+    // Only the title text opens the Default menu, so clicks on the slider don't.
+    Rect labelRect = titleRect;
+    labelRect.width = Mathf.Min(Text.CalcSize(TitleDict[floatSettingName]).x + 2f * HighlightPadding, titleRect.width / 2f);
+    if (UIAssets.ButtonLabel(labelRect, TitleDict[floatSettingName], false))
+    {
+      List<FloatMenuOption> list = new List<FloatMenuOption>();
+      list.Add(new FloatMenuOption("Default".Translate(), delegate
+      {
+        FieldInfo fieldInfoDefault = AccessTools.Field(typeof(PsychologySettings), floatSettingName + "Default");
+        PsychologySettings.ResetSettingToDefault(floatSettingName);
+        entryFloat.UpdateValueAndBuffer((float)fieldInfoDefault.GetValue(null));
+      }));
+      Find.WindowStack.Add(new FloatMenu(list));
+    }
+
+    // Widgets.HorizontalSlider draws its rail 2-10 px below the rect's top, so a 12 px rect centred on the row centres it.
+    Rect sliderRect = new Rect(labelRect.xMax + HighlightPadding, titleRect.center.y - 6f, titleRect.xMax - labelRect.xMax - 3f * HighlightPadding, 12f);
+    entryFloat.Slider(sliderRect, min, max, false, roundToDigits);
     entryFloat.NumericTextField(entryRect, min, max, false);
 
     ShiftRectsDown(RowHeight);
