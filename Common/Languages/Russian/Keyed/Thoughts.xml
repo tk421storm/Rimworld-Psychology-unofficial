@@ -5,5 +5,6 @@
 	
 	<AttendedFuneralThought>посещены похороны {0}</AttendedFuneralThought>
 	<AttendedFuneralDesc>До сих пор не могу поверь, что {0_pronoun} больше не с нами, однако... Я чувствую себя более умиротворённо после похорон.</AttendedFuneralDesc>
+	<RapportStrainedLabel>натянутые отношения</RapportStrainedLabel>
 
 </LanguageData>

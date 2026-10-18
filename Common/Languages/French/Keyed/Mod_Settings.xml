@@ -33,7 +33,7 @@
 	<BenchmarkingTooltip>Activez cette option pour recevoir des rapports de performance occasionnels dans la console vis-à-vis du système Psychology. Vous pouvez coupier-coller ces rapports pour aider l'optimisation du mod. AVERTISSEMENT : Les tests de performance ont un impact sur les performances.\n\nModifier ce paramètre relancera votre jeu.</BenchmarkingTooltip>
   
 	<ImprisonedDebuffTitle>Pénalité de rectrutement pour les prisonniers</ImprisonedDebuffTitle>
-	<ImprisonedDebuffTooltip>Pénalité d'opinion qu'un prisonnier recruté reçoit envers chaque colon (« faction m'ayant emprisonné », dure 45 jours). Elle remplace aussi le rapport vanilla : en vanilla, chaque discussion avec un gardien donne au prisonnier +2 d'opinion envers ce gardien (jusqu'à +100), ce qui le rend plus amical envers lui et réduit sa résistance jusqu'à 1,5 fois plus vite. À 0, cette option est désactivée et le rapport fonctionne comme en vanilla ; entre 0 et 20, les discussions créent moins de rapport ; à 20 (par défaut) ou plus, elles n'en créent plus et tout rapport est supprimé au recrutement. Nécessite un redémarrage.</ImprisonedDebuffTooltip>
+	<ImprisonedDebuffTooltip>Pénalité d'opinion qu'un prisonnier recruté reçoit envers chaque colon (« faction m'ayant emprisonné », dure 45 jours). Réglez sur 0 pour la désactiver. Nécessite un redémarrage.</ImprisonedDebuffTooltip>
 
 	<RomanceChanceMultiplierTitle>Multiplicateur de chance de séduction</RomanceChanceMultiplierTitle>
 	<RomanceChanceMultiplierTooltip>Les chances de séduction seront multipliées par cette valeur. Régler sur 0 retierera complètement la séduction.</RomanceChanceMultiplierTooltip>
@@ -87,5 +87,7 @@
 	<PersonalityExtremenessTooltip>Définit à quel point les personnalités sont accentuées pour correspondre aux archétypes du modèle des Big Five.</PersonalityExtremenessTooltip>
 	<IdeoPsycheMultiplierTitle>Multiplicateur d'interaction avec l'idéologie</IdeoPsycheMultiplierTitle>
 	<IdeoPsycheMultiplierTooltip>Contrôle l'intensité de l'interaction entre personnalité et idéologie. Réglez sur 0 pour la désactiver complètement.</IdeoPsycheMultiplierTooltip>
+	<AdjustRapportByCompatibilityTitle>Ajuster le rapport selon la compatibilité</AdjustRapportByCompatibilityTitle>
+	<AdjustRapportByCompatibilityTooltip>En vanilla, chaque fois qu'un gardien discute avec un prisonnier, celui-ci gagne +2 d'opinion envers ce gardien (jusqu'à +100), ce qui réduit aussi sa résistance jusqu'à 1,5 fois plus vite. Avec cette option, ce +2 dépend de la compatibilité de leurs personnalités : environ +2 pour une paire ordinaire, jusqu'à environ +6 pour une très bonne entente, et négatif (« rapport tendu ») quand leurs personnalités s'opposent. Désactivée : +2 vanilla à chaque fois.</AdjustRapportByCompatibilityTooltip>
 
 </LanguageData>

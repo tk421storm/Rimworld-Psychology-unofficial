@@ -5,5 +5,6 @@
 	
 	<AttendedFuneralThought>nahm an der Beerdigung von {0_pronoun} teil</AttendedFuneralThought>
 	<AttendedFuneralDesc>Ich kann immer noch nicht glauben, dass {0_pronoun} tot ist, aber ... nach der Beerdigung habe ich mehr Frieden damit.</AttendedFuneralDesc>
+	<RapportStrainedLabel>angespannter Rapport</RapportStrainedLabel>
 
 </LanguageData>

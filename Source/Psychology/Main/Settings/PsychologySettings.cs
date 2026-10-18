@@ -74,11 +74,14 @@ public class PsychologySettings : ModSettings
   public const float mentalBreakAnxietyChanceDefault = 0.05f;
   public static float mentalBreakAnxietyChance = 0.05f;
 
-  // Opinion penalty a recruited prisoner gets towards each colonist; at or above the default it also replaces the
-  // rapport built by warden chats (see PatchOperationRapportBuilt and the recruit patch). Slider range 0-40.
-  public const float imprisonedDebuffDefault = 20f;
-  public static float imprisonedDebuff = 20f;
+  // Opinion penalty ("faction imprisoned me") a recruited prisoner gets towards each colonist. Slider range 0-40.
+  public const float imprisonedDebuffDefault = 40f;
+  public static float imprisonedDebuff = 40f;
   public const float imprisonedDebuffMax = 40f;
+
+  // Scale vanilla's rapport from warden chats by the two pawns' personality compatibility (Thought_RapportBuilt).
+  public const bool adjustRapportByCompatibilityDefault = true;
+  public static bool adjustRapportByCompatibility = true;
 
   public const float conversationDurationDefault = 60f;
   public static float conversationDuration = 60f;
@@ -158,6 +161,7 @@ public class PsychologySettings : ModSettings
     ScribeValueAndAddToNameList(nameof(enableDateLetters));
     ScribeValueAndAddToNameList(nameof(mentalBreakAnxietyChance));
     ScribeValueAndAddToNameList(nameof(imprisonedDebuff));
+    ScribeValueAndAddToNameList(nameof(adjustRapportByCompatibility));
     ScribeValueAndAddToNameList(nameof(conversationDuration));
     ScribeValueAndAddToNameList(nameof(convoMaxOpinionChange));
     ScribeValueAndAddToNameList(nameof(convoMeanHours));

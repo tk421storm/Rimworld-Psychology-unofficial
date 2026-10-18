@@ -15,8 +15,7 @@ namespace Psychology.Harmony
     [HarmonyPatch(typeof(InteractionWorker_RecruitAttempt), "DoRecruit")]
     //Pawn recruiter, Pawn recruitee, out string letterLabel, out string letter, bool useAudiovisualEffects = true, bool sendLetter = true); // 1.3
     // When a prisoner is recruited, they get a "captured me" opinion memory of every free colonist (the "imprisoned
-    // debuff" setting controls its strength; 0 disables this). At or above the default setting that grudge replaces the
-    // rapport wardens built up, so the prisoner's RapportBuilt memories are removed.
+    // debuff" setting controls its strength; 0 disables this).
     [HarmonyPatch(new Type[] { typeof(Pawn), typeof(Pawn), typeof(string), typeof(string), typeof(bool), typeof(bool) }, new ArgumentType[] { ArgumentType.Normal, ArgumentType.Normal, ArgumentType.Ref, ArgumentType.Ref, ArgumentType.Normal, ArgumentType.Normal })]
     public static class InteractionWorker_RecruitAttempt_DoRecruitPatch
     {
@@ -31,11 +30,6 @@ namespace Psychology.Harmony
                                                                               select p);
                 if (recruitee.IsPrisonerOfColony)
                 {
-                    // Looked up by name: vanilla's ThoughtDefOf.RapportBuilt field went away in 1.5, though the def remains.
-                    if (PsychologySettings.imprisonedDebuff >= PsychologySettings.imprisonedDebuffDefault && DefDatabase<ThoughtDef>.GetNamedSilentFail("RapportBuilt") is ThoughtDef rapportBuilt)
-                    {
-                        recruitee.needs.mood.thoughts.memories.RemoveMemoriesOfDef(rapportBuilt);
-                    }
                     foreach (Pawn pawn in allFactionPawns)
                     {
                         recruitee.needs.mood.thoughts.memories.TryGainMemory(ThoughtDefOfPsychology.CapturedMe, pawn);

@@ -250,9 +250,14 @@
 		<xpath>*/ThoughtDef[defName="CapturedMe"]/stages/li[1]/baseOpinionOffset/text()</xpath>
 	</Operation>
 
-	<!-- RapportBuilt opinion offset -->
-	<Operation Class="Psychology.PatchOperationRapportBuilt">
-		<xpath>*/ThoughtDef[defName="RapportBuilt"]/stages/li[1]/baseOpinionOffset/text()</xpath>
+	<!-- RapportBuilt: scale each warden chat's opinion by personality compatibility (Psychology.Thought_RapportBuilt,
+	     "adjust rapport based on compatibility" setting). Always succeeds, for game versions without RapportBuilt. -->
+	<Operation Class="PatchOperationReplace">
+		<success>Always</success>
+		<xpath>Defs/ThoughtDef[defName="RapportBuilt"]/thoughtClass</xpath>
+		<value>
+			<thoughtClass>Psychology.Thought_RapportBuilt</thoughtClass>
+		</value>
 	</Operation>
 
 	<!-- AteLavishMeal nullifying traits -->

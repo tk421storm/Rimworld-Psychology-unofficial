@@ -32,7 +32,7 @@
 	<BenchmarkingTooltip>Aktiviere diese Option, um in der Konsole gelegentlich Leistungsberichte zu Psychology Mod zu erhalten. Sie können diesen Bericht kopieren und einfügen, um die Optimierung des Mod zu unterstützen. WARNUNG: Die Leistungstests haben ihre eigenen Auswirkungen auf die Leistung.\n\nDas Toggeln der Option sorgt für ein Neustart des Spiels.</BenchmarkingTooltip>
 
 	<ImprisonedDebuffTitle>Rekrutierungsmalus für Gefangene</ImprisonedDebuffTitle>
-	<ImprisonedDebuffTooltip>Meinungsmalus, den ein rekrutierter Gefangener gegenüber jedem Kolonisten erhält („Fraktion hat mich eingesperrt“, 45 Tage). Er ersetzt außerdem den Vanilla-Rapport: In Vanilla gibt jedes Gespräch mit einem Wärter dem Gefangenen +2 Meinung über diesen Wärter (bis zu +100), wodurch er den Wärter mag und sein Widerstand bis zu 1,5-mal schneller sinkt. Bei 0 ist dies aus und Rapport funktioniert wie in Vanilla; zwischen 0 und 20 bauen Gespräche weniger Rapport auf; ab 20 (Standard) bauen sie keinen mehr auf, und vorhandener Rapport wird bei der Rekrutierung entfernt. Neustart erforderlich.</ImprisonedDebuffTooltip>
+	<ImprisonedDebuffTooltip>Meinungsmalus, den ein rekrutierter Gefangener gegenüber jedem Kolonisten erhält („Fraktion hat mich eingesperrt“, 45 Tage). Auf 0 setzen, um ihn zu deaktivieren. Neustart erforderlich.</ImprisonedDebuffTooltip>
 
 	<RomanceChanceMultiplierTitle>Romance chance multiplier</RomanceChanceMultiplierTitle>
 	<RomanceChanceMultiplierTooltip>Romance chance will be multiplied by this value. Setting to 0 should eliminate romance entirely.</RomanceChanceMultiplierTooltip>
@@ -65,5 +65,7 @@
 	<PersonalityExtremenessTooltip>Legt fest, wie stark Persönlichkeiten an die Archetypen der Big Five angeglichen werden.</PersonalityExtremenessTooltip>
 	<IdeoPsycheMultiplierTitle>Multiplikator für Ideologie-Wechselwirkung</IdeoPsycheMultiplierTitle>
 	<IdeoPsycheMultiplierTooltip>Bestimmt, wie stark Persönlichkeit und Ideologie sich gegenseitig beeinflussen. Auf 0 setzen, um es ganz zu deaktivieren.</IdeoPsycheMultiplierTooltip>
+	<AdjustRapportByCompatibilityTitle>Rapport nach Kompatibilität anpassen</AdjustRapportByCompatibilityTitle>
+	<AdjustRapportByCompatibilityTooltip>In Vanilla erhält ein Gefangener bei jedem Gespräch mit einem Wärter +2 Meinung über diesen Wärter (bis zu +100), wodurch sein Widerstand auch bis zu 1,5-mal schneller sinkt. Ist dies aktiv, hängt diese +2 davon ab, wie gut ihre Persönlichkeiten zusammenpassen: etwa +2 bei einem gewöhnlichen Paar, bis zu etwa +6 bei sehr guter Passung und negativ („angespannter Rapport“), wenn ihre Persönlichkeiten kollidieren. Aus: jedes Mal Vanilla-+2.</AdjustRapportByCompatibilityTooltip>
 
 </LanguageData>

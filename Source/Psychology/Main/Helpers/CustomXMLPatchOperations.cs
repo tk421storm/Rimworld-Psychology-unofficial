@@ -113,25 +113,6 @@ public class PatchOperationImprisonedMe : PatchOperationPathed
   }
 }
 
-// Fades vanilla's RapportBuilt opinion out as the imprisoned debuff setting goes up (at the default setting it's 0).
-// Succeeds without changing anything if the game version has no RapportBuilt thought.
-public class PatchOperationRapportBuilt : PatchOperationPathed
-{
-  protected override bool ApplyWorker(XmlDocument xml)
-  {
-    foreach (XmlNode xmlNode in xml.SelectNodes(xpath).Cast<XmlNode>().ToArray())
-    {
-      if (xmlNode.Value != null && xmlNode.NodeType == XmlNodeType.Text)
-      {
-        float oldValue = ParseHelper.FromString<int>(xmlNode.Value);
-        float newValue = Mathf.Lerp(oldValue, 0f, PsychologySettings.imprisonedDebuff / PsychologySettings.imprisonedDebuffDefault);
-        xmlNode.Value = newValue.ToString();
-      }
-    }
-    return true;
-  }
-}
-
 // Only applies when the "empathy" setting is on. ThoughtPatches.xml uses them to soften
 // vanilla's blanket "someone was executed/harvested" mood penalties for everyone (Psychology gives the strong reactions
 // to Bleeding Hearts instead).

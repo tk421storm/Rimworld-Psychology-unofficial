@@ -48,7 +48,7 @@
 	<BenchmarkingTooltip>Turn this on to receive occasional performance reports in the console relating to Psychology systems. You can copy and paste these reports to assist in optimization of the mod. WARNING: Performance testing comes with its own performance impact.\n\nToggling this will restart your game.</BenchmarkingTooltip>-->
   
 	<ImprisonedDebuffTitle>Prisoner recruitment penalty</ImprisonedDebuffTitle>
-	<ImprisonedDebuffTooltip>Opinion penalty a recruited prisoner gets towards every colonist ("faction imprisoned me", lasts 45 days). It also replaces vanilla rapport: in vanilla each warden chat gives the prisoner +2 opinion of that warden (up to +100), which makes them like their warden and wears down resistance up to 1.5x faster. At 0 this is off and rapport works as in vanilla; between 0 and 20 chats build less rapport; at 20 (default) or more chats build none and any rapport is removed on recruitment. Requires restart.</ImprisonedDebuffTooltip>
+	<ImprisonedDebuffTooltip>Opinion penalty a recruited prisoner gets towards every colonist ("faction imprisoned me", lasts 45 days). Set to 0 to disable. Requires restart.</ImprisonedDebuffTooltip>
 
 	<RomanceChanceMultiplierTitle>Romance chance multiplier</RomanceChanceMultiplierTitle>
 	<RomanceChanceMultiplierTooltip>Romance chance will be multiplied by this value. Setting to 0 should eliminate new romances entirely.</RomanceChanceMultiplierTooltip>
@@ -106,4 +106,7 @@
 	
 	<LovinFrequencyTitle>Lovin frequency</LovinFrequencyTitle>
 	<LovinFrequencyTooltip>How often couples make love: 2 = twice as often, 0.5 = half as often.</LovinFrequencyTooltip>
+	<AdjustRapportByCompatibilityTitle>Adjust rapport based on compatibility</AdjustRapportByCompatibilityTitle>
+	<AdjustRapportByCompatibilityTooltip>In vanilla, each time a warden chats with a prisoner the prisoner gets +2 opinion of that warden (up to +100), which also wears down their resistance up to 1.5x faster. With this on, that +2 is scaled by how compatible their personalities are: about +2 for a typical pair, up to about +6 for a great fit, and negative ("strained rapport") when their personalities clash. Off: vanilla +2 each time.</AdjustRapportByCompatibilityTooltip>
+
 </LanguageData>

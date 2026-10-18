@@ -32,7 +32,7 @@
   <BenchmarkingTooltip>启用此选项，您会偶尔收到关于此心理学系统的性能测试报告，您可以提交这些报告来帮助mod作者完善这个mod， 警告: 性能测试功能本身也会影响性能。\n\n激活此选项将重启游戏。</BenchmarkingTooltip>
 
   <ImprisonedDebuffTitle>招募囚犯惩罚</ImprisonedDebuffTitle>
-  <ImprisonedDebuffTooltip>被招募的囚犯对每位殖民者产生的负面意见（“关押了我”，持续45天）。它同时取代原版的融洽关系：原版中狱卒每次与囚犯交谈，囚犯对该狱卒的意见+2（最多+100），这会让囚犯喜欢狱卒，并使其抵抗度下降最多快1.5倍。设为0时关闭此功能，融洽关系与原版相同；0到20之间交谈建立的融洽关系减少；20（默认）及以上时交谈不再建立融洽关系，且招募时会清除已有的融洽关系。需要重启游戏。</ImprisonedDebuffTooltip>
+  <ImprisonedDebuffTooltip>被招募的囚犯对每位殖民者产生的负面意见（“关押了我”，持续45天）。设为0则禁用。需要重启游戏。</ImprisonedDebuffTooltip>
 
   <RomanceChanceMultiplierTitle>追求几率乘数</RomanceChanceMultiplierTitle>
   <RomanceChanceMultiplierTooltip>追求成功的几率将会乘上这个数值。</RomanceChanceMultiplierTooltip>
@@ -65,5 +65,7 @@
 	<PersonalityExtremenessTooltip>设置性格向大五人格原型靠拢的程度。</PersonalityExtremenessTooltip>
 	<IdeoPsycheMultiplierTitle>意识形态互动乘数</IdeoPsycheMultiplierTitle>
 	<IdeoPsycheMultiplierTooltip>控制性格与意识形态相互影响的强度。设为0则完全禁用。</IdeoPsycheMultiplierTooltip>
+	<AdjustRapportByCompatibilityTitle>根据性格契合度调整融洽关系</AdjustRapportByCompatibilityTitle>
+	<AdjustRapportByCompatibilityTooltip>原版中，狱卒每次与囚犯交谈，囚犯对该狱卒的意见+2（最多+100），这也会使其抵抗度下降最多快1.5倍。开启后，这+2会根据两人的性格契合度调整：普通的一对约+2，非常契合时最多约+6，性格冲突时则为负值（“关系紧张”）。关闭时：每次交谈均为原版的+2。</AdjustRapportByCompatibilityTooltip>
 
 </LanguageData>

@@ -540,6 +540,44 @@ public class Pawn_PsycheTracker : IExposable
     return certaintyChange;
   }
 
+  // Raw compatibility scores between random pawns average about -0.033 with a standard deviation of about 0.09.
+  // Centring on the mean and dividing by three standard deviations puts a typical pair at 0 and the most / least
+  // compatible 1% of pairs at about +/-0.77.
+  public const float PersonalityCompatibilityMean = -0.033f;
+  public const float PersonalityCompatibilitySpread = 0.27f;
+
+  /// <summary>
+  /// How well this pawn's personality fits another pawn's, in [-1, 1] (0 = a typical pair). Every node is scored with
+  /// the same agree/disagree curve conversations use (SaddleShapeFunction, sharper for more controversial topics) and
+  /// weighted by its controversiality. 0 if the other pawn has no psyche. Used by Thought_RapportBuilt.
+  /// </summary>
+  public float PersonalityCompatibilityWith(Pawn other)
+  {
+    if (!PsycheHelper.PsychologyEnabled(other))
+    {
+      return 0f;
+    }
+    Pawn_PsycheTracker otherPsyche = PsycheHelper.Comp(other).Psyche;
+    float total = 0f;
+    float weight = 0f;
+    foreach (PersonalityNode node in this.nodes)
+    {
+      float controversiality = node.def.controversiality;
+      if (controversiality <= 0f)
+      {
+        continue;
+      }
+      float agreement = PsycheHelper.SaddleShapeFunction(GetPersonalityRating(node.def), otherPsyche.GetPersonalityRating(node.def), 1f - 0.5f * controversiality, 4f * controversiality * controversiality);
+      total += controversiality * agreement;
+      weight += controversiality;
+    }
+    if (weight <= 0f)
+    {
+      return 0f;
+    }
+    return Mathf.Clamp((total / weight - PersonalityCompatibilityMean) / PersonalityCompatibilitySpread, -1f, 1f);
+  }
+
   /// <summary>
   /// (Ideology) Cosine similarity, in [-1, 1], between the pawn's personality (adjusted ratings minus 0.5) and the
   /// direction the ideoligion "favours" (PersonalityNodeIdeoUtility.FavoredDisplacmentForIdeo). Scales conversion
