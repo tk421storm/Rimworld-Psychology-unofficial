@@ -54,7 +54,8 @@ public static class RomanceDebugUtility
         lord.lordManager.RemoveLord(lord);
       }));
     }
-    foreach (Pawn target in pawn.Map.mapPawns.FreeColonistsSpawned)
+    // A copy: FreeColonistsSpawned is a shared cached list, and the chances below query it again (colony size, safety).
+    foreach (Pawn target in pawn.Map.mapPawns.FreeColonistsSpawned.ToList())
     {
       if (target != pawn)
       {
