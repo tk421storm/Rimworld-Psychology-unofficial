@@ -234,6 +234,7 @@
 
 	<ThoughtDef>
 		<defName>TreatmentFailed</defName>
+		<thoughtClass>Psychology.Thought_TreatmentFailed</thoughtClass>
 		<durationDays>2</durationDays>
 		<stackLimit>20</stackLimit>
 		<showBubble>true</showBubble>

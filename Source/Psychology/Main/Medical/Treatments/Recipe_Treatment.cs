@@ -69,12 +69,12 @@ public class Recipe_Treatment : Recipe_Surgery
             pawn.health.AddHediff(recover);
             return;
         }
-        ThoughtDef failure = ThoughtDefOfPsychology.TreatmentFailed;
-        // Added this
-        // failure.stages.First().label = string.Format(failure.stages.First().label, illnessName);
-        Thought_TreatmentFailed mem = (Thought_TreatmentFailed)ThoughtMaker.MakeThought(failure, null);
-        mem.treatmentRecipe = TreatmentRecipe;
-        pawn.needs.mood.thoughts.memories.TryGainMemory(mem);
+        // TreatmentFailed's thoughtClass is Thought_TreatmentFailed; the recipe it stores blocks retrying while it lasts.
+        if (ThoughtMaker.MakeThought(ThoughtDefOfPsychology.TreatmentFailed, null) is Thought_TreatmentFailed mem)
+        {
+            mem.treatmentRecipe = TreatmentRecipe;
+            pawn.needs.mood.thoughts.memories.TryGainMemory(mem);
+        }
 
     }
 
