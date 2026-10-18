@@ -13,5 +13,7 @@
 	<ConversationEnded>fin de la conversation</ConversationEnded>
 	
 	<!-- Comp text -->
+	<DrugFreeDescription>Le trait ({TRAIT}) de {PAWN_labelShort} est atténué par son mode de vie sans drogue.</DrugFreeDescription>
+	<DrugFreeDescriptionNoTrait>{PAWN_labelShort} s'en tient à un mode de vie sans drogue.</DrugFreeDescriptionNoTrait>
 
 </LanguageData>

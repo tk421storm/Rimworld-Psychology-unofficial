@@ -3,5 +3,7 @@
 
 	<TreatedTrait>{0_labelShort}'s {1} wurden erfolgreich behandelt.</TreatedTrait>
 	<MessageFuneralCalledOff>Die Beerdigung wurde wegen der Bedingungen in der Kolonie abgesagt.</MessageFuneralCalledOff>
-	
+	<MessageCuredAnxiety>{SURGEON_labelShort} hat die Angst von {PATIENT_labelShort} erfolgreich geheilt.</MessageCuredAnxiety>
+	<TreatmentFailedMessage>Die Behandlung von {0_labelShort} ({1}) ist fehlgeschlagen. Ein neuer Versuch ist in {2} möglich.</TreatmentFailedMessage>
+
 </LanguageData>

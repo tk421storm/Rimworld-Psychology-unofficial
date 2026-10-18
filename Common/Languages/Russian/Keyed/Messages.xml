@@ -3,5 +3,7 @@
 
 	<TreatedTrait>{0_labelShort} {0_gender ? был : была} успешно {0_gender ? вылечен : вылечена} от {1}.</TreatedTrait>
 	<MessageFuneralCalledOff>Похороны были отменены из-за ситуации в поселении.</MessageFuneralCalledOff>
-	
+	<MessageCuredAnxiety>{PATIENT_labelShort}: тревожность успешно излечена ({SURGEON_labelShort}).</MessageCuredAnxiety>
+	<TreatmentFailedMessage>{0_labelShort}: лечение ({1}) не удалось. Повторить можно через {2}.</TreatmentFailedMessage>
+
 </LanguageData>

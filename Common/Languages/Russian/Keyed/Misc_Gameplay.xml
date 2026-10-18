@@ -12,5 +12,7 @@
 	<ConversationEnded>заканчивает разговор</ConversationEnded>
 		
 <!-- Comp text -->
+	<DrugFreeDescription>{PAWN_labelShort}: {TRAIT} под контролем благодаря жизни в завязке.</DrugFreeDescription>
+	<DrugFreeDescriptionNoTrait>{PAWN_labelShort} придерживается жизни в завязке.</DrugFreeDescriptionNoTrait>
 
 </LanguageData>

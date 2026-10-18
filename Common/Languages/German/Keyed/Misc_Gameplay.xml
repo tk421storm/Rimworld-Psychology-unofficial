@@ -12,5 +12,7 @@
 	<ConversationEnded>Gespräch beendet</ConversationEnded>
 		
 <!-- Comp text -->
+	<DrugFreeDescription>Durch einen drogenfreien Lebensstil wird {PAWN_labelShort}s {TRAIT} gelindert.</DrugFreeDescription>
+	<DrugFreeDescriptionNoTrait>{PAWN_labelShort} hält sich an einen drogenfreien Lebensstil.</DrugFreeDescriptionNoTrait>
 
 </LanguageData>

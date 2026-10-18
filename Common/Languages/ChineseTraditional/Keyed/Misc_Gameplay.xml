@@ -12,5 +12,7 @@
   <ConversationEnded>结束交流</ConversationEnded>
 
   <!-- Comp text -->
+	<DrugFreeDescription>戒毒的生活方式缓解了 {PAWN_labelShort} 的{TRAIT}。</DrugFreeDescription>
+	<DrugFreeDescriptionNoTrait>{PAWN_labelShort} 正坚持着戒毒的生活方式。</DrugFreeDescriptionNoTrait>
 
 </LanguageData>

@@ -3,5 +3,7 @@
 
   <TreatedTrait>{0_labelShort} 的{1}已被治疗成功。</TreatedTrait>
   <MessageFuneralCalledOff>由于殖民地发生状况，葬礼已被取消。</MessageFuneralCalledOff>
+	<MessageCuredAnxiety>{SURGEON_labelShort} 成功治愈了 {PATIENT_labelShort} 的焦虑症。</MessageCuredAnxiety>
+	<TreatmentFailedMessage>{0_labelShort} 的{1}治疗失败了。可在{2}后再次尝试。</TreatmentFailedMessage>
 
 </LanguageData>
