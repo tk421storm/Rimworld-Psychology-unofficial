@@ -12,21 +12,21 @@ using System.Linq;
 namespace Psychology;
 
 /// <summary>
-/// Humanoid Alien Races compatibility (loaded only with HAR, see LoadFolders.xml). Fills in two empty hooks in the main
-/// assembly: SpeciesHelper.AlienRaceHeuristicSettingsHook (psyche on/off from HAR's IsSentient; no age-gap preferences
-/// for ageless or non-flesh races) and RomanceUtility.AlienRaceAgeCurveHook (the race's own lovin-interval-by-age curve).
+/// Humanoid Alien Races compatibility (loaded only with HAR, see LoadFolders.xml). Fills in the two empty hooks in the
+/// main assembly's AlienRaceHooks: HeuristicSettings (psyche on/off from HAR's IsSentient; no age-gap preferences for
+/// ageless or non-flesh races) and LovinAgeCurve (the race's own lovin-interval-by-age curve).
 /// The patches are applied from a Mod constructor: SpeciesHelper works out every race's default settings in a
 /// [StaticConstructorOnStartup], and those run for the main assembly before this one, so a static constructor here would
-/// be too late.
+/// be too late. AlienRaceHooks has no static state, so patching it this early doesn't run any other class constructor.
 /// </summary>
 public class AlienRaceCompatibilityMod : Mod
 {
     public AlienRaceCompatibilityMod(ModContentPack content) : base(content)
     {
         HarmonyLib.Harmony harmonyInstance = new HarmonyLib.Harmony("Community.Psychology.UnofficialUpdate.AlienRace");
-        harmonyInstance.Patch(AccessTools.Method(typeof(SpeciesHelper), nameof(SpeciesHelper.AlienRaceHeuristicSettingsHook)),
+        harmonyInstance.Patch(AccessTools.Method(typeof(AlienRaceHooks), nameof(AlienRaceHooks.HeuristicSettings)),
             postfix: new HarmonyMethod(typeof(AlienRace_Patches), nameof(AlienRace_Patches.AlienRaceHeuristicSettingsPostfix)));
-        harmonyInstance.Patch(AccessTools.Method(typeof(RomanceUtility), nameof(RomanceUtility.AlienRaceAgeCurveHook)),
+        harmonyInstance.Patch(AccessTools.Method(typeof(AlienRaceHooks), nameof(AlienRaceHooks.LovinAgeCurve)),
             postfix: new HarmonyMethod(typeof(AlienRace_Patches), nameof(AlienRace_Patches.AlienRaceAgeCurvePostfix)));
         Log.Message("Psychology: applied Humanoid Alien Races patches");
     }

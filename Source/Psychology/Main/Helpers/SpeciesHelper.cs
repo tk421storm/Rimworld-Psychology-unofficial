@@ -25,7 +25,7 @@ namespace Psychology;
 ///
 /// Default settings per species (DefaultSettingsForSpeciesDef): an explicit SpeciesSettingsDef if a mod provides one;
 /// otherwise name heuristics ("Robot"/"AIPawn"/zombies -> no psyche, "Android" -> no age rules, "Elf" -> no age gap),
-/// HAR hints via AlienRaceHeuristicSettingsHook, and minimum dating/lovin ages interpolated from the race's
+/// HAR hints via AlienRaceHooks.HeuristicSettings, and minimum dating/lovin ages interpolated from the race's
 /// teenage/adult life stages so that they match human 14/16 on the human life-stage scale.
 /// </summary>
 [StaticConstructorOnStartup]
@@ -282,7 +282,7 @@ public class SpeciesHelper
     }
     if (ModsConfig.IsActive("erdelf.HumanoidAlienRaces"))
     {
-      AlienRaceHeuristicSettingsHook(settings, def);
+      AlienRaceHooks.HeuristicSettings(settings, def);
     }
     if (def.race?.lifeStageAges != null)
     {
@@ -443,11 +443,5 @@ public class SpeciesHelper
     return pawn.ageTracker != null && minSettingsAge < pawn.ageTracker.AgeBiologicalYearsFloat && 0f < minSettingsAge;
   }
 
-  // Hook: the HAR compatibility assembly postfixes this to disable the psyche for non-sentient races and the age gap
-  // for ageless/non-flesh races (see the note in PsychologyAlienRace about whether that postfix ever gets applied).
-  public static void AlienRaceHeuristicSettingsHook(SpeciesSettings settings, ThingDef def)
-  {
-    return;
-  }
 
 }

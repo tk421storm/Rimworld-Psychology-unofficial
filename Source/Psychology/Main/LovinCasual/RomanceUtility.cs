@@ -166,19 +166,13 @@ namespace Psychology
 
     public static SimpleCurve GetCorrectAgeCurve(Pawn pawn, out bool useVanilla)
     {
-      SimpleCurve curve = AlienRaceAgeCurveHook(pawn);
+      SimpleCurve curve = AlienRaceHooks.LovinAgeCurve(pawn);
       useVanilla = curve == null;
       if (useVanilla)
       {
         curve = VanillaLovinMTBHoursAgeCurve;
       }
       return curve;
-    }
-
-    // Hook for the HAR compatibility assembly, which postfixes this to supply the race's own lovin curve (null = vanilla's).
-    public static SimpleCurve AlienRaceAgeCurveHook(Pawn pawn)
-    {
-      return null;
     }
 
     /// <summary>
