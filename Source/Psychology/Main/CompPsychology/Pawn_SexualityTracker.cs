@@ -147,7 +147,17 @@ public class Pawn_SexualityTracker : IExposable
     Scribe_Values.Look(ref this.kinseyRating, "kinseyRating", 0, false);
     Scribe_Values.Look(ref this.sexDrive, "sexDrive", 1, false);
     Scribe_Values.Look(ref this.romanticDrive, "romanticDrive", 1, false);
-    Scribe_Collections.Look(ref this.knownSexualities, "knownSexualities", LookMode.Reference, LookMode.Value, ref this.knownSexualitiesWorkingKeys, ref this.knownSexualitiesWorkingValues);
+    // Remembered pawns can be discarded later (e.g. world pawn clean-up of old visitors), which leaves references that
+    // don't resolve: forget them before saving, and don't log the ones older saves still have (they're just skipped).
+    if (Scribe.mode == LoadSaveMode.Saving)
+    {
+      this.knownSexualities?.RemoveAll(kvp => kvp.Key == null || kvp.Key.Discarded);
+    }
+    Scribe_Collections.Look(ref this.knownSexualities, "knownSexualities", LookMode.Reference, LookMode.Value, ref this.knownSexualitiesWorkingKeys, ref this.knownSexualitiesWorkingValues, logNullErrors: false);
+    if (Scribe.mode == LoadSaveMode.PostLoadInit && this.knownSexualities == null)
+    {
+      this.knownSexualities = new Dictionary<Pawn, int>();
+    }
   }
 
   public virtual void GenerateSexuality(int inputSeed = 0)
