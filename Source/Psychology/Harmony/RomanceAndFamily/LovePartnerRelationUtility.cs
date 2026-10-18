@@ -189,9 +189,10 @@ public static class LovePartnerRelationUtility_PolygamousSpousePatch
 }
 
 // Lovin frequency for a couple. Vanilla: 12 h x singleFactor(pawn) x singleFactor(partner) x relationship factors.
-// The transpiler replaces the 12 with RomanceUtility.NewLovinMTBHoursScale(pawn, partner) and the postfix below
-// replaces each single-pawn factor with RomanceUtility.LovinMtbSinglePawnFactorPsychology (pain, consciousness, genes,
-// age curve, sex drive). The Log.Message calls only run once, when the patch is applied.
+// The transpiler replaces the 12 with RomanceUtility.NewLovinMTBHoursScale (1 / the lovin frequency setting) and the
+// postfix below replaces each single-pawn factor with RomanceUtility.LovinMtbSinglePawnFactorPsychology (pain,
+// consciousness, genes, sqrt of the age curve hours, sex drive), so a couple's base interval is the geometric mean of
+// their two lovin curve values. The Log.Message calls only run once, when the patch is applied.
 [HarmonyPatch(typeof(LovePartnerRelationUtility), nameof(LovePartnerRelationUtility.GetLovinMtbHours))]
 public static class LovePartnerRelationUtility_GetLovinMtbHours
 {
@@ -232,6 +233,6 @@ public static class LovePartnerRelationUtility_LovinMtbSinglePawnFactor_Patch
     {
       return;
     }
-    __result = RomanceUtility.LovinMtbSinglePawnFactorPsychology(pawn, out float yMean);
+    __result = RomanceUtility.LovinMtbSinglePawnFactorPsychology(pawn);
   }
 }

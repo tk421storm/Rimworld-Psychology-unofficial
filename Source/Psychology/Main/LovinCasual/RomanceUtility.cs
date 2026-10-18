@@ -61,19 +61,17 @@ namespace Psychology
       return romanceAge < 0f ? bioAge + 1f : romanceAge;
     }
 
-    // Replaces the 12 h base in vanilla GetLovinMtbHours: half the geometric mean of the two pawns' mean curve values / 12.
+    // Replaces the 12 h base in vanilla GetLovinMtbHours. The single-pawn factors already carry the age curve in hours, so
+    // the base is just the "lovin frequency" setting (2 = twice as often).
     public static float NewLovinMTBHoursScale(Pawn pawn, Pawn partner)
     {
-      LovinMtbSinglePawnFactorPsychology(pawn, out float yMean1);
-      LovinMtbSinglePawnFactorPsychology(partner, out float yMean2);
-      return 0.5f * Mathf.Sqrt(yMean1 * yMean2) / 12f / PsychologySettings.lovinFrequency;
+      return 1f / PsychologySettings.lovinFrequency;
     }
 
     // One pawn's lovin-interval factor: 1 / (1 - pain), 1 / (2 x consciousness) below 50% consciousness, Biotech gene
     // factors, and the age/sex-drive factor. -1 (no lovin) for children, pawns without a psyche or species without romance.
-    public static float LovinMtbSinglePawnFactorPsychology(Pawn pawn, out float yMean)
+    public static float LovinMtbSinglePawnFactorPsychology(Pawn pawn)
     {
-      yMean = 0f;
       if (!PsycheHelper.PsychologyEnabled(pawn))
       {
         return -1f;
@@ -106,7 +104,7 @@ namespace Psychology
         }
       }
 
-      float ageFactor = LovinMtbHoursAgeFactorAndMean(pawn, out yMean);
+      float ageFactor = LovinMtbHoursAgeFactor(pawn);
       if (ageFactor < 0f)
       {
         return -1f;
@@ -116,65 +114,54 @@ namespace Psychology
       return num;
     }
 
-    // Age and sex-drive part of the interval: the (HAR or vanilla) lovin age curve, then with Kinsey divided by
-    // (sex drive / 0.8).
-    // NOTES (shipped in 1.6): rescaledAge is computed for the vanilla curve but never used, so non-human species are
-    // evaluated at their raw biological age; and RescaleCurve below doesn't actually rescale (see there).
-    public static float LovinMtbHoursAgeFactorAndMean(Pawn pawn, out float yMean)
+    // Age and sex-drive part of one pawn's interval: the square root of their lovin curve hours, so that a couple's
+    // interval (the product of both factors) is the geometric mean of their two curve values; with Kinsey, divided by
+    // (sex drive / 0.8). -1 (no lovin) without a psyche, for species without lovin, or with no sex drive.
+    public static float LovinMtbHoursAgeFactor(Pawn pawn)
     {
-      yMean = 0f;
+      float curveHours = LovinCurveHours(pawn);
+      if (curveHours < 0f)
+      {
+        return -1f;
+      }
+      float factor = Mathf.Sqrt(curveHours);
+      if (PsychologySettings.enableKinsey)
+      {
+        float drive = PsycheHelper.Comp(pawn).Sexuality.AdjustedSexDrive;
+        if (drive <= 0f)
+        {
+          return -1f;
+        }
+        factor /= drive / 0.8f;
+      }
+      return factor;
+    }
+
+    // Hours from the lovin age curve for this pawn: the race's own curve (HAR) at their age, or vanilla's at their
+    // human-equivalent age (scaled by the species' minimum lovin age). Species with no lovin age limit use the curve's
+    // lowest (prime-age) value. -1 without a psyche or for species without lovin.
+    public static float LovinCurveHours(Pawn pawn)
+    {
       if (!PsycheHelper.PsychologyEnabled(pawn))
       {
         return -1f;
       }
-
       SpeciesSettings settings = SpeciesHelper.GetOrMakeSpeciesSettingsFromThingDef(pawn.def);
       if (settings.minLovinAge < 0f)
       {
         return -1f;
       }
-
-      float lovinMTBHoursAgeFactor = 1f;
+      SimpleCurve curve = GetCorrectAgeCurve(pawn, out bool useVanilla);
       if (settings.minLovinAge == 0f)
       {
-        if (PsychologySettings.enableKinsey)
-        {
-          lovinMTBHoursAgeFactor /= Mathf.Pow(PsycheHelper.Comp(pawn).Sexuality.AdjustedSexDrive / 0.8f, 2f);
-        }
-        return lovinMTBHoursAgeFactor;
+        return curve.Points.Min(p => p.y);
       }
-
-      float ageCurveFactor = 1f;
-      SimpleCurve rescaledCurve = GetRescaledCurve(pawn, out yMean, out bool useVanilla);
-      float bioAge = pawn.ageTracker.AgeBiologicalYearsFloat;
+      float age = pawn.ageTracker.AgeBiologicalYearsFloat;
       if (useVanilla)
       {
-        float rescaledAge = PsycheHelper.LovinBioAgeToVanilla(bioAge, settings.minLovinAge);
-        ageCurveFactor = rescaledCurve.Evaluate(bioAge);
+        age = PsycheHelper.LovinBioAgeToVanilla(age, settings.minLovinAge);
       }
-      else
-      {
-        ageCurveFactor = rescaledCurve.Evaluate(bioAge);
-      }
-
-      if (PsychologySettings.enableKinsey)
-      {
-        lovinMTBHoursAgeFactor *= Mathf.Sqrt(ageCurveFactor);
-        lovinMTBHoursAgeFactor /= Mathf.Pow(PsycheHelper.Comp(pawn).Sexuality.AdjustedSexDrive / 0.8f, 1f);
-      }
-      else
-      {
-        lovinMTBHoursAgeFactor *= ageCurveFactor;
-      }
-
-      return lovinMTBHoursAgeFactor;
-    }
-
-    public static SimpleCurve GetRescaledCurve(Pawn pawn, out float yMean, out bool useVanilla)
-    {
-      SimpleCurve curve = GetCorrectAgeCurve(pawn, out useVanilla);
-      RescaleCurve(curve, out yMean);
-      return curve;
+      return curve.Evaluate(age);
     }
 
     public static SimpleCurve GetCorrectAgeCurve(Pawn pawn, out bool useVanilla)
@@ -188,48 +175,7 @@ namespace Psychology
       return curve;
     }
 
-    // Intended: divide the curve by its mean so it becomes a relative factor.
-    // BUG (pre-existing): `curve = new SimpleCurve(...)` only reassigns the local parameter, so callers keep the original
-    // curve; the loop also drops the last point. Only yMean is effectively returned.
-    public static void RescaleCurve(SimpleCurve curve, out float yMean)
-    {
-      List<CurvePoint> oldCurvePointList = curve.Points;
-      List<CurvePoint> newCurvePointList = new List<CurvePoint>();
-      yMean = CalculateMeanOfCurve(oldCurvePointList);
-      if (yMean == 0f)
-      {
-        return;
-      }
-      for (int i = 0; i < oldCurvePointList.Count() - 1; i++)
-      {
-        newCurvePointList.Add(new CurvePoint(oldCurvePointList[i].x, oldCurvePointList[i].y / yMean));
-      }
-      curve = new SimpleCurve(newCurvePointList);
-    }
-
-    // Average y over the curve (trapezoid rule). NOTE: the loop stops at Count - 2, skipping the last segment.
-    public static float CalculateMeanOfCurve(List<CurvePoint> curvePoints)
-    {
-      if (curvePoints.NullOrEmpty())
-      {
-        Log.Warning("CalculateMeanOfCurve, curvePoints were null or empty");
-        return 0f;
-      }
-      float dx;
-      float xrange = 0f;
-      float area = 0f;
-      for (int i = 0; i < curvePoints.Count() - 2; i++)
-      {
-        dx = curvePoints[i + 1].x - curvePoints[i].x;
-        xrange += dx;
-        area += 0.5f * (curvePoints[i + 1].y + curvePoints[i].y) * dx;
-      }
-      float yMean = xrange > 0f ? area / xrange : curvePoints[0].y;
-      return yMean;
-    }
-
-    // Hook for the HAR compatibility assembly (it postfixes this to supply the race's lovin curve; see the note in
-    // PsychologyAlienRace about that postfix not actually changing the result).
+    // Hook for the HAR compatibility assembly, which postfixes this to supply the race's own lovin curve (null = vanilla's).
     public static SimpleCurve AlienRaceAgeCurveHook(Pawn pawn)
     {
       return null;
