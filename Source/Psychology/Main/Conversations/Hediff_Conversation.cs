@@ -173,7 +173,10 @@ public class Hediff_Conversation : HediffWithComps
     endConversation.defName = "EndConversation";
     endConversation.label = def.label;
     List<RulePackDef> socialFightPacks = new List<RulePackDef>();
-    if (otherConvo != null && (startedFight || (mattered && this.pawn.interactions.CheckSocialFightStart(endConversation, otherPawn))))
+    // A conversation also ends when either pawn despawns (e.g. leaves the map), and despawning clears pawn.interactions,
+    // so only roll for a fight while both are still spawned.
+    bool canFight = this.pawn.Spawned && this.otherPawn.Spawned && this.pawn.interactions != null;
+    if (otherConvo != null && (startedFight || (mattered && canFight && this.pawn.interactions.CheckSocialFightStart(endConversation, otherPawn))))
     {
       if (startedFight)
       {
