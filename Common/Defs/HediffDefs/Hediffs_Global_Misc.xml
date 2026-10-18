@@ -27,17 +27,4 @@
 			</li>
 		</stages>
 	</HediffDef>
-	<HediffDef>
-		<defName>PlannedFuneral</defName>
-		<hediffClass>Psychology.Hediff_Funeral</hediffClass>
-		<initialSeverity>1</initialSeverity>
-		<description>Funneral planned</description>
-		<label>planned funeral</label>
-		<stages>
-			<li>
-				<label>hidden</label>
-				<becomeVisible>false</becomeVisible>
-			</li>
-		</stages>
-	</HediffDef>
 </Defs>

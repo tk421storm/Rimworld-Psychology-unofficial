@@ -1,12 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
 
-	<LetterLabelFuneralPlanned>Funeral planned for {0}</LetterLabelFuneralPlanned>
-	<LetterFuneralPlanned>{0_labelShort} à plannifié des funérailles pour {1_labelShort}. La cérémonie se tiendra à {2}, à {3}h.</LetterFuneralPlanned>
-	<LetterLabelFuneralStarted>La cérémonie de funéraille de {0} est prévue.</LetterLabelFuneralStarted>
-	<LetterFuneralStarted>Les funérailles de {0_labelShort} sont en cours. Vos colons y participeront, ou non, en fonction de leur relation avec {0}.</LetterFuneralStarted>
-	<LetterLabelFuneralEnded>Les funérailles sont finies</LetterLabelFuneralEnded>
-	<LetterFuneralEnded>Les funérailles de {0_labelShort} sont finies.\n\nLes participants ont été :\n{1}</LetterFuneralEnded>
 	<LetterLabelPTSD>Stress traumatique</LetterLabelPTSD>
 	<LetterPTSD>{0_labelShort} a développé une anxiété post-traumatique suite à sa crise de démence. L'anxiété est un trouble permanent, mais peut être traité pour lentement réduire son impact, afin de le rendre plus supportable et permettre à {0} d'être plus fonctionnel'le. Les crises de démence suivantes aggraveront son anxiété.\n\nUne rumeur cirvule sur des médecins des glitterworlds capable de guérir complètement l'anxiété. Si vous mettez la main sur de la médecine ultratech, un médecin extremement compétent pourrait les utiliser pour soigner l'anxiété de {0_labelShort}.</LetterPTSD>
 	<LetterLabelDatePlanned>Rendez-vous amoureux</LetterLabelDatePlanned>

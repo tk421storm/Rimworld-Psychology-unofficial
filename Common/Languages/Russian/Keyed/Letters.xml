@@ -1,12 +1,6 @@
 ﻿<?xml version="1.0" encoding="utf-8" ?>
 <LanguageData>
 
-	<LetterLabelFuneralPlanned>Организация погребальной церемонии для {0}</LetterLabelFuneralPlanned>
-	<LetterFuneralPlanned>{0_labelShort} организует похороны для {1_labelShort}. Служба пройдёт {2}, в {3}:00.</LetterFuneralPlanned>
-	<LetterLabelFuneralStarted>Погребальная церемония для {0}</LetterLabelFuneralStarted>
-	<LetterFuneralStarted>Начались похороны {0_labelShort}. Участие в ней ваших поселенцев зависит от предыдущих отношений с {0}.</LetterFuneralStarted>
-	<LetterLabelFuneralEnded>Похороны закончились</LetterLabelFuneralEnded>
-	<LetterFuneralEnded>Похороны {0_labelShort} закончились.\n\nУчаствовали следующие поселенцы:\n{1}</LetterFuneralEnded>
 	<LetterLabelPTSD>Посттравматическое расстройство</LetterLabelPTSD>
 	<LetterPTSD>{0_labelShort} теперь страдает посттравматическим расстройством, последовавшим за {0_possessive} нервным срывом. {0_labelShort} будет постоянно находится в состоянии тревожности. Данное заболевание поддаётся долгому симптоматическому лечению, позволяя снизить уровень тревожности до уровня, при котором {0_labelShort} сможет нормально функционировать. Любой последующий нервный срыв ухудшит {0_possessive} тревожность.\n\nСуществуют слухи, что медицинские специалисты из миров-утопий могут полностью вылечить подобные расстройства. Если вы сможете раздобыть передовые медикаменты, необычайно опытный врач, возможно, сможет излечить тревожность {0_labelShort}.</LetterPTSD>
 	<LetterLabelDatePlanned>Свидание</LetterLabelDatePlanned>

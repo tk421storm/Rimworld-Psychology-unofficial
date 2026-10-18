@@ -6,8 +6,6 @@
     <MoodOffsetDepressive.stages.depressive-1.description>Natürliche Strafe durch Merkmal 'Depressiv'.</MoodOffsetDepressive.stages.depressive-1.description>
     <MethadoneWithdrawal.stages.methadone_withdrawal.label>Methadone Entzug</MethadoneWithdrawal.stages.methadone_withdrawal.label>
     <MethadoneWithdrawal.stages.methadone_withdrawal.description>Ich fühle mich benommen und krank.</MethadoneWithdrawal.stages.methadone_withdrawal.description>
-    <AttendedFuneral.stages.attended_a_funeral.label>besuchte eine Beerdigung</AttendedFuneral.stages.attended_a_funeral.label>
-    <AttendedFuneral.stages.attended_a_funeral.description>Ich nahm an der Beerdigung eines Kolonisten teil. Ich fühle mich etwas besser dadurch.</AttendedFuneral.stages.attended_a_funeral.description>
     <WitnessedDeathAllyBleedingHeart.stages.witnessed_allys_death.label>Sah Verbündeten sterben</WitnessedDeathAllyBleedingHeart.stages.witnessed_allys_death.label>
     <WitnessedDeathAllyBleedingHeart.stages.witnessed_allys_death.description>Ich habe einen Verbündeten sterben sehen. Im einen Moment war er noch am Leben und im nächsten tot.</WitnessedDeathAllyBleedingHeart.stages.witnessed_allys_death.description>
     <WitnessedDeathNonAllyBleedingHeart.stages.witnessed_outsiders_death.label>Sah Outsider sterben</WitnessedDeathNonAllyBleedingHeart.stages.witnessed_outsiders_death.label>

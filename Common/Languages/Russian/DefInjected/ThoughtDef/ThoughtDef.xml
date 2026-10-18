@@ -6,8 +6,6 @@
     <MoodOffsetDepressive.stages.depressive-1.description>Постоянный штраф к настроению за черту «депрессия».</MoodOffsetDepressive.stages.depressive-1.description>
     <MethadoneWithdrawal.stages.methadone_withdrawal.label>метадоновая ломка</MethadoneWithdrawal.stages.methadone_withdrawal.label>
     <MethadoneWithdrawal.stages.methadone_withdrawal.description>Меня тошнит и голова кружится.</MethadoneWithdrawal.stages.methadone_withdrawal.description>
-    <AttendedFuneral.stages.attended_a_funeral.label>посещены похороны</AttendedFuneral.stages.attended_a_funeral.label>
-    <AttendedFuneral.stages.attended_a_funeral.description>Недавно прошли похороны одного из поселенцев. После них мне стало немного легче.</AttendedFuneral.stages.attended_a_funeral.description>
     <WitnessedDeathAllyBleedingHeart.stages.witnessed_allys_death.label>смерть союзника</WitnessedDeathAllyBleedingHeart.stages.witnessed_allys_death.label>
     <WitnessedDeathAllyBleedingHeart.stages.witnessed_allys_death.description>Один из наших умер. Не могу поверить, что больше никогда не увижу этого человека и не смогу с ним поговорить.</WitnessedDeathAllyBleedingHeart.stages.witnessed_allys_death.description>
     <WitnessedDeathNonAllyBleedingHeart.stages.witnessed_outsiders_death.label>смерть чужеземца</WitnessedDeathNonAllyBleedingHeart.stages.witnessed_outsiders_death.label>

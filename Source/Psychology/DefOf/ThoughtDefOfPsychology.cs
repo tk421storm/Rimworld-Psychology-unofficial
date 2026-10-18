@@ -50,9 +50,6 @@ public static class ThoughtDefOfPsychology
   public static ThoughtDef MissedDate;
   public static ThoughtDef DateCancelled;
 
-  /* Funeral related thoughts */
-  public static ThoughtDef AttendedFuneral;
-
   /* Miscellaneous thoughts */
   public static ThoughtDef HungOut;
   public static ThoughtDef KilledHumanlikeEnemy;

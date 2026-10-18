@@ -19,6 +19,5 @@ namespace Psychology
         /* Miscellaneous non-health */
         public static HediffDef HoldingConversation;
         public static HediffDef PlannedDate;
-        public static HediffDef PlannedFuneral;
     }
 }

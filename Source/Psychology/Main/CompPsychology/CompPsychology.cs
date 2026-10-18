@@ -15,8 +15,7 @@ namespace Psychology;
 /// It owns two trackers, both created lazily on first access so pawns from old saves or other mods get one too:
 ///   - Psyche:    the personality (one PersonalityNode per PersonalityNodeDef), see Pawn_PsycheTracker
 ///   - Sexuality: Kinsey rating plus sex and romance drives, see Pawn_SexualityTracker
-/// It also keeps two small bits of state: whether the corpse has already had a funeral planned, and when the pawn
-/// last saw their lover (used by the long-distance-relationship thought).
+/// It also keeps when the pawn last saw their lover (used by the long-distance-relationship thought).
 ///
 /// Most code reaches this through PsycheHelper.Comp(pawn) after checking PsycheHelper.PsychologyEnabled(pawn).
 /// </summary>
@@ -25,8 +24,6 @@ public class CompPsychology : ThingComp
     private Pawn_SexualityTracker sexuality;
     private Pawn_PsycheTracker psyche;
     //public Pawn_TourMemories recruiting;
-    // Set once a funeral has been planned for this pawn's corpse, so it isn't planned twice.
-    private bool beenBuried = false;
     // Absolute tick when this pawn last shared a map with their lover; see ThoughtWorker_LDR.
     private int tickSinceLastSeenLover;
 
@@ -80,18 +77,6 @@ public class CompPsychology : ThingComp
         }
     }
 
-    public bool AlreadyBuried
-    {
-        get
-        {
-            return this.beenBuried;
-        }
-        set
-        {
-            this.beenBuried = value;
-        }
-    }
-
     public int LDRTick
     {
         get
@@ -128,7 +113,6 @@ public class CompPsychology : ThingComp
         {
             this.parent as Pawn
         });*/
-        Scribe_Values.Look(ref this.beenBuried, "beenBuried");
         Scribe_Values.Look(ref this.tickSinceLastSeenLover, "tickSinceLastSeenLover", Find.TickManager.TicksAbs);
     }
 
@@ -144,7 +128,6 @@ public class CompPsychology : ThingComp
         this.sexuality.DeepCopyFromOtherTracker(otherComp.Sexuality);
         this.psyche = new Pawn_PsycheTracker(pawn);
         this.psyche.DeepCopyFromOtherTracker(otherComp.Psyche);
-        this.beenBuried = otherComp.AlreadyBuried;
         this.tickSinceLastSeenLover = otherComp.LDRTick;
         try
         {

@@ -2,7 +2,6 @@
 <LanguageData>
 
     <TreatedTrait>Le trait ({1}) de {0_labelShort} a été traîté avec succès.</TreatedTrait>
-	<MessageFuneralCalledOff>Les funérailles ont été annulées à cause de problèmes dans votre colonie.</MessageFuneralCalledOff>
 	<MessageCuredAnxiety>{SURGEON_labelShort} a guéri avec succès l'anxiété de {PATIENT_labelShort}.</MessageCuredAnxiety>
 	<TreatmentFailedMessage>Le traitement ({1}) de {0_labelShort} a échoué. Il pourra être retenté dans {2}.</TreatmentFailedMessage>
 

@@ -7,5 +7,4 @@ namespace Psychology;
 public static class DutyDefOfPsychology
 {
     public static DutyDef HangOut;
-    public static DutyDef Funeral;
 }
