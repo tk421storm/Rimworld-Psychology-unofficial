@@ -75,6 +75,11 @@ public class Recipe_Treatment : Recipe_Surgery
             mem.treatmentRecipe = TreatmentRecipe;
             pawn.needs.mood.thoughts.memories.TryGainMemory(mem);
         }
+        if (PawnUtility.ShouldSendNotificationAbout(pawn) || PawnUtility.ShouldSendNotificationAbout(billDoer))
+        {
+            string retryIn = ThoughtDefOfPsychology.TreatmentFailed.DurationTicks.ToStringTicksToPeriod();
+            Messages.Message("TreatmentFailedMessage".Translate(pawn, illnessName, retryIn), pawn, MessageTypeDefOf.NegativeEvent);
+        }
 
     }
 
