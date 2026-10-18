@@ -26,7 +26,14 @@ public class Recipe_CureAnxiety : Recipe_Surgery
                 pawn
             });
             Hediff anxiety = pawn.health.hediffSet.GetFirstHediffOfDef(HediffDefOfPsychology.Anxiety);
-            pawn.health.RemoveHediff(anxiety);
+            if (anxiety != null)
+            {
+                pawn.health.RemoveHediff(anxiety);
+            }
+            if (PawnUtility.ShouldSendNotificationAbout(pawn) || PawnUtility.ShouldSendNotificationAbout(billDoer))
+            {
+                Messages.Message("MessageCuredAnxiety".Translate(billDoer.Named("SURGEON"), pawn.Named("PATIENT")), pawn, MessageTypeDefOf.PositiveEvent);
+            }
             return;
         }
     }
