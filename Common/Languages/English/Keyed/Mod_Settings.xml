@@ -108,5 +108,7 @@
 	<LovinFrequencyTooltip>How often couples make love: 2 = twice as often, 0.5 = half as often.</LovinFrequencyTooltip>
 	<AdjustRapportByCompatibilityTitle>Adjust rapport based on compatibility</AdjustRapportByCompatibilityTitle>
 	<AdjustRapportByCompatibilityTooltip>In vanilla, each time a warden chats with a prisoner the prisoner gets +2 opinion of that warden (up to +100), which also wears down their resistance up to 1.5x faster. With this on, that +2 is scaled by how compatible their personalities are: about +2 for a typical pair, up to about +6 for a great fit, and negative ("strained rapport") when their personalities clash. This also applies to the chats before a conversion attempt, which in vanilla are plain small talk. Off: vanilla +2 each time.</AdjustRapportByCompatibilityTooltip>
+	<ArrestBaseChanceTitle>Peaceful arrest base chance (%)</ArrestBaseChanceTitle>
+	<ArrestBaseChanceTooltip>Psychology replaces vanilla's arrest chance. A pawn goes quietly with a chance of: the arrester's peaceful arrest chance (this base plus 5% per Social level, lower if they can't talk well) x the arrestee's opinion of the arrester (0 at -100, 0.5 at 0, 1 at +100) x 1.5 if they're in the same faction x 0.2 if the arrestee is in a mental state. Downed, non-violent and guilty pawns still always go quietly. Default 2%: with neutral opinion a Social 10 arrester succeeds about 26% of the time, a Social 20 one about 51%.</ArrestBaseChanceTooltip>
 
 </LanguageData>

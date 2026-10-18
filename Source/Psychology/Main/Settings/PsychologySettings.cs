@@ -79,6 +79,11 @@ public class PsychologySettings : ModSettings
   public static float imprisonedDebuff = 40f;
   public const float imprisonedDebuffMax = 40f;
 
+  // Base of the ArrestPeacefullyChance stat, in percent (plus 5% per Social level); see Pawn_GetAcceptArrestChance_Patch.
+  public const float arrestBaseChanceDefault = 2f;
+  public static float arrestBaseChance = 2f;
+  public const float arrestBaseChanceMax = 50f;
+
   // Scale vanilla's rapport from warden chats by the two pawns' personality compatibility (Thought_RapportBuilt).
   public const bool adjustRapportByCompatibilityDefault = true;
   public static bool adjustRapportByCompatibility = true;
@@ -162,6 +167,7 @@ public class PsychologySettings : ModSettings
     ScribeValueAndAddToNameList(nameof(mentalBreakAnxietyChance));
     ScribeValueAndAddToNameList(nameof(imprisonedDebuff));
     ScribeValueAndAddToNameList(nameof(adjustRapportByCompatibility));
+    ScribeValueAndAddToNameList(nameof(arrestBaseChance));
     ScribeValueAndAddToNameList(nameof(conversationDuration));
     ScribeValueAndAddToNameList(nameof(convoMaxOpinionChange));
     ScribeValueAndAddToNameList(nameof(convoMeanHours));
@@ -193,6 +199,7 @@ public class PsychologySettings : ModSettings
     /* Keep values saved by older versions (text boxes, wider ranges) inside the sliders' ranges */
     imprisonedDebuff = Mathf.Clamp(imprisonedDebuff, 0f, imprisonedDebuffMax);
     lovinFrequency = Mathf.Clamp(lovinFrequency, lovinFrequencyMin, lovinFrequencyMax);
+    arrestBaseChance = Mathf.Clamp(arrestBaseChance, 0f, arrestBaseChanceMax);
   }
 
   // Saves/loads the static field called settingName (bool or float) and registers it in the name lists.

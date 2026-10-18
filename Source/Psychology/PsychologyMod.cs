@@ -50,4 +50,10 @@ public class PsychologyMod : Mod
     SettingsWindowUtility.DrawSettingsWindow(inRect);
     lastDrawFrame = Time.frameCount;
   }
+
+  public override void WriteSettings()
+  {
+    base.WriteSettings();
+    global::Psychology.Harmony.ArrestChanceSetting.Apply();
+  }
 }

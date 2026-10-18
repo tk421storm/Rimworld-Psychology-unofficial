@@ -331,6 +331,7 @@ public static class SettingsWindowUtility{
       FloatEntry(nameof(PsychologySettings.traitOpinionMultiplier), 0f, 2f);
       FloatSliderEntry(nameof(PsychologySettings.imprisonedDebuff), 0f, PsychologySettings.imprisonedDebuffMax, 0);
       CheckboxEntry(nameof(PsychologySettings.adjustRapportByCompatibility));
+      FloatSliderEntry(nameof(PsychologySettings.arrestBaseChance), 0f, PsychologySettings.arrestBaseChanceMax, 0);
     }
 
     if (Widgets.ButtonText(buttonRect, "Other settings"))
