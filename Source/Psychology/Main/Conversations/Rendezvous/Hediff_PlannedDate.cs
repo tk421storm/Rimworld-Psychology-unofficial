@@ -30,6 +30,7 @@ namespace Psychology
             base.Tick();
             if(this.partner == null || this.partner.Dead || (!this.courtship && !LovePartnerRelationUtility.LovePartnerRelationExists(this.pawn, this.partner)))
             {
+                PsychologyDebug.Log($"Planned date of {this.pawn} with {this.partner} dropped (partner gone, or no longer partners)");
                 this.pawn.health.RemoveHediff(this);
             }
             else if(Find.TickManager.TicksAbs >= this.day && GenLocalDate.HourOfDay(this.pawn) == this.hour)
@@ -46,6 +47,7 @@ namespace Psychology
                     {
                         partner.GetLord().Notify_PawnLost(partner, PawnLostCondition.ForcedToJoinOtherLord);
                     }
+                    PsychologyDebug.Log($"{(this.courtship ? "Date" : "Date night")} of {this.pawn} and {this.partner}: {(pawn.Awake() && partner.Awake() ? "starting" : "missed (one of them is asleep)")}");
                     if (pawn.Awake() && partner.Awake())
                     {
                         LordMaker.MakeNewLord(this.pawn.Faction, new LordJob_Date(this.pawn, this.partner, this.courtship), this.pawn.Map, new Pawn[] { this.pawn, this.partner });
@@ -61,11 +63,19 @@ namespace Psychology
                 }
                 else
                 {
+                    PsychologyDebug.Log($"{(this.courtship ? "Date" : "Date night")} of {this.pawn} and {this.partner} cancelled (one of them isn't free)");
                     this.pawn.needs.mood.thoughts.memories.TryGainMemory(ThoughtDefOfPsychology.DateCancelled);
                     this.partner.needs.mood.thoughts.memories.TryGainMemory(ThoughtDefOfPsychology.DateCancelled);
                 }
                 this.pawn.health.RemoveHediff(this);
             }
+        }
+
+        // Dev romance menu: start on the next tick.
+        public void StartNow()
+        {
+            this.day = Find.TickManager.TicksAbs;
+            this.hour = GenLocalDate.HourOfDay(this.pawn);
         }
 
         private static bool ShouldStartDate(Pawn p, Pawn partner)

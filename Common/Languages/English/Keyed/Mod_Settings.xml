@@ -124,4 +124,7 @@
 	<DateRomanceBonusTitle>Romance bonus per good date (%)</DateRomanceBonusTitle>
 	<DateRomanceBonusTooltip>How much each earlier good date between the pair adds to the romance chance after a date, as a percentage of it. Example at the defaults: after 2 earlier good dates, with good moods and opinions, the chance is about 15% x 2 = 30%.</DateRomanceBonusTooltip>
 
+	<PrintDebugInfoTitle>Print debug info</PrintDebugInfoTitle>
+	<PrintDebugInfoTooltip>Write Psychology's decisions and chances to the log (dates, courtship, romance after dates, cheating on hookups), prefixed with [Psychology]. Useful for testing or bug reports; leave off for normal play. With dev mode on, colonists also get a "DEV: Romance" button for forcing dates and hookups.</PrintDebugInfoTooltip>
+
 </LanguageData>

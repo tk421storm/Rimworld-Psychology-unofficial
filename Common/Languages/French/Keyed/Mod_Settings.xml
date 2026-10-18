@@ -105,4 +105,7 @@
 	<DateRomanceBonusTitle>Bonus de romance par bon rendez-vous (%)</DateRomanceBonusTitle>
 	<DateRomanceBonusTooltip>Ce que chaque bon rendez-vous précédent ajoute à la chance de romance après un rendez-vous, en pourcentage de celle-ci. Exemple avec les valeurs par défaut : après 2 bons rendez-vous, avec une bonne humeur et une bonne opinion, la chance est d'environ 15 % x 2 = 30 %.</DateRomanceBonusTooltip>
 
+	<PrintDebugInfoTitle>Afficher les infos de débogage</PrintDebugInfoTitle>
+	<PrintDebugInfoTooltip>Écrit dans le journal les décisions et les chances de Psychology (rendez-vous, flirt, romance après un rendez-vous, infidélité lors des aventures), préfixées par [Psychology]. Utile pour les tests ou les rapports de bugs ; laissez désactivé en jeu normal. En mode développeur, les colons ont aussi un bouton « DEV: Romance » pour forcer rendez-vous et aventures.</PrintDebugInfoTooltip>
+
 </LanguageData>

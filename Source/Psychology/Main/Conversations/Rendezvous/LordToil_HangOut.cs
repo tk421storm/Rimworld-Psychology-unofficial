@@ -39,6 +39,7 @@ namespace Psychology
             }
             if (DefDatabase<InteractionDef>.AllDefsListForReading.TryRandomElementByWeight(x => initiator.interactions.CanInteractNowWith(recipient, x) ? x.Worker.RandomSelectionWeight(initiator, recipient) : 0f, out InteractionDef interaction))
             {
+                PsychologyDebug.Log($"Outing talk: {initiator} -> {recipient}: {interaction.defName}");
                 initiator.interactions.TryInteractWith(recipient, interaction);
             }
         }

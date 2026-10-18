@@ -69,9 +69,16 @@ namespace Psychology
             float recipientQuality = RomanceUtility.DateQuality(this.recipient, this.initiator);
             RomanceUtility.GainDateMemory(this.initiator, this.recipient, initiatorQuality);
             RomanceUtility.GainDateMemory(this.recipient, this.initiator, recipientQuality);
-            if (initiatorQuality > 0f && recipientQuality > 0f
-                && !LovePartnerRelationUtility.LovePartnerRelationExists(this.initiator, this.recipient)
-                && Rand.Chance(RomanceUtility.RomanceChanceAfterDate(this.initiator, this.recipient, previousGoodDates)))
+            PsychologyDebug.Log($"Date of {this.initiator} and {this.recipient} finished: quality {initiatorQuality:0.00} / {recipientQuality:0.00} (compatibility {RomanceUtility.Compatibility(this.initiator, this.recipient):0.00}), earlier good dates {previousGoodDates:0.#}");
+            if (initiatorQuality <= 0f || recipientQuality <= 0f || LovePartnerRelationUtility.LovePartnerRelationExists(this.initiator, this.recipient))
+            {
+                PsychologyDebug.Log("  no romance roll (the date didn't go well for both, or they're already partners)");
+                return;
+            }
+            float chance = RomanceUtility.RomanceChanceAfterDate(this.initiator, this.recipient, previousGoodDates);
+            bool roll = Rand.Chance(chance);
+            PsychologyDebug.Log($"  romance chance {chance:P0} (opinions {this.initiator.relations.OpinionOf(this.recipient)} / {this.recipient.relations.OpinionOf(this.initiator)}) -> {(roll ? "romance attempt" : "not this time")}");
+            if (roll)
             {
                 RomanceUtility.TryFireRomanceAttempt(this.initiator, this.recipient);
             }

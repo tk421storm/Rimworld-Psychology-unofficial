@@ -98,6 +98,19 @@ public class CompPsychology : ThingComp
         }
     }
 
+    // Dev mode: the romance testing menu on colonists (RomanceDebugUtility).
+    public override IEnumerable<Gizmo> CompGetGizmosExtra()
+    {
+        foreach (Gizmo gizmo in base.CompGetGizmosExtra())
+        {
+            yield return gizmo;
+        }
+        if (Prefs.DevMode && this.parent is Pawn pawn && pawn.Spawned && pawn.IsColonist && PsycheHelper.PsychologyEnabled(pawn))
+        {
+            yield return RomanceDebugUtility.RomanceGizmo(pawn);
+        }
+    }
+
     public override void PostExposeData()
     {
         base.PostExposeData();

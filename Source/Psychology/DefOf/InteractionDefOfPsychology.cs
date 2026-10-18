@@ -11,6 +11,10 @@ public static class InteractionDefOfPsychology
     public static InteractionDef HangOut;
     public static InteractionDef Indoctrinate;
 
+    // Dates
+    public static InteractionDef PlanDate;
+    public static InteractionDef AskOutOnDate;
+
     // Hookups
     public static InteractionDef TriedHookupWith;
 }

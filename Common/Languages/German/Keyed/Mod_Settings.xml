@@ -83,4 +83,7 @@
 	<DateRomanceBonusTitle>Romantik-Bonus pro gutem Date (%)</DateRomanceBonusTitle>
 	<DateRomanceBonusTooltip>Wie viel jedes frühere gute Date des Paares zur Romantik-Chance nach einem Date hinzufügt, in Prozent davon. Beispiel mit den Standardwerten: Nach 2 früheren guten Dates, bei guter Stimmung und Meinung, liegt die Chance bei etwa 15 % x 2 = 30 %.</DateRomanceBonusTooltip>
 
+	<PrintDebugInfoTitle>Debug-Infos ausgeben</PrintDebugInfoTitle>
+	<PrintDebugInfoTooltip>Schreibt die Entscheidungen und Chancen von Psychology ins Log (Dates, Werbung, Romantik nach Dates, Fremdgehen bei Abenteuern), mit [Psychology] am Anfang. Nützlich zum Testen oder für Fehlerberichte; im normalen Spiel ausgeschaltet lassen. Im Entwicklermodus haben Kolonisten außerdem eine Schaltfläche „DEV: Romance“, um Dates und Abenteuer zu erzwingen.</PrintDebugInfoTooltip>
+
 </LanguageData>

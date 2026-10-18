@@ -21,29 +21,39 @@ namespace Psychology
 
         protected bool CanPlanDate(Pawn initiator, Pawn recipient)
         {
+            return BlockReason(initiator, recipient) == null;
+        }
+
+        // Why this date can't be planned right now (English, for the dev romance menu), or null if it can.
+        public string BlockReason(Pawn initiator, Pawn recipient)
+        {
             if (!initiator.IsColonist || !recipient.IsColonist)
             {
-                return false;
+                return "not both colonists";
             }
             if (!PsycheHelper.PsychologyEnabled(initiator) || !PsycheHelper.PsychologyEnabled(recipient))
             {
-                return false;
+                return "no psyche";
             }
             if (!RendezvousUtility.AcceptableGameConditionsToStartHangingOut(initiator.Map))
             {
-                return false;
+                return "not safe to go out (danger, injuries, under 4 colonists or half drafted)";
             }
             // lastDateTick is the planned date as an absolute tick (TicksAbs, see RendezvousUtility.PlanDate).
             int cooldownStart = Find.TickManager.TicksAbs - Mathf.RoundToInt(GenDate.TicksPerDay * CooldownDays);
             if (PsycheHelper.Comp(initiator).Psyche.lastDateTick >= cooldownStart || PsycheHelper.Comp(recipient).Psyche.lastDateTick >= cooldownStart)
             {
-                return false;
+                return $"a date within the last {CooldownDays:0} days (or one planned)";
             }
             if (!GatheringsUtility.ShouldGuestKeepAttendingGathering(initiator) || !GatheringsUtility.ShouldGuestKeepAttendingGathering(recipient))
             {
-                return false;
+                return "one of them can't attend (needs, mental state, etc.)";
             }
-            return RomanceUtility.GetRomanticIntent(initiator, recipient) == Intent;
+            if (RomanceUtility.GetRomanticIntent(initiator, recipient) != Intent)
+            {
+                return "wrong romantic intent";
+            }
+            return null;
         }
     }
 
@@ -72,6 +82,7 @@ namespace Psychology
             letterLabel = null;
             letterDef = null;
             lookTargets = null;
+            PsychologyDebug.Log($"{initiator} plans a date night with {recipient}");
             RendezvousUtility.PlanDate(initiator, recipient, false);
         }
     }

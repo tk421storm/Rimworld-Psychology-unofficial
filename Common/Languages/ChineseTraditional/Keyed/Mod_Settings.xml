@@ -83,4 +83,7 @@
   <DateRomanceBonusTitle>每次愉快约会的浪漫加成（%）</DateRomanceBonusTitle>
   <DateRomanceBonusTooltip>两人之前的每次愉快约会为约会后的浪漫追求几率增加的百分比。默认值的例子：之前有2次愉快约会，且心情和好感都不错时，几率约为15%×2=30%。</DateRomanceBonusTooltip>
 
+  <PrintDebugInfoTitle>输出调试信息</PrintDebugInfoTitle>
+  <PrintDebugInfoTooltip>将 Psychology 的决定和几率（约会、追求、约会后的浪漫追求、临时约会中的出轨）写入日志，以 [Psychology] 开头。适用于测试或报告问题；正常游戏时请保持关闭。开启开发者模式时，殖民者还会有一个“DEV: Romance”按钮，可强制进行约会和临时约会。</PrintDebugInfoTooltip>
+
 </LanguageData>

@@ -68,6 +68,10 @@ public class PsychologySettings : ModSettings
   public const bool enableIndividualityDefault = true;
   public static bool enableIndividuality = true;
 
+  // Writes Psychology's decisions and chances to the log (PsychologyDebug.Log).
+  public const bool printDebugInfoDefault = false;
+  public static bool printDebugInfo = false;
+
   public const bool enableDateLettersDefault = true;
   public static bool enableDateLetters = true;
 
@@ -184,6 +188,7 @@ public class PsychologySettings : ModSettings
     ScribeValueAndAddToNameList(nameof(enableKinsey));
     ScribeValueAndAddToNameList(nameof(enableEmpathy));
     ScribeValueAndAddToNameList(nameof(enableIndividuality));
+    ScribeValueAndAddToNameList(nameof(printDebugInfo));
     ScribeValueAndAddToNameList(nameof(enableDateLetters));
     ScribeValueAndAddToNameList(nameof(mentalBreakAnxietyChance));
     ScribeValueAndAddToNameList(nameof(imprisonedDebuff));

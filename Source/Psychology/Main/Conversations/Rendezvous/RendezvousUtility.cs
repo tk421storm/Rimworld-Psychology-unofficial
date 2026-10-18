@@ -103,6 +103,7 @@ namespace Psychology
             initiator.health.AddHediff(plannedDate);
             PsycheHelper.Comp(initiator).Psyche.lastDateTick = day;
             PsycheHelper.Comp(recipient).Psyche.lastDateTick = day;
+            PsychologyDebug.Log($"{(courtship ? "Date" : "Date night")} planned: {initiator} and {recipient}, in {(day - Find.TickManager.TicksAbs) / (float)GenDate.TicksPerDay:0.0} days at hour {hour}");
             if(PsychologySettings.enableDateLetters)
             {
                 int hourDiscrepancy = GenDate.HourOfDay(day, Find.WorldGrid.LongLatOf(initiator.Map.Tile).x) - hour;

@@ -351,7 +351,13 @@ namespace Psychology
     // Whether a pawn goes through with a hookup that would be cheating: yes with probability CheatFactor.
     public static bool WillPawnContinue(Pawn pawn, Pawn target, out Pawn cheatOn)
     {
-      return Rand.Chance(CheatFactor(pawn, target, out cheatOn));
+      float chance = CheatFactor(pawn, target, out cheatOn);
+      bool goAhead = Rand.Chance(chance);
+      if (cheatOn != null)
+      {
+        PsychologyDebug.Log($"{pawn} considers a hookup with {target}, cheating on {cheatOn}: chance {chance:P0} -> {(goAhead ? "goes ahead" : "stays faithful")}");
+      }
+      return goAhead;
     }
 
     /// <summary>
@@ -391,32 +397,47 @@ namespace Psychology
     /// </summary>
     public static RomanticIntent GetRomanticIntent(Pawn initiator, Pawn recipient)
     {
+      return GetRomanticIntent(initiator, recipient, out _);
+    }
+
+    // As above, with the deciding reason (English, for the dev romance menu and debug log).
+    public static RomanticIntent GetRomanticIntent(Pawn initiator, Pawn recipient, out string reason)
+    {
       if (initiator == recipient || !PsycheHelper.PsychologyEnabled(initiator) || !PsycheHelper.PsychologyEnabled(recipient))
       {
+        reason = "no psyche";
         return RomanticIntent.None;
       }
       if (!SpeciesHelper.RomanceEnabled(initiator, true) || !SpeciesHelper.RomanceEnabled(recipient, true))
       {
+        reason = "too young to date (or species can't)";
         return RomanticIntent.None;
       }
       if (LovePartnerRelationUtility.LovePartnerRelationExists(initiator, recipient))
       {
+        reason = "partners";
         return RomanticIntent.DateNight;
       }
-      if (initiator.relations.SecondaryRomanceChanceFactor(recipient) < MinAttraction)
+      float attraction = initiator.relations.SecondaryRomanceChanceFactor(recipient);
+      if (attraction < MinAttraction)
       {
+        reason = $"not attracted ({attraction:0.00} < {MinAttraction:0.00})";
         return RomanticIntent.None;
       }
       float opinion = initiator.relations.OpinionOf(recipient);
-      if (opinion >= PsychologySettings.romanceOpinionThreshold
-          && (PsycheHelper.Comp(initiator).Sexuality.AdjustedRomanticDrive > 0f || GoodDateCount(initiator, recipient) > 0))
+      float romanticDrive = PsycheHelper.Comp(initiator).Sexuality.AdjustedRomanticDrive;
+      int goodDates = GoodDateCount(initiator, recipient);
+      if (opinion >= PsychologySettings.romanceOpinionThreshold && (romanticDrive > 0f || goodDates > 0))
       {
+        reason = $"attraction {attraction:0.00}, opinion {opinion:0}, romantic drive {romanticDrive:0.00}, good dates {goodDates}";
         return RomanticIntent.Courtship;
       }
       if (opinion >= PsychologySettings.minOpinionForHookup && WillPawnTryHookup(initiator))
       {
+        reason = $"attraction {attraction:0.00}, opinion {opinion:0} (below romance minimum {PsychologySettings.romanceOpinionThreshold:0} or no romantic drive)";
         return RomanticIntent.Hookup;
       }
+      reason = $"opinion {opinion:0} below romance minimum {PsychologySettings.romanceOpinionThreshold:0}, and no hookup (minimum {PsychologySettings.minOpinionForHookup:0}, or unwilling)";
       return RomanticIntent.None;
     }
 
@@ -506,15 +527,28 @@ namespace Psychology
 
     /// <summary>
     /// Fires a vanilla romance attempt (so Psychology's success chance patches apply) from the bolder of the two
-    /// (romantic drive + Confident) at the other, with the usual log entry, bubble and letter. Goes through the worker
-    /// directly, because TryInteractWith refuses when they aren't standing close enough at that moment. True if they
-    /// end up partners.
+    /// (romantic drive + Confident) at the other. True if they end up partners.
     /// </summary>
     public static bool TryFireRomanceAttempt(Pawn a, Pawn b)
     {
       Pawn initiator = Boldness(a) >= Boldness(b) ? a : b;
       Pawn recipient = initiator == a ? b : a;
-      InteractionDef def = InteractionDefOf.RomanceAttempt;
+      if (PsychologyDebug.Enabled)
+      {
+        PsychologyDebug.Log($"{initiator} makes a romance attempt on {recipient}: success chance {InteractionWorker_RomanceAttempt.SuccessChance(initiator, recipient):P0}");
+      }
+      ForceInteraction(initiator, recipient, InteractionDefOf.RomanceAttempt);
+      bool partners = LovePartnerRelationUtility.LovePartnerRelationExists(initiator, recipient);
+      PsychologyDebug.Log($"{initiator} and {recipient}: {(partners ? "now lovers" : "romance attempt rejected")}");
+      return partners;
+    }
+
+    /// <summary>
+    /// Runs an interaction's worker directly, with the usual log entry, bubble and letter. Used where TryInteractWith
+    /// would refuse because the pawns aren't standing close enough at that moment (end of a date, the dev romance menu).
+    /// </summary>
+    public static void ForceInteraction(Pawn initiator, Pawn recipient, InteractionDef def)
+    {
       List<RulePackDef> extraSentencePacks = new List<RulePackDef>();
       def.Worker.Interacted(initiator, recipient, extraSentencePacks, out string letterText, out string letterLabel, out LetterDef letterDef, out LookTargets lookTargets);
       PlayLogEntry_Interaction entry = new PlayLogEntry_Interaction(def, initiator, recipient, extraSentencePacks);
@@ -532,7 +566,6 @@ namespace Psychology
         }
         Find.LetterStack.ReceiveLetter(letterLabel, text, letterDef, lookTargets ?? new LookTargets(initiator));
       }
-      return LovePartnerRelationUtility.LovePartnerRelationExists(initiator, recipient);
     }
 
     private static float Boldness(Pawn pawn)

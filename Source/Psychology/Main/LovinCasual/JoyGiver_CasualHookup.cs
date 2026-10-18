@@ -107,7 +107,7 @@ namespace Psychology
         /// <param name="p1"></param>
         /// <param name="p2"></param>
         /// <returns>A bed with at least two sleeping spots</returns>
-        private static Building_Bed FindHookupBed(Pawn p1, Pawn p2)
+        internal static Building_Bed FindHookupBed(Pawn p1, Pawn p2)
         {
             Building_Bed result;
             //If p1 owns a suitable bed, use that

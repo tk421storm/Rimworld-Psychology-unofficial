@@ -352,6 +352,7 @@ public static class SettingsWindowUtility{
       FloatEntry(nameof(PsychologySettings.mentalBreakAnxietyChance), 0f, 2f);
       FloatEntry(nameof(PsychologySettings.personalityExtremeness), 0f, 1f);
       FloatEntry(nameof(PsychologySettings.ideoPsycheMultiplier), 0f, 10f);
+      CheckboxEntry(nameof(PsychologySettings.printDebugInfo));
     }
 
     Widgets.EndScrollView();
