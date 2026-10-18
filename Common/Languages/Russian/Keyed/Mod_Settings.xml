@@ -31,8 +31,8 @@
 	<BenchmarkingTitle>Включить тест производительности</BenchmarkingTitle>
 	<BenchmarkingTooltip>Включите это, чтобы получать периодические отчёты о производительности мода в консоли. Вы можете копировать эти отчёты и отправлять их разработчикам для улучшения оптимизации мода. ВНИМАНИЕ: тест производительности сам по себе может негативно повлиять на производительность.\n\nИзменение данного параметра перезапустит игру.</BenchmarkingTooltip>
 
-	<ImprisonedDebuffTitle>Prisoner recruitment penalty</ImprisonedDebuffTitle>
-	<ImprisonedDebuffTooltip>Enable/disable negative opinion penalty for recruited prisoners (-40 Faction imprisoned me).</ImprisonedDebuffTooltip>
+	<ImprisonedDebuffTitle>Штраф за вербовку пленников</ImprisonedDebuffTitle>
+	<ImprisonedDebuffTooltip>Штраф к мнению, который завербованный пленник получает о каждом колонисте («фракция взяла меня в плен», 45 дней). Он также заменяет обычное расположение: в базовой игре каждая беседа надзирателя даёт пленнику +2 к мнению об этом надзирателе (до +100), из-за чего пленник проникается к нему симпатией, а сопротивление снижается до 1,5 раза быстрее. При 0 штраф отключён и расположение работает как в базовой игре; от 0 до 20 беседы дают меньше расположения; при 20 (по умолчанию) и выше беседы его не дают, а накопленное расположение удаляется при вербовке. Требуется перезапуск.</ImprisonedDebuffTooltip>
 
 	<RomanceChanceMultiplierTitle>Romance chance multiplier</RomanceChanceMultiplierTitle>
 	<RomanceChanceMultiplierTooltip>Romance chance will be multiplied by this value. Setting to 0 should eliminate romance entirely.</RomanceChanceMultiplierTooltip>
@@ -46,5 +46,7 @@
 
 	<BeatyOverrideEnabledTitle>Disable opinion changes from beauty traits</BeatyOverrideEnabledTitle>
 	<BeatyOverrideEnabledToolip>Disables opinion changes from traits such as: Pretty, Beautiful, Ugly, etc. Note that Psychology's changes to those traits would still work even if you disable this option. Its recommended to keep this option enabled.</BeatyOverrideEnabledToolip>
-  
+	<LovinFrequencyTitle>Частота близости</LovinFrequencyTitle>
+	<LovinFrequencyTooltip>Как часто пары занимаются любовью: 2 — вдвое чаще, 0,5 — вдвое реже.</LovinFrequencyTooltip>
+
 </LanguageData>

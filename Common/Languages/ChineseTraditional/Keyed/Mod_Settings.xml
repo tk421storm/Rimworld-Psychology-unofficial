@@ -32,7 +32,7 @@
   <BenchmarkingTooltip>启用此选项，您会偶尔收到关于此心理学系统的性能测试报告，您可以提交这些报告来帮助mod作者完善这个mod， 警告: 性能测试功能本身也会影响性能。\n\n激活此选项将重启游戏。</BenchmarkingTooltip>
 
   <ImprisonedDebuffTitle>招募囚犯惩罚</ImprisonedDebuffTitle>
-  <ImprisonedDebuffTooltip>启用/禁用招募囚犯的负面意见惩罚（-40派系好感度）</ImprisonedDebuffTooltip>
+  <ImprisonedDebuffTooltip>被招募的囚犯对每位殖民者产生的负面意见（“关押了我”，持续45天）。它同时取代原版的融洽关系：原版中狱卒每次与囚犯交谈，囚犯对该狱卒的意见+2（最多+100），这会让囚犯喜欢狱卒，并使其抵抗度下降最多快1.5倍。设为0时关闭此功能，融洽关系与原版相同；0到20之间交谈建立的融洽关系减少；20（默认）及以上时交谈不再建立融洽关系，且招募时会清除已有的融洽关系。需要重启游戏。</ImprisonedDebuffTooltip>
 
   <RomanceChanceMultiplierTitle>追求几率乘数</RomanceChanceMultiplierTitle>
   <RomanceChanceMultiplierTooltip>追求成功的几率将会乘上这个数值。</RomanceChanceMultiplierTooltip>
@@ -46,11 +46,7 @@
 
   <BeatyOverrideEnabledTitle>禁用外貌影响更改</BeatyOverrideEnabledTitle>
   <BeatyOverrideEnabledToolip>禁用对诸如：美貌、漂亮、丑陋等特征的影响更改。请注意，即使禁用此选项，此心理学mod对这些特征的更改仍然有效。建议保持此选项处于启用状态。</BeatyOverrideEnabledToolip>
-
-
-
-
-
-
+	<LovinFrequencyTitle>亲热频率</LovinFrequencyTitle>
+	<LovinFrequencyTooltip>伴侣亲热的频率：2 = 频率翻倍，0.5 = 频率减半。</LovinFrequencyTooltip>
 
 </LanguageData>

@@ -33,7 +33,7 @@
 	<BenchmarkingTooltip>Activez cette option pour recevoir des rapports de performance occasionnels dans la console vis-à-vis du système Psychology. Vous pouvez coupier-coller ces rapports pour aider l'optimisation du mod. AVERTISSEMENT : Les tests de performance ont un impact sur les performances.\n\nModifier ce paramètre relancera votre jeu.</BenchmarkingTooltip>
   
 	<ImprisonedDebuffTitle>Pénalité de rectrutement pour les prisonniers</ImprisonedDebuffTitle>
-	<ImprisonedDebuffTooltip>Active/désactive la pénalité d'opinion pour les prisonniers recrutés (-40 Untel me retiens en captivité).</ImprisonedDebuffTooltip>
+	<ImprisonedDebuffTooltip>Pénalité d'opinion qu'un prisonnier recruté reçoit envers chaque colon (« faction m'ayant emprisonné », dure 45 jours). Elle remplace aussi le rapport vanilla : en vanilla, chaque discussion avec un gardien donne au prisonnier +2 d'opinion envers ce gardien (jusqu'à +100), ce qui le rend plus amical envers lui et réduit sa résistance jusqu'à 1,5 fois plus vite. À 0, cette option est désactivée et le rapport fonctionne comme en vanilla ; entre 0 et 20, les discussions créent moins de rapport ; à 20 (par défaut) ou plus, elles n'en créent plus et tout rapport est supprimé au recrutement. Nécessite un redémarrage.</ImprisonedDebuffTooltip>
 
 	<RomanceChanceMultiplierTitle>Multiplicateur de chance de séduction</RomanceChanceMultiplierTitle>
 	<RomanceChanceMultiplierTooltip>Les chances de séduction seront multipliées par cette valeur. Régler sur 0 retierera complètement la séduction.</RomanceChanceMultiplierTooltip>
@@ -70,5 +70,7 @@
 
 	<MinLovinAgeTitle>Amourettes</MinLovinAgeTitle>
 	<MinLovinAgeTooltip>Règle l'âge minimum auquel cette espèce peut s'engager dans une relation charnelle. Avec un chiffre positif, l'âge effectif s'échelonne par rapport au chiffre 16 dans les formule. Paramétrer 0 autorise les amourettes à tout âge et, dans les faits, désactive l'écart d'âge. Recommandé pour les androïdes conscients, qui n'ont pas réellement d'enfance. Un chiffre négatif désactive les amourettes pour cette espèce.</MinLovinAgeTooltip>
+	<LovinFrequencyTitle>Fréquence des câlins</LovinFrequencyTitle>
+	<LovinFrequencyTooltip>Fréquence à laquelle les couples font des câlins : 2 = deux fois plus souvent, 0,5 = deux fois moins souvent.</LovinFrequencyTooltip>
 
 </LanguageData>

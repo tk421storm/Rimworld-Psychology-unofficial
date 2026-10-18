@@ -31,8 +31,8 @@
 	<BenchmarkingTitle>Aktiviert Leistungstests</BenchmarkingTitle>
 	<BenchmarkingTooltip>Aktiviere diese Option, um in der Konsole gelegentlich Leistungsberichte zu Psychology Mod zu erhalten. Sie können diesen Bericht kopieren und einfügen, um die Optimierung des Mod zu unterstützen. WARNUNG: Die Leistungstests haben ihre eigenen Auswirkungen auf die Leistung.\n\nDas Toggeln der Option sorgt für ein Neustart des Spiels.</BenchmarkingTooltip>
 
-	<ImprisonedDebuffTitle>Prisoner recruitment penalty</ImprisonedDebuffTitle>
-	<ImprisonedDebuffTooltip>Enable/disable negative opinion penalty for recruited prisoners (-40 Faction imprisoned me).</ImprisonedDebuffTooltip>
+	<ImprisonedDebuffTitle>Rekrutierungsmalus für Gefangene</ImprisonedDebuffTitle>
+	<ImprisonedDebuffTooltip>Meinungsmalus, den ein rekrutierter Gefangener gegenüber jedem Kolonisten erhält („Fraktion hat mich eingesperrt“, 45 Tage). Er ersetzt außerdem den Vanilla-Rapport: In Vanilla gibt jedes Gespräch mit einem Wärter dem Gefangenen +2 Meinung über diesen Wärter (bis zu +100), wodurch er den Wärter mag und sein Widerstand bis zu 1,5-mal schneller sinkt. Bei 0 ist dies aus und Rapport funktioniert wie in Vanilla; zwischen 0 und 20 bauen Gespräche weniger Rapport auf; ab 20 (Standard) bauen sie keinen mehr auf, und vorhandener Rapport wird bei der Rekrutierung entfernt. Neustart erforderlich.</ImprisonedDebuffTooltip>
 
 	<RomanceChanceMultiplierTitle>Romance chance multiplier</RomanceChanceMultiplierTitle>
 	<RomanceChanceMultiplierTooltip>Romance chance will be multiplied by this value. Setting to 0 should eliminate romance entirely.</RomanceChanceMultiplierTooltip>
@@ -46,5 +46,7 @@
 
 	<BeatyOverrideEnabledTitle>Disable opinion changes from beauty traits</BeatyOverrideEnabledTitle>
 	<BeatyOverrideEnabledToolip>Disables opinion changes from traits such as: Pretty, Beautiful, Ugly, etc. Note that Psychology's changes to those traits would still work even if you disable this option. Its recommended to keep this option enabled.</BeatyOverrideEnabledToolip>
-  
+	<LovinFrequencyTitle>Häufigkeit des Liebesspiels</LovinFrequencyTitle>
+	<LovinFrequencyTooltip>Wie oft Paare sich lieben: 2 = doppelt so oft, 0,5 = halb so oft.</LovinFrequencyTooltip>
+
 </LanguageData>
