@@ -330,9 +330,7 @@ public class Hediff_Conversation : HediffWithComps
   }
 
   // Keeps at most ~10 conversation memories per pair: once full, a new one is only added if it's stronger than the
-  // weakest of the overflow, and the overflow memories are expired.
-  // BUG (pre-existing): the OrderByDescending below is discarded, so the 9 "kept" memories are just the first 9 found,
-  // not the strongest ones.
+  // strongest of the overflow, and the overflow memories are expired; the 9 strongest are kept.
   private bool TryGainThought(ThoughtDef def, int opinionOffset)
   {
     ThoughtStage stage = def.stages.First();
@@ -350,9 +348,7 @@ public class Hediff_Conversation : HediffWithComps
       this.pawn.needs.mood.thoughts.memories.TryGainMemory(def, this.otherPawn);
       return true;
     }
-    convoMemories.OrderByDescending(m => Mathf.Abs(m.OpinionOffset()));
-    IEnumerable<Thought_MemorySocialDynamic> keptMemories = convoMemories.Take(maxConvoOpinions - 1);
-    IEnumerable<Thought_MemorySocialDynamic> removedMemories = convoMemories.Except(keptMemories);
+    List<Thought_MemorySocialDynamic> removedMemories = convoMemories.OrderByDescending(m => Mathf.Abs(m.OpinionOffset())).Skip(maxConvoOpinions - 1).ToList();
 
     Thought_MemorySocialDynamic lastMemory = removedMemories.MaxBy(m => Mathf.Abs(m.OpinionOffset()));
     if (Mathf.Abs(opinionOffset) < Mathf.Abs(lastMemory.OpinionOffset()))
