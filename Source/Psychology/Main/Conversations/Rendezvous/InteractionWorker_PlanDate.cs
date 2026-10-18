@@ -32,9 +32,8 @@ namespace Psychology
             {
                 return 0f;
             }
-            // NOTE: lastDateTick is stored as an absolute tick (TicksAbs, see Interacted below) but compared with TicksGame here,
-            // so the cooldown is really 7 days plus the game's start offset into the year.
-            if(PsycheHelper.Comp(initiator).Psyche.lastDateTick >= Find.TickManager.TicksGame - GenDate.TicksPerDay*7 || PsycheHelper.Comp(recipient).Psyche.lastDateTick >= Find.TickManager.TicksGame - GenDate.TicksPerDay * 7)
+            // lastDateTick is the planned date as an absolute tick (TicksAbs, see Interacted below): no new date until a week after it.
+            if(PsycheHelper.Comp(initiator).Psyche.lastDateTick >= Find.TickManager.TicksAbs - GenDate.TicksPerDay*7 || PsycheHelper.Comp(recipient).Psyche.lastDateTick >= Find.TickManager.TicksAbs - GenDate.TicksPerDay * 7)
             {
                 return 0f;
             }
