@@ -56,19 +56,29 @@ public static class InteractionWorker_MarriageProposal_AcceptanceChancePatch
     }
 }
 
-// DISABLED since 1.5 (dropped from the 1.5/1.6 builds), presumably because vanilla's Interacted() changed and the
-// transpiler no longer finds its TryGainMemory(RejectedMyProposal/IRejectedTheirProposal) calls. As a result a rejected
-// proposal gives vanilla's fixed thoughts instead of the personality-scaled ones from RomanceHelperMethods.
-// TODO: verify against the 1.6/1.7 IL and re-enable.
-#if false
+// Rejected proposals get Psychology's personality-scaled thoughts (RomanceHelperMethods) instead of vanilla's fixed
+// RejectedMyProposal (-30 opinion) and IRejectedTheirProposal (-15 opinion). Vanilla gives both in one branch when the
+// proposal fails, and both allow only one memory per pair, so they're swapped out afterwards. (The old transpiler for
+// this can't match 1.6's IL: `needs.mood?.` breaks its assumption about where the pawn is loaded.) Psychology also
+// removes RejectedMyProposal's thoughtToMake, so without this the rejected pawn got no mood thought at all.
 [HarmonyPatch(typeof(InteractionWorker_MarriageProposal), nameof(InteractionWorker_MarriageProposal.Interacted))]
 public static class InteractionWorker_MarriageProposal_InteractedPatch
 {
-    // TryGain RejectedMyProposal
-    [HarmonyTranspiler]
-    public static IEnumerable<CodeInstruction> Transpiler(IEnumerable<CodeInstruction> codes)
+    [HarmonyPostfix]
+    public static void PsychologyRejectionThoughts(Pawn initiator, Pawn recipient)
     {
-        return RomanceHelperMethods.InterdictTryGainAndRemoveMemories(codes);
+        if (initiator.relations.DirectRelationExists(PawnRelationDefOf.Fiance, recipient))
+        {
+            // Accepted
+            return;
+        }
+        if (!PsycheHelper.PsychologyEnabled(initiator) || !PsycheHelper.PsychologyEnabled(recipient))
+        {
+            return;
+        }
+        initiator.needs.mood.thoughts.memories.RemoveMemoriesOfDefWhereOtherPawnIs(ThoughtDefOf.RejectedMyProposal, recipient);
+        recipient.needs.mood.thoughts.memories.RemoveMemoriesOfDefWhereOtherPawnIs(ThoughtDefOf.IRejectedTheirProposal, initiator);
+        RomanceHelperMethods.GainRejectedMyProposal(initiator, recipient);
+        RomanceHelperMethods.GainIRejectedTheirProposal(recipient, initiator);
     }
 }
-#endif
