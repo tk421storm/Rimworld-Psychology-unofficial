@@ -113,25 +113,22 @@ public class PatchOperationImprisonedMe : PatchOperationPathed
   }
 }
 
-// Fades vanilla's RapportBuilt opinion out as the imprisoned debuff setting goes up.
-// NOTE: RapportBuilt no longer exists since 1.5, so the patch in ThoughtPatches.xml that uses this matches nothing and
-// logs a patch failure on every startup.
+// Fades vanilla's RapportBuilt opinion out as the imprisoned debuff setting goes up (at the default setting it's 0).
+// Succeeds without changing anything if the game version has no RapportBuilt thought.
 public class PatchOperationRapportBuilt : PatchOperationPathed
 {
   protected override bool ApplyWorker(XmlDocument xml)
   {
-    bool result = false;
     foreach (XmlNode xmlNode in xml.SelectNodes(xpath).Cast<XmlNode>().ToArray())
     {
       if (xmlNode.Value != null && xmlNode.NodeType == XmlNodeType.Text)
       {
-        result = true;
         float oldValue = ParseHelper.FromString<int>(xmlNode.Value);
         float newValue = Mathf.Lerp(oldValue, 0f, PsychologySettings.imprisonedDebuff / PsychologySettings.imprisonedDebuffDefault);
         xmlNode.Value = newValue.ToString();
       }
     }
-    return result;
+    return true;
   }
 }
 
@@ -150,8 +147,7 @@ public class PatchOperationReplaceEmpathyEnabled : PatchOperationReplace
   }
 }
 
-// Sets the conversation memory duration to the "conversation duration" setting. (Its failure log says
-// "PatchOperationImprisonedMe", a copy-paste leftover.)
+// Sets the conversation memory duration to the "conversation duration" setting.
 public class PatchOperationConversationDurationDays : PatchOperationPathed
 {
   protected override bool ApplyWorker(XmlDocument xml)
@@ -167,7 +163,7 @@ public class PatchOperationConversationDurationDays : PatchOperationPathed
     }
     if (result != true)
     {
-      Log.Error("PatchOperationImprisonedMe");
+      Log.Error("PatchOperationConversationDurationDays");
     }
 
     return result;
