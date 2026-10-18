@@ -115,6 +115,10 @@ public class PsychologySettings : ModSettings
   public const float lovinFrequencyMin = 0.1f;
   public const float lovinFrequencyMax = 5f;
 
+  // Base chance (percent) that a pawn cheats on a partner they don't like; see RomanceUtility.CheatChance. Slider 0-100.
+  public const float cheatChanceDefault = 50f;
+  public static float cheatChance = 50f;
+
   public const float traitOpinionMultiplierDefault = 0.25f; // v1.3
   public static float traitOpinionMultiplier = 0.25f; // v1.3
 
@@ -146,8 +150,6 @@ public class PsychologySettings : ModSettings
   public const float minOpinionForHookupDefault = 5f;
   public static float minOpinionForHookup = 5f;
 
-  public const float hookupCheatChanceDefault = 0.05f;
-  public static float hookupCheatChance = 0.05f;
 
   /* DEPRECATED SETTINGS */
   private const bool enableAnxietyDefault = true; // v1.1
@@ -176,6 +178,7 @@ public class PsychologySettings : ModSettings
     ScribeValueAndAddToNameList(nameof(romanceChanceMultiplier));
     ScribeValueAndAddToNameList(nameof(romanceOpinionThreshold));
     ScribeValueAndAddToNameList(nameof(lovinFrequency));
+    ScribeValueAndAddToNameList(nameof(cheatChance));
     ScribeValueAndAddToNameList(nameof(traitOpinionMultiplier));
     ScribeValueAndAddToNameList(nameof(personalityExtremeness));
     ScribeValueAndAddToNameList(nameof(ideoPsycheMultiplier));
@@ -200,6 +203,7 @@ public class PsychologySettings : ModSettings
     imprisonedDebuff = Mathf.Clamp(imprisonedDebuff, 0f, imprisonedDebuffMax);
     lovinFrequency = Mathf.Clamp(lovinFrequency, lovinFrequencyMin, lovinFrequencyMax);
     arrestBaseChance = Mathf.Clamp(arrestBaseChance, 0f, arrestBaseChanceMax);
+    cheatChance = Mathf.Clamp(cheatChance, 0f, 100f);
   }
 
   // Saves/loads the static field called settingName (bool or float) and registers it in the name lists.

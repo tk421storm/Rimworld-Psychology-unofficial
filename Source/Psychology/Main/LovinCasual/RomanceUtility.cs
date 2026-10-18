@@ -297,16 +297,48 @@ namespace Psychology
     }
 
     /// <summary>
+    /// Probability (0-1) that <paramref name="pawn"/> cheats on <paramref name="partner"/>, used both for casual hookups
+    /// (WillPawnContinue) and for whether a pawn with a partner makes a romance attempt on someone else
+    /// (InteractionWorker_RomanceAttempt selection weight): the "cheating chance" setting x an opinion curve x personality.
+    /// - Opinion: normal pawns use a Romantic-shaped curve, 0 at or above 50 - 40r and 1 at or below -50 + 25r with
+    ///   r = 2 x Romantic - 1 (romantic pawns stay loyal longer but turn faster on a partner they dislike). Lechers cheat
+    ///   on anyone below 70 opinion who shares their map (1 at 15), and below 100 when apart (1 at 50).
+    /// - Personality: 2^((Experimental - 0.5) - (Moralistic - 0.5) - (Pure - 0.5)), about x0.35 to x2.8.
+    /// Codependent pawns never cheat; a setting of 0 turns cheating off.
+    /// </summary>
+    public static float CheatChance(Pawn pawn, Pawn partner)
+    {
+      if (PsychologySettings.cheatChance <= 0f || !PsycheHelper.PsychologyEnabled(pawn) || pawn.story.traits.HasTrait(TraitDefOfPsychology.Codependent))
+      {
+        return 0f;
+      }
+      Pawn_PsycheTracker psyche = PsycheHelper.Comp(pawn).Psyche;
+      float opinion = pawn.relations.OpinionOf(partner);
+      float opinionFactor;
+      if (pawn.story.traits.HasTrait(TraitDefOfPsychology.Lecher))
+      {
+        opinionFactor = pawn.Map == partner.Map ? Mathf.InverseLerp(70f, 15f, opinion) : Mathf.InverseLerp(100f, 50f, opinion);
+      }
+      else
+      {
+        float romDisp = 2f * psyche.GetPersonalityRating(PersonalityNodeDefOf.Romantic) - 1f;
+        opinionFactor = Mathf.InverseLerp(50f - 40f * romDisp, -50f + 25f * romDisp, opinion);
+      }
+      float personality = Mathf.Pow(2f, (psyche.GetPersonalityRating(PersonalityNodeDefOf.Experimental) - 0.5f)
+                                      - (psyche.GetPersonalityRating(PersonalityNodeDefOf.Moralistic) - 0.5f)
+                                      - (psyche.GetPersonalityRating(PersonalityNodeDefOf.Pure) - 0.5f));
+      return Mathf.Clamp01(PsychologySettings.cheatChance / 100f * opinionFactor * personality);
+    }
+
+    /// <summary>
     /// Returns true if interaction between <paramref name="pawn"/> and <paramref name="target"/> is not cheating and is allowed by ideo. Otherwise, finds the partner they would feel the worst about cheating on and decides based on opinion.
     /// </summary>
     /// <param name="pawn"></param>
     /// <param name="target"></param>
     /// <param name="cheatOn">The pawn they feel worst about cheating on</param>
     /// <returns></returns>
-    // Whether a pawn goes through with a hookup that would be cheating. Codependents never cheat.
-    // NOTE (please check): it refuses when Rand x (cheat chance / 100) < InverseLerp(30, -80, opinion of partner). That factor
-    // is 0 when they LIKE their partner, so pawns who love their partner never refuse, while pawns who dislike them almost
-    // always do. This looks inverted. Lechers use a different, map-dependent curve.
+    // Whether a pawn goes through with a hookup that would be cheating: yes with probability CheatChance for the partner
+    // they'd feel worst about cheating on (the one with the lowest chance).
     public static bool WillPawnContinue(Pawn pawn, Pawn target, out Pawn cheatOn)
     {
       cheatOn = null;
@@ -315,39 +347,17 @@ namespace Psychology
         if (!cheatedOnList.NullOrEmpty())
         {
           //At this point, both the pawn and a non-zero number of partners consider this cheating
-          if (pawn.story.traits.HasTrait(TraitDefOfPsychology.Codependent))
-          {
-            return false;
-          }
-          //Don't allow if user has turned cheating off
-          if (PsychologySettings.hookupCheatChance == 0f)
-          {
-            return false;
-          }
-          //This should find the person they would feel the worst about cheating on
-          //With the philanderer map differences, I think this is the best way
-          float opinionFactor = 99999f;
+          float chance = float.MaxValue;
           foreach (Pawn p in cheatedOnList)
           {
-            float opinion = pawn.relations.OpinionOf(p);
-            float tempOpinionFactor;
-            if (pawn.story.traits.HasTrait(TraitDefOfPsychology.Lecher))
+            float partnerChance = CheatChance(pawn, p);
+            if (partnerChance < chance)
             {
-              tempOpinionFactor = pawn.Map == p.Map
-                  ? Mathf.InverseLerp(70f, 15f, opinion)
-                  : Mathf.InverseLerp(100f, 50f, opinion);
-            }
-            else
-            {
-              tempOpinionFactor = Mathf.InverseLerp(30f, -80f, opinion);
-            }
-            if (tempOpinionFactor < opinionFactor)
-            {
-              opinionFactor = tempOpinionFactor;
+              chance = partnerChance;
               cheatOn = p;
             }
           }
-          if (Rand.Range(0f, 1f) * (PsychologySettings.hookupCheatChance / 100f) < opinionFactor)
+          if (!Rand.Chance(chance))
           {
             return false;
           }

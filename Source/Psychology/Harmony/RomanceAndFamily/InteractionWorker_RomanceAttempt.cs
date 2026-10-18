@@ -127,20 +127,18 @@ public static class InteractionWorker_RomanceAttempt_SelectionWeightPatch
     }
 
     /* INITIATOR EXISTING LOVE PARTNER FACTOR */
-    //A pawn with high enough opinion of their lover will not hit on other pawns unless they are lecherous or polygamous (and their lover is also polygamous).
+    // Romancing someone else while their ideoligion allows no more partners is cheating (a successful attempt makes both
+    // pawns leave their partners, who get "cheated on me"), so it's weighted by the same cheat chance as casual hookups
+    // (RomanceUtility.CheatChance: setting x Romantic-shaped opinion of the partner x personality; Lechers use their own
+    // curve). Polygamous pawns, or pawns whose partner is Polygamous, aren't held back.
     float existingPartnerMult = 1f;
     if (!new HistoryEvent(initiator.GetHistoryEventForLoveRelationCountPlusOne(), initiator.Named(HistoryEventArgsNames.Doer)).DoerWillingToDo())
     {
       Pawn pawn = LovePartnerRelationUtility.ExistingMostLikedLovePartner(initiator, allowDead: false);
-      if (pawn != null && !initiatorLecher && !initiator.story.traits.HasTrait(TraitDefOfPsychology.Polygamous)
+      if (pawn != null && !initiator.story.traits.HasTrait(TraitDefOfPsychology.Polygamous)
           && !pawn.story.traits.HasTrait(TraitDefOfPsychology.Polygamous))
       {
-        float opinionOfLover = (float)initiator.relations.OpinionOf(pawn);
-        // More romantic pawns will stay loyal longer, but will also turn faster against a partner they don't like
-        float romDisp = 2f * initiatorRomantic - 1f;
-        float maxOpinionOfLover = 50f - 40f * romDisp;
-        float minOpinionOfLover = -50f + 25f * romDisp;
-        existingPartnerMult = Mathf.InverseLerp(maxOpinionOfLover, minOpinionOfLover, opinionOfLover);
+        existingPartnerMult = RomanceUtility.CheatChance(initiator, pawn);
       }
     }
 

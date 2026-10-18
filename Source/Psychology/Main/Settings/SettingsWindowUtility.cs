@@ -303,6 +303,7 @@ public static class SettingsWindowUtility{
       FloatEntry(nameof(PsychologySettings.romanceChanceMultiplier), 0f, 1E+09f);
       FloatEntry(nameof(PsychologySettings.romanceOpinionThreshold), -99f, 99f);
       FloatSliderEntry(nameof(PsychologySettings.lovinFrequency), PsychologySettings.lovinFrequencyMin, PsychologySettings.lovinFrequencyMax, 2);
+      FloatSliderEntry(nameof(PsychologySettings.cheatChance), 0f, 100f, 0);
     }
 
     if (Widgets.ButtonText(buttonRect, "Conversations"))
