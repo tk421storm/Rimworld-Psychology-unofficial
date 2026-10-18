@@ -14,6 +14,7 @@
 		<li>Common</li>
 		<li>1.6</li>
 		<li IfModActive="Ludeon.RimWorld.Ideology">Common/Mods/Ideology</li>
+		<li IfModActive="erdelf.HumanoidAlienRaces">Common/Mods/HumanoidAlienRaces</li>
 		<li IfModActive="erdelf.HumanoidAlienRaces">1.6/Mods/HumanoidAlienRaces</li>
 		<li IfModActive="void.charactereditor, void.charactereditor.unofficial">1.6/Mods/CharacterEditor</li>
 		<li IfModActive="tachyonite.pawnmorpherpublic">1.6/Mods/Pawnmorpher</li>
@@ -22,6 +23,7 @@
 		<li>Common</li>
 		<li>1.7</li>
 		<li IfModActive="Ludeon.RimWorld.Ideology">Common/Mods/Ideology</li>
+		<li IfModActive="erdelf.HumanoidAlienRaces">Common/Mods/HumanoidAlienRaces</li>
 		<li IfModActive="erdelf.HumanoidAlienRaces">1.7/Mods/HumanoidAlienRaces</li>
 		<li IfModActive="void.charactereditor, void.charactereditor.unofficial">1.7/Mods/CharacterEditor</li>
 		<li IfModActive="tachyonite.pawnmorpherpublic">1.7/Mods/Pawnmorpher</li>
