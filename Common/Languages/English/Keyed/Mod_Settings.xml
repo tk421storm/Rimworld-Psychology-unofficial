@@ -107,6 +107,6 @@
 	<LovinFrequencyTitle>Lovin frequency</LovinFrequencyTitle>
 	<LovinFrequencyTooltip>How often couples make love: 2 = twice as often, 0.5 = half as often.</LovinFrequencyTooltip>
 	<AdjustRapportByCompatibilityTitle>Adjust rapport based on compatibility</AdjustRapportByCompatibilityTitle>
-	<AdjustRapportByCompatibilityTooltip>In vanilla, each time a warden chats with a prisoner the prisoner gets +2 opinion of that warden (up to +100), which also wears down their resistance up to 1.5x faster. With this on, that +2 is scaled by how compatible their personalities are: about +2 for a typical pair, up to about +6 for a great fit, and negative ("strained rapport") when their personalities clash. Off: vanilla +2 each time.</AdjustRapportByCompatibilityTooltip>
+	<AdjustRapportByCompatibilityTooltip>In vanilla, each time a warden chats with a prisoner the prisoner gets +2 opinion of that warden (up to +100), which also wears down their resistance up to 1.5x faster. With this on, that +2 is scaled by how compatible their personalities are: about +2 for a typical pair, up to about +6 for a great fit, and negative ("strained rapport") when their personalities clash. This also applies to the chats before a conversion attempt, which in vanilla are plain small talk. Off: vanilla +2 each time.</AdjustRapportByCompatibilityTooltip>
 
 </LanguageData>

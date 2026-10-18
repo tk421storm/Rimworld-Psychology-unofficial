@@ -66,6 +66,6 @@
 	<IdeoPsycheMultiplierTitle>Multiplikator für Ideologie-Wechselwirkung</IdeoPsycheMultiplierTitle>
 	<IdeoPsycheMultiplierTooltip>Bestimmt, wie stark Persönlichkeit und Ideologie sich gegenseitig beeinflussen. Auf 0 setzen, um es ganz zu deaktivieren.</IdeoPsycheMultiplierTooltip>
 	<AdjustRapportByCompatibilityTitle>Rapport nach Kompatibilität anpassen</AdjustRapportByCompatibilityTitle>
-	<AdjustRapportByCompatibilityTooltip>In Vanilla erhält ein Gefangener bei jedem Gespräch mit einem Wärter +2 Meinung über diesen Wärter (bis zu +100), wodurch sein Widerstand auch bis zu 1,5-mal schneller sinkt. Ist dies aktiv, hängt diese +2 davon ab, wie gut ihre Persönlichkeiten zusammenpassen: etwa +2 bei einem gewöhnlichen Paar, bis zu etwa +6 bei sehr guter Passung und negativ („angespannter Rapport“), wenn ihre Persönlichkeiten kollidieren. Aus: jedes Mal Vanilla-+2.</AdjustRapportByCompatibilityTooltip>
+	<AdjustRapportByCompatibilityTooltip>In Vanilla erhält ein Gefangener bei jedem Gespräch mit einem Wärter +2 Meinung über diesen Wärter (bis zu +100), wodurch sein Widerstand auch bis zu 1,5-mal schneller sinkt. Ist dies aktiv, hängt diese +2 davon ab, wie gut ihre Persönlichkeiten zusammenpassen: etwa +2 bei einem gewöhnlichen Paar, bis zu etwa +6 bei sehr guter Passung und negativ („angespannter Rapport“), wenn ihre Persönlichkeiten kollidieren. Das gilt auch für die Gespräche vor einem Bekehrungsversuch, die in Vanilla nur Smalltalk sind. Aus: jedes Mal Vanilla-+2.</AdjustRapportByCompatibilityTooltip>
 
 </LanguageData>
