@@ -16,9 +16,11 @@ namespace Psychology
         
         protected override Job TryGiveJob(Pawn pawn)
         {
-            LordToil_HangOut toil = pawn.GetLord().CurLordToil as LordToil_HangOut;
+            LordToil_HangOut toil = pawn.GetLord()?.CurLordToil as LordToil_HangOut;
+            if (toil == null)
+                return null;
             Pawn friend = (pawn == toil.friends[0] ? toil.friends[1] : toil.friends[0]);
-            if (friend == null)
+            if (friend == null || pawn.needs?.joy == null)
                 return null;
             /* If they are partners, possibly send them to lay down together so they'll do lovin'. */
             if (LovePartnerRelationUtility.LovePartnerRelationExists(pawn, friend) && pawn.ownership.OwnedBed != null && !pawn.GetPosture().Laying() && (pawn.IsHashIntervalTick(GenDate.TicksPerHour) || friend.IsHashIntervalTick(GenDate.TicksPerHour)))
@@ -57,7 +59,8 @@ namespace Psychology
             if (((pawn.Position - friend.Position).LengthHorizontalSquared >= 54 || !GenSight.LineOfSight(pawn.Position, friend.Position, pawn.Map, true)))
             { /* Make sure they are close to each other if they're not actively doing a joy activity. */
               /* If the other pawn is already walking over, just hang around until they get there. */
-                if (friend.CurJob.def != JobDefOf.Goto)
+                /* (No current job right after the date starts, as both pawns' jobs are stopped.) */
+                if (friend.CurJob?.def != JobDefOf.Goto)
                     return new Job(JobDefOf.Goto, friend);
                 else
                 {

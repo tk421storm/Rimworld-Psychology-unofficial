@@ -37,26 +37,30 @@ namespace Psychology
             {
                 if(ShouldStartDate(pawn, partner) && ShouldStartDate(partner, pawn))
                 {
-                    pawn.jobs.StopAll();
-                    partner.jobs.StopAll();
-                    if(pawn.GetLord() != null)
+                    // Check who's awake before stopping their jobs: stopping a sleeping pawn's job wakes them up, which
+                    // used to make every sleeper "turn up" (and "missed our date" never happen).
+                    bool pawnAwake = pawn.Awake();
+                    bool partnerAwake = partner.Awake();
+                    PsychologyDebug.Log($"{(this.courtship ? "Date" : "Date night")} of {this.pawn} and {this.partner}: {(pawnAwake && partnerAwake ? "starting" : "missed (one of them is asleep)")}");
+                    if (pawnAwake && partnerAwake)
                     {
-                        pawn.GetLord().Notify_PawnLost(pawn, PawnLostCondition.ForcedToJoinOtherLord);
-                    }
-                    if (partner.GetLord() != null)
-                    {
-                        partner.GetLord().Notify_PawnLost(partner, PawnLostCondition.ForcedToJoinOtherLord);
-                    }
-                    PsychologyDebug.Log($"{(this.courtship ? "Date" : "Date night")} of {this.pawn} and {this.partner}: {(pawn.Awake() && partner.Awake() ? "starting" : "missed (one of them is asleep)")}");
-                    if (pawn.Awake() && partner.Awake())
-                    {
+                        pawn.jobs.StopAll();
+                        partner.jobs.StopAll();
+                        if(pawn.GetLord() != null)
+                        {
+                            pawn.GetLord().Notify_PawnLost(pawn, PawnLostCondition.ForcedToJoinOtherLord);
+                        }
+                        if (partner.GetLord() != null)
+                        {
+                            partner.GetLord().Notify_PawnLost(partner, PawnLostCondition.ForcedToJoinOtherLord);
+                        }
                         LordMaker.MakeNewLord(this.pawn.Faction, new LordJob_Date(this.pawn, this.partner, this.courtship), this.pawn.Map, new Pawn[] { this.pawn, this.partner });
                     }
-                    else if(pawn.Awake())
+                    else if(pawnAwake)
                     {
                         this.pawn.needs.mood.thoughts.memories.TryGainMemory(ThoughtDefOfPsychology.MissedDate, this.partner);
                     }
-                    else if (partner.Awake())
+                    else if (partnerAwake)
                     {
                         this.partner.needs.mood.thoughts.memories.TryGainMemory(ThoughtDefOfPsychology.MissedDate, this.pawn);
                     }
