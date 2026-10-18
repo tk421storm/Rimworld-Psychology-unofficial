@@ -22,8 +22,10 @@
   <HangOut.label>rumhängen</HangOut.label>
   <HangOut.logRulesInitiator.rulesStrings.0>r_logentry->[INITIATOR_nameDef] hat [RECIPIENT_nameDef] gefragt, mit [INITIATOR_objective] rumzuhängen.</HangOut.logRulesInitiator.rulesStrings.0>
 
-  <PlanDate.label>ein Verabredung planen</PlanDate.label>
-  <PlanDate.logRulesInitiator.rulesStrings.0>r_logentry->[INITIATOR_nameDef] plante eine Verabredung mit [RECIPIENT_nameDef].</PlanDate.logRulesInitiator.rulesStrings.0>
+  <PlanDate.label>einen Pärchenabend planen</PlanDate.label>
+  <PlanDate.logRulesInitiator.rulesStrings.0>r_logentry->[INITIATOR_nameDef] plante einen Pärchenabend mit [RECIPIENT_nameDef].</PlanDate.logRulesInitiator.rulesStrings.0>
 
+  <AskOutOnDate.label>um ein Date bitten</AskOutOnDate.label>
+  <AskOutOnDate.logRulesInitiator.rulesStrings.0>r_logentry->[INITIATOR_nameDef] bat [RECIPIENT_nameDef] um ein Date.</AskOutOnDate.logRulesInitiator.rulesStrings.0>
 
 </LanguageData>

@@ -49,6 +49,9 @@ public static class ThoughtDefOfPsychology
   public static ThoughtDef WentOnDate;
   public static ThoughtDef MissedDate;
   public static ThoughtDef DateCancelled;
+  public static ThoughtDef DateWentWell;
+  public static ThoughtDef DateWentBadly;
+  public static ThoughtDef RebuffedMyDateRequest;
 
   /* Miscellaneous thoughts */
   public static ThoughtDef HungOut;

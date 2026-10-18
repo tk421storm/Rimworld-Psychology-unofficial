@@ -34,7 +34,8 @@ public class Pawn_PsycheTracker : IExposable
 {
   // Saved but no longer read anywhere; kept for save compatibility.
   public int upbringing = 0;
-  // When this pawn's last planned date is (absolute ticks); see the TicksAbs/TicksGame note in InteractionWorker_PlanDate.
+  // When this pawn's last planned date is (absolute ticks, set by RendezvousUtility.PlanDate); InteractionWorker_DateBase
+  // uses it for the date cooldowns.
   public int lastDateTick = 0;
   private Pawn pawn;
   private HashSet<PersonalityNode> nodes;

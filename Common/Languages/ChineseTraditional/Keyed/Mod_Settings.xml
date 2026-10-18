@@ -72,4 +72,15 @@
 	<CheatChanceTitle>出轨几率（%）</CheatChanceTitle>
 	<CheatChanceTooltip>小人对伴侣出轨的可能性，包括追求其他人（成功后双方都会离开各自的伴侣）以及临时约会。小人的几率为：此数值×对伴侣的不满程度×性格。喜欢自己伴侣的小人不会出轨；浪漫的小人更长久地保持忠诚，但对不喜欢的伴侣会更快变心；好色之徒更容易出轨，尤其是伴侣不在身边时。有道德感和纯洁的小人出轨更少，爱尝试的小人更多。依赖型的小人从不出轨，对多偶的小人来说这不算出轨。默认50%时的例子：普通小人对伴侣意见为+50时出轨几率为0%，为0时为25%，为-50时为50%。设为0则关闭出轨。</CheatChanceTooltip>
 
+  <CourtshipChanceTitle>追求几率（倍数）</CourtshipChanceTitle>
+  <CourtshipChanceTooltip>单身小人（以及愿意出轨的小人）邀请心仪对象约会的频率。几率还会随吸引力、好感、浪漫欲望、自信以及之前的愉快约会而提高。每次约会都会留下愉快或糟糕的约会记忆；愉快的约会会让浪漫追求更可能发生。设为0则关闭追求。情侣的约会之夜不受影响。</CourtshipChanceTooltip>
+  <DateOpinionGoodTitle>愉快约会好感</DateOpinionGoodTitle>
+  <DateOpinionGoodTooltip>完美约会带来的好感加成。每次约会的结果会根据两人的性格契合度、心情、对彼此的好感和运气，在此数值与糟糕约会好感之间变化。最多可叠加5次愉快约会记忆（第一次之后每次按75%计算），持续20天。</DateOpinionGoodTooltip>
+  <DateOpinionBadTitle>糟糕约会好感</DateOpinionBadTitle>
+  <DateOpinionBadTooltip>最糟糕的约会带来的好感惩罚。参见“愉快约会好感”。</DateOpinionBadTooltip>
+  <DateRomanceChanceTitle>约会后的浪漫追求几率（%）</DateRomanceChanceTitle>
+  <DateRomanceChanceTooltip>双方都满意的约会结束时，其中一人请求对方成为恋人（普通的浪漫追求，仍可能失败）的几率。根据两人的心情乘以0.5到1.5，根据对彼此的好感乘以0.5到2；如果任何一方的好感低于最低浪漫好感，则没有机会。</DateRomanceChanceTooltip>
+  <DateRomanceBonusTitle>每次愉快约会的浪漫加成（%）</DateRomanceBonusTitle>
+  <DateRomanceBonusTooltip>两人之前的每次愉快约会为约会后的浪漫追求几率增加的百分比。默认值的例子：之前有2次愉快约会，且心情和好感都不错时，几率约为15%×2=30%。</DateRomanceBonusTooltip>
+
 </LanguageData>

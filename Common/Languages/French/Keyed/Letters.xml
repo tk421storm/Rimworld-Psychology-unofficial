@@ -3,10 +3,13 @@
 
 	<LetterLabelPTSD>Stress traumatique</LetterLabelPTSD>
 	<LetterPTSD>{0_labelShort} a développé une anxiété post-traumatique suite à sa crise de démence. L'anxiété est un trouble permanent, mais peut être traité pour lentement réduire son impact, afin de le rendre plus supportable et permettre à {0} d'être plus fonctionnel'le. Les crises de démence suivantes aggraveront son anxiété.\n\nUne rumeur cirvule sur des médecins des glitterworlds capable de guérir complètement l'anxiété. Si vous mettez la main sur de la médecine ultratech, un médecin extremement compétent pourrait les utiliser pour soigner l'anxiété de {0_labelShort}.</LetterPTSD>
-	<LetterLabelDatePlanned>Rendez-vous amoureux</LetterLabelDatePlanned>
+	<LetterLabelDatePlanned>Soirée en amoureux</LetterLabelDatePlanned>
 	<LetterDatePlanned>{0_labelShort} a prévu un rendez-vous amoureux avec {1_labelShort} pour le {2} à {3}h.\n\nCes rendez-vous peuvent être annulés, principalement si eun des deux colons à reçu une tâche prioritaire, est mobilisé, invalide ou si la colonie à des problèmes plus urgents.\n\nSi le rendez-vous est annulé, les amoureux seront déçus. Les colons peuvent aussi rater un rendez-vous parce qu'ils sont en train de dormir, ce qui vexera leur partenaire, mais ne génèrera aucun malus au moral.</LetterDatePlanned>
 	
 	<!-- Replaced vanilla letters -->
 	<LetterRejectedProposalPsychology>En fonction de leur humeur et de leur personnalité, leur moral et relations seront affectés.</LetterRejectedProposalPsychology>
+
+	<LetterLabelCourtshipDatePlanned>Rendez-vous galant</LetterLabelCourtshipDatePlanned>
+	<LetterCourtshipDatePlanned>{0_labelShort} a invité {1_labelShort} à un rendez-vous galant le {2} à {3}h.\n\nSi tout se passe bien, ils s'apprécieront davantage et pourraient décider de devenir amants. Un mauvais rendez-vous peut les refroidir. Le rendez-vous peut être annulé si l'un des colons reçoit une tâche prioritaire, est mobilisé ou est invalide.</LetterCourtshipDatePlanned>
 
 </LanguageData>

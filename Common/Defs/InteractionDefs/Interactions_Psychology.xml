@@ -116,15 +116,45 @@
   
   <InteractionDef>
     <defName>PlanDate</defName>
-    <label>planning a date</label>
-    <workerClass>Psychology.InteractionWorker_PlanDate</workerClass>
+    <label>planning a date night</label>
+    <workerClass>Psychology.InteractionWorker_PlanDateNight</workerClass>
     <symbol>Things/Mote/Heart</symbol>
     <logRulesInitiator>
       <rulesStrings>
-        <li>r_logentry->[INITIATOR_nameDef] planned a date with [RECIPIENT_nameDef].</li>
+        <li>r_logentry->[INITIATOR_nameDef] planned a date night with [RECIPIENT_nameDef].</li>
       </rulesStrings>
     </logRulesInitiator>
   </InteractionDef>
+
+  <InteractionDef>
+    <defName>AskOutOnDate</defName>
+    <label>asking out on a date</label>
+    <workerClass>Psychology.InteractionWorker_AskOutOnDate</workerClass>
+    <symbol>Things/Mote/SpeechSymbols/Romance</symbol>
+    <initiatorXpGainSkill>Social</initiatorXpGainSkill>
+    <initiatorXpGainAmount>10</initiatorXpGainAmount>
+    <logRulesInitiator>
+      <rulesStrings>
+        <li>r_logentry->[INITIATOR_nameDef] asked [RECIPIENT_nameDef] out on a date.</li>
+      </rulesStrings>
+    </logRulesInitiator>
+  </InteractionDef>
+  <RulePackDef>
+    <defName>DateAccepted</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>sent-> [RECIPIENT_nameDef] said yes.</li>
+      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+  <RulePackDef>
+    <defName>DateDeclined</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>sent-> [RECIPIENT_nameDef] turned [INITIATOR_objective] down.</li>
+      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
   
   
 

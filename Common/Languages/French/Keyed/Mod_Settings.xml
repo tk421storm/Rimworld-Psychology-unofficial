@@ -94,4 +94,15 @@
 	<CheatChanceTitle>Chance d'infidélité (%)</CheatChanceTitle>
 	<CheatChanceTooltip>Probabilité qu'un pion trompe son partenaire, en séduisant quelqu'un d'autre (une réussite fait que les deux quittent leur partenaire) ou lors d'une aventure passagère. La chance d'un pion est cette valeur x son mécontentement envers son partenaire x sa personnalité. Les pions qui aiment leur partenaire ne trompent pas ; les pions romantiques restent fidèles plus longtemps mais se détournent plus vite d'un partenaire qu'ils n'aiment pas ; les pions lubriques trompent bien plus facilement, surtout quand leur partenaire est absent. Les pions moralistes et purs trompent moins, les expérimentaux davantage. Les pions codépendants ne trompent jamais, et ce n'est pas tromper pour les pions polygames. Exemple à 50 % par défaut : un pion moyen trompe avec 0 % de chance à +50 d'opinion envers son partenaire, 25 % à 0 et 50 % à -50. Réglez sur 0 pour désactiver l'infidélité.</CheatChanceTooltip>
 
+	<CourtshipChanceTitle>Chance de flirt (x)</CourtshipChanceTitle>
+	<CourtshipChanceTooltip>Fréquence à laquelle les pions célibataires (et ceux prêts à tromper) invitent quelqu'un qui leur plaît à un rendez-vous galant. La chance augmente aussi avec l'attirance, l'opinion, la libido romantique, la confiance et les bons rendez-vous précédents. Chaque rendez-vous laisse un souvenir de bon ou de mauvais rendez-vous ; les bons rendent une tentative de romance plus probable. Réglez sur 0 pour désactiver les rendez-vous galants. Les soirées en amoureux des couples ne sont pas affectées.</CourtshipChanceTooltip>
+	<DateOpinionGoodTitle>Opinion d'un bon rendez-vous</DateOpinionGoodTitle>
+	<DateOpinionGoodTooltip>Bonus d'opinion d'un rendez-vous parfait. Le résultat de chaque rendez-vous se situe entre cette valeur et l'opinion d'un mauvais rendez-vous, selon la compatibilité de personnalité, l'humeur, l'opinion mutuelle et la chance. Jusqu'à 5 souvenirs de bons rendez-vous se cumulent (à 75 % chacun après le premier) et durent 20 jours.</DateOpinionGoodTooltip>
+	<DateOpinionBadTitle>Opinion d'un mauvais rendez-vous</DateOpinionBadTitle>
+	<DateOpinionBadTooltip>Malus d'opinion d'un rendez-vous désastreux. Voir « Opinion d'un bon rendez-vous ».</DateOpinionBadTooltip>
+	<DateRomanceChanceTitle>Chance de romance après un rendez-vous (%)</DateRomanceChanceTitle>
+	<DateRomanceChanceTooltip>Chance qu'un rendez-vous galant réussi pour les deux se termine par une demande pour devenir amants (une tentative de romance normale, qui peut échouer). Elle est multipliée de x0,5 à x1,5 selon leur humeur et de x0,5 à x2 selon leur opinion mutuelle, et elle est nulle si l'une des opinions est sous l'opinion minimale de romance.</DateRomanceChanceTooltip>
+	<DateRomanceBonusTitle>Bonus de romance par bon rendez-vous (%)</DateRomanceBonusTitle>
+	<DateRomanceBonusTooltip>Ce que chaque bon rendez-vous précédent ajoute à la chance de romance après un rendez-vous, en pourcentage de celle-ci. Exemple avec les valeurs par défaut : après 2 bons rendez-vous, avec une bonne humeur et une bonne opinion, la chance est d'environ 15 % x 2 = 30 %.</DateRomanceBonusTooltip>
+
 </LanguageData>

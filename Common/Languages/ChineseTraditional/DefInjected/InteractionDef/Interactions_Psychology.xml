@@ -22,8 +22,10 @@
   <HangOut.label>闲逛</HangOut.label>
   <HangOut.logRulesInitiator.rulesStrings.0>r_logentry->[INITIATOR_nameDef] 邀请 [RECIPIENT_nameDef] 和 [INITIATOR_objective] 有时间一起出去逛逛。</HangOut.logRulesInitiator.rulesStrings.0>
 
-  <PlanDate.label>计划一场约会</PlanDate.label>
-  <PlanDate.logRulesInitiator.rulesStrings.0>r_logentry->[INITIATOR_nameDef] 计划了一场和 [RECIPIENT_nameDef] 的约会。</PlanDate.logRulesInitiator.rulesStrings.0>
+  <PlanDate.label>计划约会之夜</PlanDate.label>
+  <PlanDate.logRulesInitiator.rulesStrings.0>r_logentry->[INITIATOR_nameDef] 计划了一场和 [RECIPIENT_nameDef] 的约会之夜。</PlanDate.logRulesInitiator.rulesStrings.0>
 
+  <AskOutOnDate.label>邀请约会</AskOutOnDate.label>
+  <AskOutOnDate.logRulesInitiator.rulesStrings.0>r_logentry->[INITIATOR_nameDef] 邀请 [RECIPIENT_nameDef] 出去约会。</AskOutOnDate.logRulesInitiator.rulesStrings.0>
 
 </LanguageData>

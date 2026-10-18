@@ -328,6 +328,50 @@
 			</li>
 		</stages>
 	</ThoughtDef>
+	<!-- Courtship dates. The opinion is set per memory on a sliding scale (RomanceUtility.GainDateMemory); the stage
+	     values here are only placeholders. Good dates are counted towards romance (RomanceUtility.GoodDateCount). -->
+	<ThoughtDef>
+		<defName>DateWentWell</defName>
+		<thoughtClass>Thought_MemorySocial</thoughtClass>
+		<durationDays>20.0</durationDays>
+		<stackLimit>300</stackLimit>
+		<stackLimitForSameOtherPawn>5</stackLimitForSameOtherPawn>
+		<stackedEffectMultiplier>0.75</stackedEffectMultiplier>
+		<stages>
+			<li>
+				<label>good date</label>
+				<baseOpinionOffset>15</baseOpinionOffset>
+			</li>
+		</stages>
+	</ThoughtDef>
+	<ThoughtDef>
+		<defName>DateWentBadly</defName>
+		<thoughtClass>Thought_MemorySocial</thoughtClass>
+		<durationDays>20.0</durationDays>
+		<stackLimit>300</stackLimit>
+		<stackLimitForSameOtherPawn>5</stackLimitForSameOtherPawn>
+		<stackedEffectMultiplier>0.75</stackedEffectMultiplier>
+		<stages>
+			<li>
+				<label>bad date</label>
+				<baseOpinionOffset>-5</baseOpinionOffset>
+			</li>
+		</stages>
+	</ThoughtDef>
+	<!-- RebuffedMyDateRequest: also stops them asking that pawn out again while it lasts -->
+	<ThoughtDef>
+		<defName>RebuffedMyDateRequest</defName>
+		<thoughtClass>Thought_MemorySocial</thoughtClass>
+		<durationDays>5.0</durationDays>
+		<stackLimit>300</stackLimit>
+		<stackLimitForSameOtherPawn>1</stackLimitForSameOtherPawn>
+		<stages>
+			<li>
+				<label>turned down my date</label>
+				<baseOpinionOffset>-3</baseOpinionOffset>
+			</li>
+		</stages>
+	</ThoughtDef>
 	<!-- HungOut -->
 	<ThoughtDef>
 		<defName>HungOut</defName>

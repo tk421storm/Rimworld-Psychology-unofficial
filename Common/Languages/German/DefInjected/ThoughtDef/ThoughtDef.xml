@@ -177,4 +177,8 @@
     <Sedentary.stages.comfortably_settled_in.label>bequem angesiedelt</Sedentary.stages.comfortably_settled_in.label>
     <Sedentary.stages.comfortably_settled_in.description>Ein schöner, komfortabler Ort, um sich eine Weile auszuruhen. Genau wie ich es mag.</Sedentary.stages.comfortably_settled_in.description>
 
+    <DateWentWell.stages.0.label>gutes Date</DateWentWell.stages.0.label>
+    <DateWentBadly.stages.0.label>schlechtes Date</DateWentBadly.stages.0.label>
+    <RebuffedMyDateRequest.stages.0.label>hat mein Date abgelehnt</RebuffedMyDateRequest.stages.0.label>
+
 </LanguageData>

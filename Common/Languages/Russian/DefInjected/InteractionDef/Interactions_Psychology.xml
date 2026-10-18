@@ -22,8 +22,10 @@
   <HangOut.label>тусовка</HangOut.label>
   <HangOut.logRulesInitiator.rulesStrings.0>r_logentry->[INITIATOR_nameDef] приглашает [RECIPIENT_nameDef] провести с собой время.</HangOut.logRulesInitiator.rulesStrings.0>
 
-  <PlanDate.label>свидание</PlanDate.label>
-  <PlanDate.logRulesInitiator.rulesStrings.0>r_logentry->[INITIATOR_nameDef] приглашает [RECIPIENT_nameDef] на свидание.</PlanDate.logRulesInitiator.rulesStrings.0>
+  <PlanDate.label>романтический вечер</PlanDate.label>
+  <PlanDate.logRulesInitiator.rulesStrings.0>r_logentry->[INITIATOR_nameDef] приглашает [RECIPIENT_nameDef] на романтический вечер.</PlanDate.logRulesInitiator.rulesStrings.0>
 
+  <AskOutOnDate.label>приглашение на свидание</AskOutOnDate.label>
+  <AskOutOnDate.logRulesInitiator.rulesStrings.0>r_logentry->[INITIATOR_nameDef] приглашает [RECIPIENT_nameDef] на свидание.</AskOutOnDate.logRulesInitiator.rulesStrings.0>
 
 </LanguageData>

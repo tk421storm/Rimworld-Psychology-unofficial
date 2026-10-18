@@ -113,4 +113,15 @@
 	<CheatChanceTitle>Cheating chance (%)</CheatChanceTitle>
 	<CheatChanceTooltip>How likely pawns are to cheat on a partner, either by romancing someone else (a success makes both leave their partners) or through a casual hookup. A pawn's chance is this value x how unhappy they are with their partner x their personality. Pawns who like their partner don't cheat; romantic pawns stay loyal longer but turn faster on a partner they dislike; Lechers cheat far more easily, especially when their partner is away. Moralistic and Pure pawns cheat less, Experimental ones more. Codependent pawns never cheat, and it isn't cheating for Polygamous pawns. Example at the default 50%: an average pawn cheats with 0% chance at +50 opinion of their partner, 25% at 0 and 50% at -50. Set to 0 to turn cheating off.</CheatChanceTooltip>
 
+	<CourtshipChanceTitle>Courtship chance (x)</CourtshipChanceTitle>
+	<CourtshipChanceTooltip>How often single pawns (and pawns willing to cheat) ask someone they're attracted to out on a date. The chance also rises with attraction, opinion, romantic drive and confidence, and with earlier good dates. Each date leaves a good or bad date memory; good dates make a romance attempt more likely. Set to 0 to turn courtship off. Couples' date nights aren't affected.</CourtshipChanceTooltip>
+	<DateOpinionGoodTitle>Good date opinion</DateOpinionGoodTitle>
+	<DateOpinionGoodTooltip>Opinion bonus from a date that went perfectly. Each date's result falls between this and the bad date opinion, based on the pair's personality compatibility, mood, opinion of each other and luck. Up to 5 good date memories stack (at 75% each after the first) and last 20 days.</DateOpinionGoodTooltip>
+	<DateOpinionBadTitle>Bad date opinion</DateOpinionBadTitle>
+	<DateOpinionBadTooltip>Opinion penalty from a date that went as badly as possible. See "Good date opinion".</DateOpinionBadTooltip>
+	<DateRomanceChanceTitle>Romance chance after a date (%)</DateRomanceChanceTitle>
+	<DateRomanceChanceTooltip>Chance that a courtship date that went well for both ends with one of them asking the other to be lovers (a normal romance attempt, which can still fail). It's scaled from x0.5 to x1.5 by their moods and from x0.5 to x2 by their opinions of each other, and there's no chance if either opinion is below the minimum romance opinion.</DateRomanceChanceTooltip>
+	<DateRomanceBonusTitle>Romance bonus per good date (%)</DateRomanceBonusTitle>
+	<DateRomanceBonusTooltip>How much each earlier good date between the pair adds to the romance chance after a date, as a percentage of it. Example at the defaults: after 2 earlier good dates, with good moods and opinions, the chance is about 15% x 2 = 30%.</DateRomanceBonusTooltip>
+
 </LanguageData>

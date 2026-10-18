@@ -23,5 +23,8 @@
   <HungOut.stages.0.label>一起游玩</HungOut.stages.0.label>
   <MissedDate.stages.0.label>放了鸽子</MissedDate.stages.0.label>
 
+  <DateWentWell.stages.0.label>愉快的约会</DateWentWell.stages.0.label>
+  <DateWentBadly.stages.0.label>糟糕的约会</DateWentBadly.stages.0.label>
+  <RebuffedMyDateRequest.stages.0.label>拒绝了我的约会</RebuffedMyDateRequest.stages.0.label>
 
 </LanguageData>

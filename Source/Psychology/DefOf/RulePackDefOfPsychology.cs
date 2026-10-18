@@ -15,5 +15,8 @@ namespace Psychology
         // Casual lovin
         public static RulePackDef HookupSucceeded;
         public static RulePackDef HookupFailed;
+        // Courtship
+        public static RulePackDef DateAccepted;
+        public static RulePackDef DateDeclined;
     }
 }

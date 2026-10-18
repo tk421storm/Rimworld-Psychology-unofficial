@@ -9,9 +9,10 @@ using Verse.AI.Group;
 
 namespace Psychology
 {
-    // A date one partner has planned (added by InteractionWorker_PlanDate). Waits until the planned day and hour, then
-    // starts LordJob_Date if both are free (not downed, starving, bleeding, exhausted, working, drafted, or on another
-    // map). If only one is awake the other "missed the date"; if either isn't free, both get "date cancelled".
+    // A date one pawn has planned (RendezvousUtility.PlanDate). Waits until the planned day and hour, then starts
+    // LordJob_Date if both are free (not downed, starving, bleeding, exhausted, working, drafted, or on another map). If
+    // only one is awake the other "missed the date"; if either isn't free, both get "date cancelled". A date night is
+    // dropped if they stop being partners; a courtship date only if the other pawn is gone.
     public class Hediff_PlannedDate : Hediff
     {
         public override void ExposeData()
@@ -20,13 +21,14 @@ namespace Psychology
             Scribe_References.Look(ref this.partner, "partner");
             Scribe_Values.Look(ref this.hour, "hour", 0);
             Scribe_Values.Look(ref this.day, "day", 0);
+            Scribe_Values.Look(ref this.courtship, "courtship", false);
         }
 
-        
+
         public override void Tick()
         {
             base.Tick();
-            if(!LovePartnerRelationUtility.LovePartnerRelationExists(this.pawn, this.partner))
+            if(this.partner == null || this.partner.Dead || (!this.courtship && !LovePartnerRelationUtility.LovePartnerRelationExists(this.pawn, this.partner)))
             {
                 this.pawn.health.RemoveHediff(this);
             }
@@ -46,7 +48,7 @@ namespace Psychology
                     }
                     if (pawn.Awake() && partner.Awake())
                     {
-                        LordMaker.MakeNewLord(this.pawn.Faction, new LordJob_Date(this.pawn, this.partner), this.pawn.Map, new Pawn[] { this.pawn, this.partner });
+                        LordMaker.MakeNewLord(this.pawn.Faction, new LordJob_Date(this.pawn, this.partner, this.courtship), this.pawn.Map, new Pawn[] { this.pawn, this.partner });
                     }
                     else if(pawn.Awake())
                     {
@@ -79,5 +81,6 @@ namespace Psychology
         public Pawn partner;
         public int hour;
         public int day;
+        public bool courtship;
     }
 }

@@ -72,4 +72,15 @@
 	<CheatChanceTitle>Fremdgeh-Chance (%)</CheatChanceTitle>
 	<CheatChanceTooltip>Wie wahrscheinlich Personen ihren Partner betrügen, entweder indem sie jemand anderen umwerben (bei Erfolg verlassen beide ihre Partner) oder bei einem flüchtigen Abenteuer. Die Chance einer Person ist dieser Wert x wie unzufrieden sie mit ihrem Partner ist x ihre Persönlichkeit. Wer seinen Partner mag, geht nicht fremd; romantische Personen bleiben länger treu, wenden sich aber schneller von einem Partner ab, den sie nicht mögen; Lüstlinge gehen viel leichter fremd, besonders wenn ihr Partner fort ist. Moralische und reine Personen gehen seltener fremd, experimentierfreudige öfter. Co-abhängige Personen gehen nie fremd, und für polygame Personen ist es kein Fremdgehen. Beispiel beim Standard von 50 %: Eine durchschnittliche Person geht bei +50 Meinung über ihren Partner mit 0 % fremd, bei 0 mit 25 % und bei -50 mit 50 %. Auf 0 setzen, um Fremdgehen abzuschalten.</CheatChanceTooltip>
 
+	<CourtshipChanceTitle>Werbungs-Chance (x)</CourtshipChanceTitle>
+	<CourtshipChanceTooltip>Wie oft alleinstehende Personen (und solche, die fremdgehen würden) jemanden, den sie attraktiv finden, um ein Date bitten. Die Chance steigt außerdem mit Anziehung, Meinung, romantischem Trieb, Selbstvertrauen und früheren guten Dates. Jedes Date hinterlässt eine Erinnerung an ein gutes oder schlechtes Date; gute Dates machen einen Romantikversuch wahrscheinlicher. Auf 0 setzen, um Werbung abzuschalten. Pärchenabende von Paaren sind nicht betroffen.</CourtshipChanceTooltip>
+	<DateOpinionGoodTitle>Meinung nach gutem Date</DateOpinionGoodTitle>
+	<DateOpinionGoodTooltip>Meinungsbonus durch ein perfektes Date. Das Ergebnis jedes Dates liegt zwischen diesem Wert und der Meinung nach schlechtem Date, abhängig von Persönlichkeitskompatibilität, Stimmung, gegenseitiger Meinung und Glück. Bis zu 5 Erinnerungen an gute Dates stapeln sich (nach der ersten zu je 75 %) und halten 20 Tage.</DateOpinionGoodTooltip>
+	<DateOpinionBadTitle>Meinung nach schlechtem Date</DateOpinionBadTitle>
+	<DateOpinionBadTooltip>Meinungsmalus durch ein völlig misslungenes Date. Siehe „Meinung nach gutem Date“.</DateOpinionBadTooltip>
+	<DateRomanceChanceTitle>Romantik-Chance nach einem Date (%)</DateRomanceChanceTitle>
+	<DateRomanceChanceTooltip>Chance, dass ein für beide gelungenes Date damit endet, dass einer den anderen fragt, ein Paar zu werden (ein normaler Romantikversuch, der scheitern kann). Sie wird je nach Stimmung mit x0,5 bis x1,5 und je nach gegenseitiger Meinung mit x0,5 bis x2 multipliziert und ist null, wenn eine der Meinungen unter der Mindestmeinung für Romantik liegt.</DateRomanceChanceTooltip>
+	<DateRomanceBonusTitle>Romantik-Bonus pro gutem Date (%)</DateRomanceBonusTitle>
+	<DateRomanceBonusTooltip>Wie viel jedes frühere gute Date des Paares zur Romantik-Chance nach einem Date hinzufügt, in Prozent davon. Beispiel mit den Standardwerten: Nach 2 früheren guten Dates, bei guter Stimmung und Meinung, liegt die Chance bei etwa 15 % x 2 = 30 %.</DateRomanceBonusTooltip>
+
 </LanguageData>

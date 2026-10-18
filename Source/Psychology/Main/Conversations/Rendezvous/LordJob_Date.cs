@@ -12,17 +12,19 @@ using UnityEngine;
 
 namespace Psychology
 {
-    // A 4-6 hour date. Ends early on danger, injury, drafting, work time or exhaustion; finishing it gives both a
-    // "went on a date" memory.
+    // A 4-6 hour date. Ends early on danger, injury, drafting, work time or exhaustion. Finishing a date night gives both
+    // a "went on a date" memory; finishing a courtship date gives each a good or bad date memory scaled by how it went
+    // for them (RomanceUtility.DateQuality), and if it went well for both it may end in a romance attempt.
     class LordJob_Date : LordJob
     {
         public LordJob_Date()
         { }
 
-        public LordJob_Date(Pawn initiator, Pawn recipient)
+        public LordJob_Date(Pawn initiator, Pawn recipient, bool courtship)
         {
             this.initiator = initiator;
             this.recipient = recipient;
+            this.courtship = courtship;
         }
 
         public override StateGraph CreateGraph()
@@ -50,14 +52,36 @@ namespace Psychology
         }
         public void Finished()
         {
+            if (this.courtship)
+            {
+                FinishedCourtship();
+                return;
+            }
             this.initiator.needs.mood.thoughts.memories.TryGainMemory(ThoughtDefOfPsychology.WentOnDate, this.recipient);
             this.recipient.needs.mood.thoughts.memories.TryGainMemory(ThoughtDefOfPsychology.WentOnDate, this.initiator);
+        }
+
+        private void FinishedCourtship()
+        {
+            // Count earlier good dates first, so this one doesn't count towards its own romance roll.
+            float previousGoodDates = (RomanceUtility.GoodDateCount(this.initiator, this.recipient) + RomanceUtility.GoodDateCount(this.recipient, this.initiator)) / 2f;
+            float initiatorQuality = RomanceUtility.DateQuality(this.initiator, this.recipient);
+            float recipientQuality = RomanceUtility.DateQuality(this.recipient, this.initiator);
+            RomanceUtility.GainDateMemory(this.initiator, this.recipient, initiatorQuality);
+            RomanceUtility.GainDateMemory(this.recipient, this.initiator, recipientQuality);
+            if (initiatorQuality > 0f && recipientQuality > 0f
+                && !LovePartnerRelationUtility.LovePartnerRelationExists(this.initiator, this.recipient)
+                && Rand.Chance(RomanceUtility.RomanceChanceAfterDate(this.initiator, this.recipient, previousGoodDates)))
+            {
+                RomanceUtility.TryFireRomanceAttempt(this.initiator, this.recipient);
+            }
         }
 
         public override void ExposeData()
         {
             Scribe_References.Look(ref this.initiator, "initiator");
             Scribe_References.Look(ref this.recipient, "recipient");
+            Scribe_Values.Look(ref this.courtship, "courtship", false);
         }
         
         public override string GetReport(Pawn pawn)
@@ -73,5 +97,6 @@ namespace Psychology
         private Trigger_TicksPassed timeoutTrigger;
         public Pawn initiator;
         public Pawn recipient;
+        public bool courtship;
     }
 }

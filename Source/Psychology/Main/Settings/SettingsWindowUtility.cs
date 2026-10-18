@@ -304,6 +304,11 @@ public static class SettingsWindowUtility{
       FloatEntry(nameof(PsychologySettings.romanceOpinionThreshold), -99f, 99f);
       FloatSliderEntry(nameof(PsychologySettings.lovinFrequency), PsychologySettings.lovinFrequencyMin, PsychologySettings.lovinFrequencyMax, 2);
       FloatSliderEntry(nameof(PsychologySettings.cheatChance), 0f, 100f, 0);
+      FloatSliderEntry(nameof(PsychologySettings.courtshipChance), 0f, PsychologySettings.courtshipChanceMax, 2);
+      FloatSliderEntry(nameof(PsychologySettings.dateOpinionGood), 0f, PsychologySettings.dateOpinionMax, 0);
+      FloatSliderEntry(nameof(PsychologySettings.dateOpinionBad), -PsychologySettings.dateOpinionMax, 0f, 0);
+      FloatSliderEntry(nameof(PsychologySettings.dateRomanceChance), 0f, 100f, 0);
+      FloatSliderEntry(nameof(PsychologySettings.dateRomanceBonus), 0f, 100f, 0);
     }
 
     if (Widgets.ButtonText(buttonRect, "Conversations"))

@@ -119,6 +119,25 @@ public class PsychologySettings : ModSettings
   public const float cheatChanceDefault = 50f;
   public static float cheatChance = 50f;
 
+  // Courtship (InteractionWorker_AskOutOnDate): multiplies how often pawns ask someone out; 0 turns courtship off.
+  public const float courtshipChanceDefault = 1f;
+  public static float courtshipChance = 1f;
+  public const float courtshipChanceMax = 5f;
+
+  // Opinion of a courtship date at its best (quality 1) and worst (quality -1); see RomanceUtility.GainDateMemory.
+  public const float dateOpinionGoodDefault = 15f;
+  public static float dateOpinionGood = 15f;
+  public const float dateOpinionBadDefault = -5f;
+  public static float dateOpinionBad = -5f;
+  public const float dateOpinionMax = 30f;
+
+  // Percent chance a good courtship date ends in a romance attempt, and the bonus per earlier good date (percent of
+  // that chance); see RomanceUtility.RomanceChanceAfterDate.
+  public const float dateRomanceChanceDefault = 15f;
+  public static float dateRomanceChance = 15f;
+  public const float dateRomanceBonusDefault = 50f;
+  public static float dateRomanceBonus = 50f;
+
   public const float traitOpinionMultiplierDefault = 0.25f; // v1.3
   public static float traitOpinionMultiplier = 0.25f; // v1.3
 
@@ -179,6 +198,11 @@ public class PsychologySettings : ModSettings
     ScribeValueAndAddToNameList(nameof(romanceOpinionThreshold));
     ScribeValueAndAddToNameList(nameof(lovinFrequency));
     ScribeValueAndAddToNameList(nameof(cheatChance));
+    ScribeValueAndAddToNameList(nameof(courtshipChance));
+    ScribeValueAndAddToNameList(nameof(dateOpinionGood));
+    ScribeValueAndAddToNameList(nameof(dateOpinionBad));
+    ScribeValueAndAddToNameList(nameof(dateRomanceChance));
+    ScribeValueAndAddToNameList(nameof(dateRomanceBonus));
     ScribeValueAndAddToNameList(nameof(traitOpinionMultiplier));
     ScribeValueAndAddToNameList(nameof(personalityExtremeness));
     ScribeValueAndAddToNameList(nameof(ideoPsycheMultiplier));
@@ -204,6 +228,11 @@ public class PsychologySettings : ModSettings
     lovinFrequency = Mathf.Clamp(lovinFrequency, lovinFrequencyMin, lovinFrequencyMax);
     arrestBaseChance = Mathf.Clamp(arrestBaseChance, 0f, arrestBaseChanceMax);
     cheatChance = Mathf.Clamp(cheatChance, 0f, 100f);
+    courtshipChance = Mathf.Clamp(courtshipChance, 0f, courtshipChanceMax);
+    dateOpinionGood = Mathf.Clamp(dateOpinionGood, 0f, dateOpinionMax);
+    dateOpinionBad = Mathf.Clamp(dateOpinionBad, -dateOpinionMax, 0f);
+    dateRomanceChance = Mathf.Clamp(dateRomanceChance, 0f, 100f);
+    dateRomanceBonus = Mathf.Clamp(dateRomanceBonus, 0f, 100f);
   }
 
   // Saves/loads the static field called settingName (bool or float) and registers it in the name lists.

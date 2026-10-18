@@ -11,6 +11,17 @@ using System.Reflection.Emit;
 namespace Psychology
 {
   /// <summary>
+  /// What a pawn wants from another pawn romantically; see RomanceUtility.GetRomanticIntent.
+  /// </summary>
+  public enum RomanticIntent
+  {
+    None,
+    DateNight,  // they're already a couple (InteractionWorker_PlanDateNight)
+    Courtship,  // interested in them, or has had a good date with them (InteractionWorker_AskOutOnDate)
+    Hookup      // attracted to them but not interested in more (JoyGiver_CasualHookup)
+  }
+
+  /// <summary>
   /// Shared romance helpers: species age checks injected into vanilla code, Psychology's lovin frequency, and the casual
   /// hookup rules (who finds whom attractive, cheating, whether a pawn is free / willing).
   /// </summary>
@@ -337,36 +348,200 @@ namespace Psychology
     /// <param name="target"></param>
     /// <param name="cheatOn">The pawn they feel worst about cheating on</param>
     /// <returns></returns>
-    // Whether a pawn goes through with a hookup that would be cheating: yes with probability CheatChance for the partner
-    // they'd feel worst about cheating on (the one with the lowest chance).
+    // Whether a pawn goes through with a hookup that would be cheating: yes with probability CheatFactor.
     public static bool WillPawnContinue(Pawn pawn, Pawn target, out Pawn cheatOn)
     {
+      return Rand.Chance(CheatFactor(pawn, target, out cheatOn));
+    }
+
+    /// <summary>
+    /// Chance (0-1) that <paramref name="pawn"/> goes ahead with something romantic with <paramref name="target"/>: 1 if it
+    /// isn't cheating, otherwise CheatChance for the partner they'd feel worst about cheating on (the lowest chance).
+    /// </summary>
+    public static float CheatFactor(Pawn pawn, Pawn target, out Pawn cheatOn)
+    {
       cheatOn = null;
-      if (IsThisCheating(pawn, target, out List<Pawn> cheatedOnList))
+      //Pawn may think they are cheating even though no partners will be upset (e.g. the no spouses mod); that's allowed
+      if (!IsThisCheating(pawn, target, out List<Pawn> cheatedOnList) || cheatedOnList.NullOrEmpty())
       {
-        if (!cheatedOnList.NullOrEmpty())
-        {
-          //At this point, both the pawn and a non-zero number of partners consider this cheating
-          float chance = float.MaxValue;
-          foreach (Pawn p in cheatedOnList)
-          {
-            float partnerChance = CheatChance(pawn, p);
-            if (partnerChance < chance)
-            {
-              chance = partnerChance;
-              cheatOn = p;
-            }
-          }
-          if (!Rand.Chance(chance))
-          {
-            return false;
-          }
-        }
-        //Pawn thinks they are cheating, even though no partners will be upset
-        //This can happen with the no spouses mod, which is a bit weird
-        //Letting this continue for now, might change later
+        return 1f;
       }
-      return true;
+      float chance = float.MaxValue;
+      foreach (Pawn p in cheatedOnList)
+      {
+        float partnerChance = CheatChance(pawn, p);
+        if (partnerChance < chance)
+        {
+          chance = partnerChance;
+          cheatOn = p;
+        }
+      }
+      return chance;
+    }
+
+    // Minimum romance chance factor (attraction) for any romantic interest; the same cut-off vanilla romance uses.
+    public const float MinAttraction = 0.15f;
+
+    /// <summary>
+    /// The one place that decides what <paramref name="initiator"/> wants from <paramref name="recipient"/>, so date night,
+    /// courtship and hookups share the same gates. Both need a psyche and must be old enough to date. Partners get
+    /// DateNight. Otherwise the initiator must find the recipient attractive (MinAttraction): Courtship needs the minimum
+    /// romance opinion plus some romantic drive, or an earlier good date with them; Hookup needs the minimum hookup opinion
+    /// and a pawn willing to hook up. Cheating and the recipient's answer are left to the callers.
+    /// </summary>
+    public static RomanticIntent GetRomanticIntent(Pawn initiator, Pawn recipient)
+    {
+      if (initiator == recipient || !PsycheHelper.PsychologyEnabled(initiator) || !PsycheHelper.PsychologyEnabled(recipient))
+      {
+        return RomanticIntent.None;
+      }
+      if (!SpeciesHelper.RomanceEnabled(initiator, true) || !SpeciesHelper.RomanceEnabled(recipient, true))
+      {
+        return RomanticIntent.None;
+      }
+      if (LovePartnerRelationUtility.LovePartnerRelationExists(initiator, recipient))
+      {
+        return RomanticIntent.DateNight;
+      }
+      if (initiator.relations.SecondaryRomanceChanceFactor(recipient) < MinAttraction)
+      {
+        return RomanticIntent.None;
+      }
+      float opinion = initiator.relations.OpinionOf(recipient);
+      if (opinion >= PsychologySettings.romanceOpinionThreshold
+          && (PsycheHelper.Comp(initiator).Sexuality.AdjustedRomanticDrive > 0f || GoodDateCount(initiator, recipient) > 0))
+      {
+        return RomanticIntent.Courtship;
+      }
+      if (opinion >= PsychologySettings.minOpinionForHookup && WillPawnTryHookup(initiator))
+      {
+        return RomanticIntent.Hookup;
+      }
+      return RomanticIntent.None;
+    }
+
+    // Personality compatibility in [-1, 1] (0 = a typical pair); see Pawn_PsycheTracker.PersonalityCompatibilityWith.
+    public static float Compatibility(Pawn pawn, Pawn other)
+    {
+      return PsycheHelper.PsychologyEnabled(pawn) ? PsycheHelper.Comp(pawn).Psyche.PersonalityCompatibilityWith(other) : 0f;
+    }
+
+    // How many current memories of this def pawn has about other.
+    public static int CountMemoriesOf(Pawn pawn, Pawn other, ThoughtDef def)
+    {
+      List<Thought_Memory> memories = pawn?.needs?.mood?.thoughts?.memories?.Memories;
+      if (memories == null)
+      {
+        return 0;
+      }
+      int count = 0;
+      for (int i = 0; i < memories.Count; i++)
+      {
+        if (memories[i].def == def && memories[i].otherPawn == other)
+        {
+          count++;
+        }
+      }
+      return count;
+    }
+
+    // Good courtship dates pawn remembers having with other (DateWentWell memories last 20 days, up to 5 per pawn).
+    public static int GoodDateCount(Pawn pawn, Pawn other)
+    {
+      return CountMemoriesOf(pawn, other, ThoughtDefOfPsychology.DateWentWell);
+    }
+
+    /// <summary>
+    /// How a date went for <paramref name="pawn"/>, from -1 (awful) to 1 (wonderful): 0.5 x personality compatibility,
+    /// 0.3 x mood (-1 at 0%, +1 at 100%), 0.2 x opinion of the other / 100, luck (+/-0.3), and a 0.1 lean so a typical
+    /// date between two content pawns who like each other is mildly good.
+    /// </summary>
+    public static float DateQuality(Pawn pawn, Pawn other)
+    {
+      float mood = pawn.needs?.mood?.CurLevel ?? 0.5f;
+      float quality = 0.1f + 0.5f * Compatibility(pawn, other) + 0.3f * (2f * mood - 1f) + 0.2f * pawn.relations.OpinionOf(other) / 100f + Rand.Range(-0.3f, 0.3f);
+      return Mathf.Clamp(quality, -1f, 1f);
+    }
+
+    /// <summary>
+    /// Gives <paramref name="pawn"/> a "good date" or "bad date" memory of <paramref name="other"/> on a sliding scale:
+    /// quality x the good date opinion setting, or |quality| x the bad date opinion setting. Dates too forgettable to move
+    /// opinion by half a point leave no memory.
+    /// </summary>
+    public static void GainDateMemory(Pawn pawn, Pawn other, float quality)
+    {
+      if (pawn.needs?.mood?.thoughts?.memories == null)
+      {
+        return;
+      }
+      bool good = quality >= 0f;
+      float offset = Mathf.Abs(quality) * (good ? PsychologySettings.dateOpinionGood : PsychologySettings.dateOpinionBad);
+      if (Mathf.Abs(offset) < 0.5f)
+      {
+        return;
+      }
+      Thought_MemorySocial thought = (Thought_MemorySocial)ThoughtMaker.MakeThought(good ? ThoughtDefOfPsychology.DateWentWell : ThoughtDefOfPsychology.DateWentBadly);
+      thought.opinionOffset = offset;
+      pawn.needs.mood.thoughts.memories.TryGainMemory(thought, other);
+    }
+
+    /// <summary>
+    /// Chance a courtship date that went well for both ends in a romance attempt: the base setting x a mood factor (x0.5
+    /// to x1.5 by the lower of their moods, 20% to 90%) x an opinion factor (none below the minimum romance opinion, then
+    /// x0.5 to x2 by the lower of their opinions, up to 100) x (1 + the per-date bonus x their earlier good dates).
+    /// </summary>
+    public static float RomanceChanceAfterDate(Pawn a, Pawn b, float previousGoodDates)
+    {
+      float minOpinion = Mathf.Min(a.relations.OpinionOf(b), b.relations.OpinionOf(a));
+      if (minOpinion < PsychologySettings.romanceOpinionThreshold)
+      {
+        return 0f;
+      }
+      float minMood = Mathf.Min(a.needs?.mood?.CurLevel ?? 0.5f, b.needs?.mood?.CurLevel ?? 0.5f);
+      float moodFactor = Mathf.Lerp(0.5f, 1.5f, Mathf.InverseLerp(0.2f, 0.9f, minMood));
+      float opinionFactor = Mathf.Lerp(0.5f, 2f, Mathf.InverseLerp(PsychologySettings.romanceOpinionThreshold, 100f, minOpinion));
+      float historyFactor = 1f + PsychologySettings.dateRomanceBonus / 100f * previousGoodDates;
+      return Mathf.Clamp01(PsychologySettings.dateRomanceChance / 100f * moodFactor * opinionFactor * historyFactor);
+    }
+
+    /// <summary>
+    /// Fires a vanilla romance attempt (so Psychology's success chance patches apply) from the bolder of the two
+    /// (romantic drive + Confident) at the other, with the usual log entry, bubble and letter. Goes through the worker
+    /// directly, because TryInteractWith refuses when they aren't standing close enough at that moment. True if they
+    /// end up partners.
+    /// </summary>
+    public static bool TryFireRomanceAttempt(Pawn a, Pawn b)
+    {
+      Pawn initiator = Boldness(a) >= Boldness(b) ? a : b;
+      Pawn recipient = initiator == a ? b : a;
+      InteractionDef def = InteractionDefOf.RomanceAttempt;
+      List<RulePackDef> extraSentencePacks = new List<RulePackDef>();
+      def.Worker.Interacted(initiator, recipient, extraSentencePacks, out string letterText, out string letterLabel, out LetterDef letterDef, out LookTargets lookTargets);
+      PlayLogEntry_Interaction entry = new PlayLogEntry_Interaction(def, initiator, recipient, extraSentencePacks);
+      Find.PlayLog.Add(entry);
+      if (initiator.Spawned && recipient.Spawned)
+      {
+        MoteMaker.MakeInteractionBubble(initiator, recipient, def.interactionMote, def.GetSymbol());
+      }
+      if (letterDef != null)
+      {
+        string text = entry.ToGameStringFromPOV(initiator);
+        if (!letterText.NullOrEmpty())
+        {
+          text = text + "\n\n" + letterText;
+        }
+        Find.LetterStack.ReceiveLetter(letterLabel, text, letterDef, lookTargets ?? new LookTargets(initiator));
+      }
+      return LovePartnerRelationUtility.LovePartnerRelationExists(initiator, recipient);
+    }
+
+    private static float Boldness(Pawn pawn)
+    {
+      if (!PsycheHelper.PsychologyEnabled(pawn))
+      {
+        return 0f;
+      }
+      return PsycheHelper.Comp(pawn).Sexuality.AdjustedRomanticDrive + PsycheHelper.Comp(pawn).Psyche.GetPersonalityRating(PersonalityNodeDefOf.Confident);
     }
 
     /// <summary>

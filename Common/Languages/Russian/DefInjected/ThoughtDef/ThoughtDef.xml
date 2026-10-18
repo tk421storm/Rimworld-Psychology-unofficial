@@ -177,4 +177,8 @@
     <Sedentary.stages.comfortably_settled_in.label>обустроился с комфортом</Sedentary.stages.comfortably_settled_in.label>
     <Sedentary.stages.comfortably_settled_in.description>Приятное, удобное место, где можно немного отдохнуть. Прямо как мне нравится.</Sedentary.stages.comfortably_settled_in.description>
 
+    <DateWentWell.stages.0.label>удачное свидание</DateWentWell.stages.0.label>
+    <DateWentBadly.stages.0.label>неудачное свидание</DateWentBadly.stages.0.label>
+    <RebuffedMyDateRequest.stages.0.label>отказ(а) в свидании</RebuffedMyDateRequest.stages.0.label>
+
 </LanguageData>
