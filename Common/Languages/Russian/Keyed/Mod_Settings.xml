@@ -5,7 +5,7 @@
 	<EnableEmpathyTooltip>Отключите это, чтобы установить по-умолчанию реакцию поселенцев на плохие вещи, происходящие с другими. Это увеличит сложность игры, но на персонажей с чертой «чуткое сердце» не повлияет. Перезапустите игру после изменений параметра.</EnableEmpathyTooltip>
 	
 	<EnableKinseyTitle>Включить изменения сексуальных предпочтений</EnableKinseyTitle>
-	<EnableEmpathyTooltip>Отключите это, чтобы убрать шкалу Кинси, влияющую на сексуальные предпочтения ваших поселенцев и вернуть механику через черту «гомосексуальность». НЕ ИЗМЕНЯЙТЕ параметр во время игры, перезапустите игру после изменений параметра.</EnableEmpathyTooltip>
+	<EnableKinseyTooltip>Отключите это, чтобы убрать шкалу Кинси, влияющую на сексуальные предпочтения ваших поселенцев и вернуть механику через черту «гомосексуальность». НЕ ИЗМЕНЯЙТЕ параметр во время игры, перезапустите игру после изменений параметра.</EnableKinseyTooltip>
 	
 	<KinseyFormulaTitle>Формула шкалы Кинси</KinseyFormulaTitle>
 	<KinseyFormulaTooltip>Этот параметр влияет на то, какая формула используется при создании персонажей, и какое будет их распределение по шкале Кинси.</KinseyFormulaTooltip>
@@ -48,5 +48,22 @@
 	<BeatyOverrideEnabledToolip>Disables opinion changes from traits such as: Pretty, Beautiful, Ugly, etc. Note that Psychology's changes to those traits would still work even if you disable this option. Its recommended to keep this option enabled.</BeatyOverrideEnabledToolip>
 	<LovinFrequencyTitle>Частота близости</LovinFrequencyTitle>
 	<LovinFrequencyTooltip>Как часто пары занимаются любовью: 2 — вдвое чаще, 0,5 — вдвое реже.</LovinFrequencyTooltip>
+
+	<MentalBreakAnxietyChanceTitle>Шанс тревожности после срыва</MentalBreakAnxietyChanceTitle>
+	<MentalBreakAnxietyChanceTooltip>Задаёт средний шанс того, что после серьёзного нервного срыва у поселенца разовьётся тревожность. При лёгких срывах шанс уменьшается вдвое, при экстремальных — удваивается. Шанс также зависит от психики поселенца. Тревожность может появиться и как случайная возрастная болезнь. Для полного эффекта требуется перезапуск.</MentalBreakAnxietyChanceTooltip>
+	<ConvoMaxOpinionChangeTitle>Макс. изменение мнения от бесед</ConvoMaxOpinionChangeTitle>
+	<ConvoMaxOpinionChangeTooltip>Наибольшее изменение мнения, которое может вызвать одна беседа (по умолчанию 40). Чем выше значение, тем важнее беседы.</ConvoMaxOpinionChangeTooltip>
+	<ConvoMeanHoursTitle>Ожидаемая длительность беседы</ConvoMeanHoursTitle>
+	<ConvoMeanHoursTooltip>Средняя длительность беседы в часах (по умолчанию 1,3).</ConvoMeanHoursTooltip>
+	<ConvoTimeScaleHoursTitle>Временной масштаб бесед</ConvoTimeScaleHoursTitle>
+	<ConvoTimeScaleHoursTooltip>Задаёт временной масштаб в часах, по которому мнения от бесед меняются в зависимости от их длительности.</ConvoTimeScaleHoursTooltip>
+	<ConvoPersonalityEffectMultiplierTitle>Влияние личности на беседы</ConvoPersonalityEffectMultiplierTitle>
+	<ConvoPersonalityEffectMultiplierTooltip>Этот множитель определяет, насколько черты личности, например дружелюбие, вежливость или невозмутимость, влияют на изменение мнения.</ConvoPersonalityEffectMultiplierTooltip>
+	<TraitOpinionMultiplierTitle>Множитель мнения от черт</TraitOpinionMultiplierTitle>
+	<TraitOpinionMultiplierTooltip>Масштабирует изменения мнения от следующих черт: красивый, уродливый, обезображенный, раздражающий голос, жуткое дыхание, одобрение модификаций тела и отвращение пуриста тела. Установите 0, чтобы полностью отключить. Требуется перезапуск.</TraitOpinionMultiplierTooltip>
+	<PersonalityExtremenessTitle>Выраженность личности</PersonalityExtremenessTitle>
+	<PersonalityExtremenessTooltip>Задаёт, насколько сильно личности усиливаются, чтобы соответствовать архетипам «Большой пятёрки».</PersonalityExtremenessTooltip>
+	<IdeoPsycheMultiplierTitle>Множитель взаимодействия с идеологией</IdeoPsycheMultiplierTitle>
+	<IdeoPsycheMultiplierTooltip>Определяет, насколько сильно личность и идеология влияют друг на друга. Установите 0, чтобы полностью отключить.</IdeoPsycheMultiplierTooltip>
 
 </LanguageData>

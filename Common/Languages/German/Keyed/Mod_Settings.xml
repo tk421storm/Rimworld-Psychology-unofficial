@@ -5,7 +5,7 @@
 	<EnableEmpathyTooltip>Schalte das aus, um die Reaktion der Kolonisten auf normal (Standard) zu setzen, wenn schlimme Sachen anderen Menschen passieren. Die Änderungen werden die Schwierigkeit erhöhen; Menschen mit der "Bleeding Heart"-Eigenschaft sind nicht betroffen. Wenn deaktiviert: Spiel neustarten!</EnableEmpathyTooltip>
 	
 	<EnableKinseyTitle>Erlaube Sexualität-Änderungen</EnableKinseyTitle>
-	<EnableEmpathyTooltip>Schalte das aus, um die Kinsey-Skala von Kolonisten zu deaktivieren. Somit werden die Standard-Eigenschaften geladen. NICHT bei laufendem Spiel ändern! Wenn deaktiviert: Spiel neustarten!</EnableEmpathyTooltip>
+	<EnableKinseyTooltip>Schalte das aus, um die Kinsey-Skala von Kolonisten zu deaktivieren. Somit werden die Standard-Eigenschaften geladen. NICHT bei laufendem Spiel ändern! Wenn deaktiviert: Spiel neustarten!</EnableKinseyTooltip>
 	
 	<KinseyFormulaTitle>Kinsey-Skala Formel</KinseyFormulaTitle>
 	<KinseyFormulaTooltip>Diese Einstellung bestimmt, welche Formel benutzt wird, um die Kinsey-Skala zu gewichten, wenn Kolonisten generiert werden.</KinseyFormulaTooltip>
@@ -48,5 +48,22 @@
 	<BeatyOverrideEnabledToolip>Disables opinion changes from traits such as: Pretty, Beautiful, Ugly, etc. Note that Psychology's changes to those traits would still work even if you disable this option. Its recommended to keep this option enabled.</BeatyOverrideEnabledToolip>
 	<LovinFrequencyTitle>Häufigkeit des Liebesspiels</LovinFrequencyTitle>
 	<LovinFrequencyTooltip>Wie oft Paare sich lieben: 2 = doppelt so oft, 0,5 = halb so oft.</LovinFrequencyTooltip>
+
+	<MentalBreakAnxietyChanceTitle>Angst-Chance nach Nervenzusammenbruch</MentalBreakAnxietyChanceTitle>
+	<MentalBreakAnxietyChanceTooltip>Legt die durchschnittliche Chance fest, dass ein Kolonist nach einem schweren Nervenzusammenbruch an Angst erkrankt. Bei leichten Zusammenbrüchen wird die Chance halbiert, bei extremen verdoppelt. Die Chance hängt auch von der Psyche des Kolonisten ab. Angst kann außerdem als zufällige Alterskrankheit auftreten. Für die volle Wirkung ist ein Neustart nötig.</MentalBreakAnxietyChanceTooltip>
+	<ConvoMaxOpinionChangeTitle>Max. Meinungsänderung durch Gespräche</ConvoMaxOpinionChangeTitle>
+	<ConvoMaxOpinionChangeTooltip>Die größte Meinungsänderung, die ein einzelnes Gespräch bewirken kann (Standard 40). Höhere Werte machen Gespräche bedeutsamer.</ConvoMaxOpinionChangeTooltip>
+	<ConvoMeanHoursTitle>Erwartete Gesprächsdauer</ConvoMeanHoursTitle>
+	<ConvoMeanHoursTooltip>Die durchschnittliche Dauer eines Gesprächs in Stunden (Standard 1,3).</ConvoMeanHoursTooltip>
+	<ConvoTimeScaleHoursTitle>Zeitskala von Gesprächen</ConvoTimeScaleHoursTitle>
+	<ConvoTimeScaleHoursTooltip>Legt die Zeitskala in Stunden fest, nach der sich die Meinungen aus Gesprächen mit der Gesprächsdauer ändern.</ConvoTimeScaleHoursTooltip>
+	<ConvoPersonalityEffectMultiplierTitle>Persönlichkeitseinfluss auf Gespräche</ConvoPersonalityEffectMultiplierTitle>
+	<ConvoPersonalityEffectMultiplierTooltip>Dieser Multiplikator bestimmt, wie stark Persönlichkeitsmerkmale wie Freundlich, Höflich oder Cool die Meinungsänderung beeinflussen.</ConvoPersonalityEffectMultiplierTooltip>
+	<TraitOpinionMultiplierTitle>Multiplikator für Meinung durch Eigenschaften</TraitOpinionMultiplierTitle>
+	<TraitOpinionMultiplierTooltip>Skaliert die Meinungsänderungen durch folgende Eigenschaften: Hübsch, Hässlich, Entstellt, Nervige Stimme, Gruseliges Atmen, Wertschätzung von Körpermodifikation und Abscheu von Körperpuristen. Auf 0 setzen, um sie ganz zu deaktivieren. Neustart erforderlich.</TraitOpinionMultiplierTooltip>
+	<PersonalityExtremenessTitle>Extremität der Persönlichkeit</PersonalityExtremenessTitle>
+	<PersonalityExtremenessTooltip>Legt fest, wie stark Persönlichkeiten an die Archetypen der Big Five angeglichen werden.</PersonalityExtremenessTooltip>
+	<IdeoPsycheMultiplierTitle>Multiplikator für Ideologie-Wechselwirkung</IdeoPsycheMultiplierTitle>
+	<IdeoPsycheMultiplierTooltip>Bestimmt, wie stark Persönlichkeit und Ideologie sich gegenseitig beeinflussen. Auf 0 setzen, um es ganz zu deaktivieren.</IdeoPsycheMultiplierTooltip>
 
 </LanguageData>

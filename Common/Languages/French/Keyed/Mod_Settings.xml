@@ -5,7 +5,7 @@
 	<EnableEmpathyTooltip>Désactivez ceci pour réinitialiser les réactions des colons aux mauvaises choses qui arrivent à d'autres. Cela va augmenter la difficulté ; les colons de Bleeding Heart pawns seront innaffectés. Rechargez le jeu pour désactivez ceci.</EnableEmpathyTooltip>
 	
 	<EnableKinseyTitle>Activez les changements sur l'orientation</EnableKinseyTitle>
-	<EnableEmpathyTooltip>Coupez ceci pour désactiber l'échelle de Kinsey des colons et réactiver le trait Homo. NE changez PAS ceci en plein jeu, et relancez le jeu après l'avoir activé.</EnableEmpathyTooltip>
+	<EnableKinseyTooltip>Coupez ceci pour désactiber l'échelle de Kinsey des colons et réactiver le trait Homo. NE changez PAS ceci en plein jeu, et relancez le jeu après l'avoir activé.</EnableKinseyTooltip>
 	
 	<KinseyFormulaTitle>Formule de l'échelle de Kinsey</KinseyFormulaTitle>
 	<KinseyFormulaTooltip>Ce paramètre détermine quelle formule est utilisée pour déterminer où se trouve sur l'échelle de Kinsey lors de sa génération.</KinseyFormulaTooltip>
@@ -72,5 +72,20 @@
 	<MinLovinAgeTooltip>Règle l'âge minimum auquel cette espèce peut s'engager dans une relation charnelle. Avec un chiffre positif, l'âge effectif s'échelonne par rapport au chiffre 16 dans les formule. Paramétrer 0 autorise les amourettes à tout âge et, dans les faits, désactive l'écart d'âge. Recommandé pour les androïdes conscients, qui n'ont pas réellement d'enfance. Un chiffre négatif désactive les amourettes pour cette espèce.</MinLovinAgeTooltip>
 	<LovinFrequencyTitle>Fréquence des câlins</LovinFrequencyTitle>
 	<LovinFrequencyTooltip>Fréquence à laquelle les couples font des câlins : 2 = deux fois plus souvent, 0,5 = deux fois moins souvent.</LovinFrequencyTooltip>
+
+	<MentalBreakAnxietyChanceTitle>Chance d'anxiété après une crise</MentalBreakAnxietyChanceTitle>
+	<MentalBreakAnxietyChanceTooltip>Définit la chance moyenne qu'un colon développe de l'anxiété après une crise mentale majeure. Pour les crises mineures, la chance est divisée par deux ; pour les crises extrêmes, elle est doublée. La chance dépend aussi de la psyché du colon. L'anxiété peut aussi apparaître comme une maladie aléatoire liée à l'âge. Nécessite un redémarrage pour un effet complet.</MentalBreakAnxietyChanceTooltip>
+	<ConvoMaxOpinionChangeTitle>Changement d'opinion max. par conversation</ConvoMaxOpinionChangeTitle>
+	<ConvoMaxOpinionChangeTooltip>Le plus grand changement d'opinion qu'une seule conversation peut provoquer (40 par défaut). Des valeurs plus élevées rendent les conversations plus importantes.</ConvoMaxOpinionChangeTooltip>
+	<ConvoMeanHoursTitle>Durée moyenne des discussions</ConvoMeanHoursTitle>
+	<ConvoMeanHoursTooltip>La durée moyenne d'une conversation, en heures (1,3 par défaut).</ConvoMeanHoursTooltip>
+	<ConvoTimeScaleHoursTitle>Échelle de temps des conversations</ConvoTimeScaleHoursTitle>
+	<ConvoTimeScaleHoursTooltip>Définit l'échelle de temps, en heures, selon laquelle les opinions issues des conversations évoluent avec leur durée.</ConvoTimeScaleHoursTooltip>
+	<ConvoPersonalityEffectMultiplierTitle>Effets de la personnalité sur les conversations</ConvoPersonalityEffectMultiplierTitle>
+	<ConvoPersonalityEffectMultiplierTooltip>Ce multiplicateur contrôle à quel point des traits de personnalité comme Amical, Poli ou Cool influencent le changement d'opinion.</ConvoPersonalityEffectMultiplierTooltip>
+	<PersonalityExtremenessTitle>Personnalités extrêmes</PersonalityExtremenessTitle>
+	<PersonalityExtremenessTooltip>Définit à quel point les personnalités sont accentuées pour correspondre aux archétypes du modèle des Big Five.</PersonalityExtremenessTooltip>
+	<IdeoPsycheMultiplierTitle>Multiplicateur d'interaction avec l'idéologie</IdeoPsycheMultiplierTitle>
+	<IdeoPsycheMultiplierTooltip>Contrôle l'intensité de l'interaction entre personnalité et idéologie. Réglez sur 0 pour la désactiver complètement.</IdeoPsycheMultiplierTooltip>
 
 </LanguageData>

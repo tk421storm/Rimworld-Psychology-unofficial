@@ -26,14 +26,14 @@
 	<ConversationDurationTitle>Conversation memory duration</ConversationDurationTitle>
 	<ConversationDurationTooltip>Set how long people will remember conversations for. The default is 60 days, i.e. one year. The minimum is 15 day, one quadrum, and the maximum is 180 days, three years. Setting it lower will make colonists' interactions with each other more ephemeral, and setting it higher will make them more lasting. Requires restart.</ConversationDurationTooltip>
 
-	<ConvoOpinionMultiplierTitle>Max opinion change from conversations</ConvoOpinionMultiplierTitle>
-	<ConvoOpinionMultiplierTooltip>This maximum controls the scale of opinion changes from conversations.</ConvoOpinionMultiplierTooltip>
+	<ConvoMaxOpinionChangeTitle>Max opinion change from conversations</ConvoMaxOpinionChangeTitle>
+	<ConvoMaxOpinionChangeTooltip>The largest opinion change a single conversation can cause (default 40). Higher values make conversations matter more.</ConvoMaxOpinionChangeTooltip>
 
 	<!--<ConvoOpinionMultiplierTitle>Conversation opinion multiplier</ConvoOpinionMultiplierTitle>
 	<ConvoOpinionMultiplierTooltip>This multiplier controls how large the opinion changes will be from conversations.</ConvoOpinionMultiplierTooltip>-->
 
-	<ConvoMeanTimeHoursTitle>Expected discussion time</ConvoMeanTimeHoursTitle>
-	<ConvoMeanTimeHoursTooltip>Set the average time in hours that a conversation will last.</ConvoMeanTimeHoursTooltip>
+	<ConvoMeanHoursTitle>Expected discussion time</ConvoMeanHoursTitle>
+	<ConvoMeanHoursTooltip>The average length of a conversation, in hours (default 1.3).</ConvoMeanHoursTooltip>
 
 	<ConvoTimeScaleHoursTitle>Time scale of conversations</ConvoTimeScaleHoursTitle>
 	<ConvoTimeScaleHoursTooltip>Set the time scale in hours by which conversation opinions will change as a function of time.</ConvoTimeScaleHoursTooltip>
