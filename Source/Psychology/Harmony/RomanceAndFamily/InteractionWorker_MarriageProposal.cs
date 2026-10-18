@@ -13,7 +13,8 @@ namespace Psychology.Harmony;
 
 // Proposal acceptance: Codependent recipients always say yes; otherwise vanilla's chance is shifted by
 // 0.8 x (Romantic + Pure - 1) using relativistic addition in the -1..1 space (romantic, traditional pawns accept more).
-// NOTE: the Kinsey romantic-drive factor is applied to `num` after __result has been computed, so it has no effect.
+// With Kinsey on, the recipient's age-adjusted romantic drive shifts it again by 0.4 x (drive - 0.7), capped at +/-0.3:
+// neutral at a typical drive of 0.7, about +14 points at a 50% base for a very high drive, about -12 for a very low one.
 [HarmonyPatch(typeof(InteractionWorker_MarriageProposal), nameof(InteractionWorker_MarriageProposal.AcceptanceChance))]
 public static class InteractionWorker_MarriageProposal_AcceptanceChancePatch
 {
@@ -45,13 +46,13 @@ public static class InteractionWorker_MarriageProposal_AcceptanceChancePatch
         x *= 0.8f;
         float num = Mathf.Clamp(-1f + 2f * __result, -0.999f, 0.999f);
         num = PsycheHelper.RelativisticAddition(num, x);
-        __result = 0.5f * (1f + num);
 
         if (PsychologySettings.enableKinsey)
         {
-            num *= 1.2f * Mathf.Sqrt(recipientComp.Sexuality.AdjustedRomanticDrive);
+            float driveShift = Mathf.Clamp(0.4f * (recipientComp.Sexuality.AdjustedRomanticDrive - 0.7f), -0.3f, 0.3f);
+            num = PsycheHelper.RelativisticAddition(num, driveShift);
         }
-        __result = Mathf.Clamp01(__result);
+        __result = Mathf.Clamp01(0.5f * (1f + num));
     }
 }
 
