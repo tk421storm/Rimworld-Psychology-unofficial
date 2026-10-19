@@ -49,19 +49,21 @@ public class TraitSet_ManualPatches
         {
             num = 2;
         }
+        // Other mods add orientation traits directly (e.g. Humanoid Alien Races' forced race traits), so converting
+        // them is expected, not an error.
         else if (trait.def == TraitDefOf.Asexual)
         {
-            Log.Error("GainTrait_KinseyEnabledPrefix was used for TraitDefOf.Asexual = " + ___pawn);
+            PsychologyDebug.Log("Asexual trait converted to Kinsey values for " + ___pawn);
             num = 3;
         }
         else if (trait.def == TraitDefOf.Bisexual)
         {
-            Log.Error("GainTrait_KinseyEnabledPrefix was used for TraitDefOf.Bisexual for pawn = " + ___pawn);
+            PsychologyDebug.Log("Bisexual trait converted to Kinsey values for " + ___pawn);
             num = 4;
         }
         else if (trait.def == TraitDefOf.Gay)
         {
-            Log.Error("GainTrait_KinseyEnabledPrefix was used for TraitDefOf.Gay for pawn = " + ___pawn);
+            PsychologyDebug.Log("Gay trait converted to Kinsey values for " + ___pawn);
             num = 5;
         }
         else
