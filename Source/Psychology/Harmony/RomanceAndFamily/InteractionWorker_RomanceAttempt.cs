@@ -172,6 +172,12 @@ public static class InteractionWorker_RomanceAttempt_SelectionWeightPatch
     // Include chance multiplier from settings
     __result = 1.15f * PsychologySettings.romanceChanceMultiplier * romChanceMult * initiatorOpinMult * existingPartnerMult * knownSexFactor * straightWomanFactor * confidenceFactor;
 
+    // The attempt is routed to a date night, courtship or hookup (RomanceAttemptRouter); none if that can't happen now.
+    if (__result > 0f && !RomanceAttemptRouter.CanRoute(initiator, recipient))
+    {
+      __result = 0f;
+    }
+
     return false;
   }
 
@@ -385,8 +391,12 @@ public static class InteractionWorker_RomanceAttempt_PartnerFactor_Patches
   }
 }
 
-// After a romance attempt: the initiator learns the recipient's Kinsey rating; on success old break-up thoughts
-// between them are cleared; a rejected Lecher gets a special (mild) rebuffed thought.
+// A romance attempt: the initiator learns the recipient's Kinsey rating, then RomanceAttemptRouter decides what it is.
+// Date night, courtship, hookup and cheating attempts are carried out by Psychology instead of vanilla's lovers roll;
+// direct ones (after a good date, player-ordered, or no other intent) run vanilla. Either way the log entry gets a
+// sentence naming the type before the result, and "Print debug info" logs the attempt with its calculations.
+// After vanilla's roll: on success old break-up thoughts between them are cleared; a rejected Lecher gets a special
+// (mild) rebuffed thought.
 [HarmonyPatch(typeof(InteractionWorker_RomanceAttempt), nameof(InteractionWorker_RomanceAttempt.Interacted))]
 public static class InteractionWorker_RomanceAttempt_Interacted_Patches
 {
@@ -399,6 +409,41 @@ public static class InteractionWorker_RomanceAttempt_Interacted_Patches
       PsycheHelper.Comp(initiator).Sexuality.LearnSexuality(recipient);
     }
     return true;
+  }
+
+  // __state: the start of the debug line for a direct attempt, finished by LogDirectAttempt once vanilla has rolled.
+  [HarmonyPrefix]
+  public static bool RouteAttempt(Pawn initiator, Pawn recipient, List<RulePackDef> extraSentencePacks, ref string letterText, ref string letterLabel, ref LetterDef letterDef, ref LookTargets lookTargets, out string __state)
+  {
+    __state = null;
+    RomanceAttemptType type = RomanceAttemptRouter.GetAttemptType(initiator, recipient, out _, out string reason);
+    extraSentencePacks.Add(RomanceAttemptRouter.TypeSentence(type));
+    if (type == RomanceAttemptType.Direct)
+    {
+      if (PsychologyDebug.Enabled)
+      {
+        __state = $"{initiator} attempted to romance {recipient}: {type} ({reason}), ";
+        __state += $"success chance {InteractionWorker_RomanceAttempt.SuccessChance(initiator, recipient):P0}";
+      }
+      return true;
+    }
+    letterText = null;
+    letterLabel = null;
+    letterDef = null;
+    lookTargets = null;
+    string result = RomanceAttemptRouter.Resolve(type, initiator, recipient, extraSentencePacks);
+    PsychologyDebug.Log($"{initiator} attempted to romance {recipient}: {type} ({reason}), {result}");
+    return false;
+  }
+
+  [HarmonyPostfix]
+  public static void LogDirectAttempt(Pawn initiator, Pawn recipient, List<RulePackDef> extraSentencePacks, string __state)
+  {
+    if (__state != null)
+    {
+      bool accepted = extraSentencePacks.Contains(RulePackDefOf.Sentence_RomanceAttemptAccepted);
+      PsychologyDebug.Log($"{__state} -> {(accepted ? "now lovers" : "rejected")}");
+    }
   }
 
   [HarmonyPostfix]

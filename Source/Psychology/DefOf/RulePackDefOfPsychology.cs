@@ -15,6 +15,13 @@ namespace Psychology
         // Casual lovin
         public static RulePackDef HookupSucceeded;
         public static RulePackDef HookupFailed;
+        public static RulePackDef HookupNoBed;
+        // Romance attempt types (RomanceAttemptRouter)
+        public static RulePackDef RomanceAttemptDirect;
+        public static RulePackDef RomanceAttemptDateNight;
+        public static RulePackDef RomanceAttemptCourtship;
+        public static RulePackDef RomanceAttemptHookup;
+        public static RulePackDef RomanceAttemptCheating;
         // Courtship
         public static RulePackDef DateAccepted;
         public static RulePackDef DateDeclined;

@@ -47,13 +47,19 @@ namespace Psychology
 
         public override void Interacted(Pawn initiator, Pawn recipient, List<RulePackDef> extraSentencePacks, out string letterText, out string letterLabel, out LetterDef letterDef, out LookTargets lookTargets)
         {
-            letterText = null;
-            letterLabel = null;
-            letterDef = null;
-            lookTargets = null;
-            float chance = AcceptChance(recipient, initiator, out string details);
-            bool accepted = Rand.Chance(chance);
+            // The base call clears the outs and lets other mods' hooks on InteractionWorker.Interacted see this interaction
+            // (Intimacy only raises its need there).
+            base.Interacted(initiator, recipient, extraSentencePacks, out letterText, out letterLabel, out letterDef, out lookTargets);
+            bool accepted = Ask(initiator, recipient, extraSentencePacks, out float chance, out string details);
             PsychologyDebug.Log($"{initiator} asks {recipient} out: accept chance {chance:P0} ({details}) -> {(accepted ? "yes" : "no")}");
+        }
+
+        // Rolls the answer, adds it to the log entry, and plans the date or gives the asker the rebuffed memory. Also used
+        // by romance attempts routed to courtship (RomanceAttemptRouter).
+        public static bool Ask(Pawn initiator, Pawn recipient, List<RulePackDef> extraSentencePacks, out float chance, out string details)
+        {
+            chance = AcceptChance(recipient, initiator, out details);
+            bool accepted = Rand.Chance(chance);
             if (accepted)
             {
                 extraSentencePacks.Add(RulePackDefOfPsychology.DateAccepted);
@@ -64,6 +70,7 @@ namespace Psychology
                 extraSentencePacks.Add(RulePackDefOfPsychology.DateDeclined);
                 initiator.needs?.mood?.thoughts?.memories?.TryGainMemory(ThoughtDefOfPsychology.RebuffedMyDateRequest, recipient);
             }
+            return accepted;
         }
 
         public static float AcceptChance(Pawn recipient, Pawn initiator)

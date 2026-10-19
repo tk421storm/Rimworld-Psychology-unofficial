@@ -527,20 +527,23 @@ namespace Psychology
 
     /// <summary>
     /// Fires a vanilla romance attempt (so Psychology's success chance patches apply) from the bolder of the two
-    /// (romantic drive + Confident) at the other. True if they end up partners.
+    /// (romantic drive + Confident) at the other. True if they end up partners. It isn't routed to a date or hookup
+    /// (RomanceAttemptRouter); the attempt itself logs the debug line.
     /// </summary>
     public static bool TryFireRomanceAttempt(Pawn a, Pawn b)
     {
       Pawn initiator = Boldness(a) >= Boldness(b) ? a : b;
       Pawn recipient = initiator == a ? b : a;
-      if (PsychologyDebug.Enabled)
+      RomanceAttemptRouter.directReason = "after a good date";
+      try
       {
-        PsychologyDebug.Log($"{initiator} makes a romance attempt on {recipient}: success chance {InteractionWorker_RomanceAttempt.SuccessChance(initiator, recipient):P0}");
+        ForceInteraction(initiator, recipient, InteractionDefOf.RomanceAttempt);
       }
-      ForceInteraction(initiator, recipient, InteractionDefOf.RomanceAttempt);
-      bool partners = LovePartnerRelationUtility.LovePartnerRelationExists(initiator, recipient);
-      PsychologyDebug.Log($"{initiator} and {recipient}: {(partners ? "now lovers" : "romance attempt rejected")}");
-      return partners;
+      finally
+      {
+        RomanceAttemptRouter.directReason = null;
+      }
+      return LovePartnerRelationUtility.LovePartnerRelationExists(initiator, recipient);
     }
 
     /// <summary>
@@ -583,53 +586,50 @@ namespace Psychology
     /// <param name="target"></param>
     /// <param name="asker"></param>
     /// <returns>True or False</returns>
-    // The target's decision: needs the minimum hookup opinion, not asexual (unless already partners), willing to cheat if
-    // it would be cheating, then a roll against attraction (reduced 1.5x for non-partners) times an opinion factor.
+    // The target's decision, rolled against HookupAcceptChance.
     public static bool IsHookupAppealing(Pawn target, Pawn asker)
+    {
+      float chance = HookupAcceptChance(target, asker, out string details);
+      bool accepted = Rand.Chance(chance);
+      PsychologyDebug.Log($"{target} considers a hookup with {asker}: chance {chance:P0} ({details}) -> {(accepted ? "yes" : "no")}");
+      return accepted;
+    }
+
+    // Chance (0-1) the target agrees to a hookup: needs the minimum hookup opinion and not asexual (unless already
+    // partners); then the cheat chance if it would be cheating x InverseLerp(0.05, 1, attraction (reduced 1.5x for
+    // non-partners) x an opinion factor). details explains it (English, for the debug log).
+    public static float HookupAcceptChance(Pawn target, Pawn asker, out string details)
     {
       if (!PsycheHelper.PsychologyEnabled(target) || !PsycheHelper.PsychologyEnabled(asker))
       {
-        return false;
+        details = "no psyche";
+        return 0f;
       }
-      if (target.relations.OpinionOf(asker) < PsychologySettings.minOpinionForHookup)
+      float opinion = target.relations.OpinionOf(asker);
+      if (opinion < PsychologySettings.minOpinionForHookup)
       {
-        return false;
+        details = $"opinion {opinion:0} below hookup minimum {PsychologySettings.minOpinionForHookup:0}";
+        return 0f;
       }
-      if (PsychologySettings.enableKinsey)
+      bool partners = LovePartnerRelationUtility.LovePartnerRelationExists(target, asker);
+      bool asexual = PsychologySettings.enableKinsey ? PsycheHelper.Comp(target).Sexuality.IsAsexual : target.story.traits.HasTrait(TraitDefOf.Asexual);
+      //Otherwise their rating is already factored in via secondary romance chance factor
+      if (asexual && !partners)
       {
-        if (PsycheHelper.Comp(target).Sexuality.IsAsexual)
-        {
-          if (!LovePartnerRelationUtility.LovePartnerRelationExists(target, asker))
-          {
-            return false;
-          }
-        }
+        details = "asexual";
+        return 0f;
       }
-      else if (target.story.traits.HasTrait(TraitDefOf.Asexual))
+      float cheat = CheatFactor(target, asker, out Pawn cheatOn);
+      float romanceFactor = target.relations.SecondaryRomanceChanceFactor(asker);
+      if (!partners)
       {
-        if (!LovePartnerRelationUtility.LovePartnerRelationExists(target, asker))
-        {
-          return false;
-        }
-        //Otherwise their rating is already factored in via secondary romance chance factor
+        romanceFactor /= 1.5f;
       }
-
-      if (WillPawnContinue(target, asker, out _))
-      {
-        //It's either not cheating or they have decided to cheat
-        float romanceFactor = target.relations.SecondaryRomanceChanceFactor(asker);
-        if (!LovePartnerRelationUtility.LovePartnerRelationExists(target, asker))
-        {
-          romanceFactor /= 1.5f;
-        }
-        float opinionFactor = 1f;
-        //Decrease if opinion is negative
-        opinionFactor *= Mathf.InverseLerp(-100f, 0f, target.relations.OpinionOf(asker));
-        //Increase if opinion is positive, but on a lesser scale to above
-        opinionFactor *= GenMath.LerpDouble(0, 100f, 1f, 1.5f, target.relations.OpinionOf(asker));
-        return Rand.Range(0.05f, 1f) < (romanceFactor * opinionFactor);
-      }
-      return false;
+      //Decrease if opinion is negative, increase if positive but on a lesser scale
+      float opinionFactor = Mathf.InverseLerp(-100f, 0f, opinion) * GenMath.LerpDouble(0, 100f, 1f, 1.5f, opinion);
+      float appeal = Mathf.InverseLerp(0.05f, 1f, romanceFactor * opinionFactor);
+      details = $"attraction {romanceFactor:0.00} x opinion {opinionFactor:0.00} -> appeal {appeal:0.00} x cheat {cheat:0.00}{(cheatOn != null ? $" (on {cheatOn})" : "")}";
+      return Mathf.Clamp01(cheat * appeal);
     }
 
     /// <summary>

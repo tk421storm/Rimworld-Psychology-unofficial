@@ -115,6 +115,8 @@
 
 	<CourtshipChanceTitle>Courtship chance (x)</CourtshipChanceTitle>
 	<CourtshipChanceTooltip>How often single pawns (and pawns willing to cheat) ask someone they're attracted to out on a date. The chance also rises with attraction, opinion, romantic drive and confidence, and with earlier good dates. Each date leaves a good or bad date memory; good dates make a romance attempt more likely. Set to 0 to turn courtship off. Couples' date nights aren't affected.</CourtshipChanceTooltip>
+	<SocialRomanceChanceTitle>Romance while socializing (%)</SocialRomanceChanceTitle>
+	<SocialRomanceChanceTooltip>While relaxing socially (at a table or campfire), at a party or hangout, dancing or playing billiards, pawns chat much more often than usual. This is the chance that one of those chats becomes a look around for romance instead. Only pawns who are single, allowed another partner, or willing to cheat on theirs this time (see the cheating chance) look. They pick someone close by they're attracted to and like enough, favouring the most attractive, and make a romance attempt: a date night for partners, asking out, a hookup, or an affair if it would be cheating. Not during dates. Set to 0 to turn it off.</SocialRomanceChanceTooltip>
 	<DateOpinionGoodTitle>Good date opinion</DateOpinionGoodTitle>
 	<DateOpinionGoodTooltip>Opinion bonus from a date that went perfectly. Each date's result falls between this and the bad date opinion, based on the pair's personality compatibility, mood, opinion of each other and luck. Up to 5 good date memories stack (at 75% each after the first) and last 20 days.</DateOpinionGoodTooltip>
 	<DateOpinionBadTitle>Bad date opinion</DateOpinionBadTitle>

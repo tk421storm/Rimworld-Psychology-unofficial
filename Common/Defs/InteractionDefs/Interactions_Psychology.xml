@@ -36,6 +36,56 @@
       </rulesStrings>
     </rulePack>
   </RulePackDef>
+  <RulePackDef>
+    <defName>HookupNoBed</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>sent-&gt; [RECIPIENT_nameDef] was willing, but there was no bed for two.</li>
+      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+
+  <!-- What a vanilla romance attempt turned into (Psychology.RomanceAttemptRouter); the first sentence after the attempt -->
+  <RulePackDef>
+    <defName>RomanceAttemptDirect</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>sent-&gt; [INITIATOR_nameDef] asked [RECIPIENT_objective] to be lovers.</li>
+      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+  <RulePackDef>
+    <defName>RomanceAttemptDateNight</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>sent-&gt; [INITIATOR_nameDef] planned a date night with [RECIPIENT_objective].</li>
+      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+  <RulePackDef>
+    <defName>RomanceAttemptCourtship</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>sent-&gt; [INITIATOR_nameDef] asked [RECIPIENT_objective] out on a date.</li>
+      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+  <RulePackDef>
+    <defName>RomanceAttemptHookup</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>sent-&gt; [INITIATOR_nameDef] proposed a casual hookup.</li>
+      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
+  <RulePackDef>
+    <defName>RomanceAttemptCheating</defName>
+    <rulePack>
+      <rulesStrings>
+        <li>sent-&gt; [INITIATOR_nameDef] proposed an affair behind [INITIATOR_possessive] partner's back.</li>
+      </rulesStrings>
+    </rulePack>
+  </RulePackDef>
 
 
   <InteractionDef>

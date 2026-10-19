@@ -128,6 +128,11 @@ public class PsychologySettings : ModSettings
   public static float courtshipChance = 1f;
   public const float courtshipChanceMax = 5f;
 
+  // Percent chance that a random interaction during a super-active social job (relaxing socially, parties, dancing,
+  // billiards) becomes a look around for romance; see RomanceAttemptRouter.TrySocialRomance. Slider 0-100.
+  public const float socialRomanceChanceDefault = 10f;
+  public static float socialRomanceChance = 10f;
+
   // Opinion of a courtship date at its best (quality 1) and worst (quality -1); see RomanceUtility.GainDateMemory.
   public const float dateOpinionGoodDefault = 15f;
   public static float dateOpinionGood = 15f;
@@ -204,6 +209,7 @@ public class PsychologySettings : ModSettings
     ScribeValueAndAddToNameList(nameof(lovinFrequency));
     ScribeValueAndAddToNameList(nameof(cheatChance));
     ScribeValueAndAddToNameList(nameof(courtshipChance));
+    ScribeValueAndAddToNameList(nameof(socialRomanceChance));
     ScribeValueAndAddToNameList(nameof(dateOpinionGood));
     ScribeValueAndAddToNameList(nameof(dateOpinionBad));
     ScribeValueAndAddToNameList(nameof(dateRomanceChance));
@@ -234,6 +240,7 @@ public class PsychologySettings : ModSettings
     arrestBaseChance = Mathf.Clamp(arrestBaseChance, 0f, arrestBaseChanceMax);
     cheatChance = Mathf.Clamp(cheatChance, 0f, 100f);
     courtshipChance = Mathf.Clamp(courtshipChance, 0f, courtshipChanceMax);
+    socialRomanceChance = Mathf.Clamp(socialRomanceChance, 0f, 100f);
     dateOpinionGood = Mathf.Clamp(dateOpinionGood, 0f, dateOpinionMax);
     dateOpinionBad = Mathf.Clamp(dateOpinionBad, -dateOpinionMax, 0f);
     dateRomanceChance = Mathf.Clamp(dateRomanceChance, 0f, 100f);
