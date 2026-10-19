@@ -73,10 +73,9 @@ namespace Psychology
         
         public override void Interacted(Pawn initiator, Pawn recipient, List<RulePackDef> extraSentencePacks, out string letterText, out string letterLabel, out LetterDef letterDef, out LookTargets lookTargets)
         {
-            letterText = null;
-            letterLabel = null;
-            letterDef = null;
-            lookTargets = null;
+            // The base call clears the outs and lets other mods' hooks on InteractionWorker.Interacted see this interaction
+            // (Intimacy only raises its need there).
+            base.Interacted(initiator, recipient, extraSentencePacks, out letterText, out letterLabel, out letterDef, out lookTargets);
             initiator.jobs.StopAll();
             recipient.jobs.StopAll();
             Lord meeting = LordMaker.MakeNewLord(initiator.Faction, new LordJob_HangOut(initiator, recipient), initiator.Map, new Pawn[] { initiator, recipient });

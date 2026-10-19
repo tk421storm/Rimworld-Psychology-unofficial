@@ -61,10 +61,9 @@ public class InteractionWorker_Conversation : InteractionWorker
     // The initiator's hediff has waveGoodbye = true: it owns the log entry and the goodbye bubble.
     public override void Interacted(Pawn initiator, Pawn recipient, List<RulePackDef> extraSentencePacks, out string letterText, out string letterLabel, out LetterDef letterDef, out LookTargets lookTargets)
     {
-        letterText = null;
-        letterLabel = null;
-        letterDef = null;
-        lookTargets = null;
+        // The base call clears the outs and lets other mods' hooks on InteractionWorker.Interacted see this interaction
+        // (Intimacy only raises its need there).
+        base.Interacted(initiator, recipient, extraSentencePacks, out letterText, out letterLabel, out letterDef, out lookTargets);
         PersonalityNode topic = (from node in PsycheHelper.Comp(initiator).Psyche.PersonalityNodes
                                  where node.HasConvoTopics
                                  select node).RandomElementByWeight(node => PsycheHelper.Comp(initiator).Psyche.GetConversationTopicWeight(node.def, recipient));
