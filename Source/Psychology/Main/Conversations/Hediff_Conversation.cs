@@ -18,6 +18,7 @@ namespace Psychology;
 ///     topic, its controversiality, both personalities, how long they talked, and a seeded random factor
 ///   - possibly a social fight, if the outcome was negative and the initiator is Aggressive
 ///   - a play-log entry describing the talk (short/normal/long/epic phrasing from the Keyed Conversations strings)
+///   - with Intimacy - Friends n' Lovers loaded, extra social intimacy for both pawns that grows with the length
 /// </summary>
 public class Hediff_Conversation : HediffWithComps
 {
@@ -167,6 +168,10 @@ public class Hediff_Conversation : HediffWithComps
     float opinionMod;
     ThoughtDef def = CreateSocialThought(out opinionMod);
     bool mattered = TryGainThought(def, Mathf.RoundToInt(opinionMod));
+    if (this.waveGoodbye)
+    {
+      GiveIntimacyForLength();
+    }
     InteractionDef endConversation = new InteractionDef();
     // The released 1.4-1.6 builds use 0.1 * ... / 2 (i.e. a quarter of the 0.2 base that was in source).
     endConversation.socialFightBaseChance = 0.1f * PsycheHelper.Comp(pawn).Psyche.GetPersonalityRating(PersonalityNodeDefOf.Aggressive) * PopulationModifier / 2f * Mathf.InverseLerp(0f, -80f, opinionMod);
@@ -327,6 +332,26 @@ public class Hediff_Conversation : HediffWithComps
   public static float Func(float x)
   {
     return 1f - Mathf.Exp(-x);
+  }
+
+  // Most intimacy a conversation can add when it ends, on top of Intimacy's flat +1% when it starts (same as nuzzling).
+  public const float MaxIntimacyForLength = 0.04f;
+
+  // Intimacy - Friends n' Lovers only counts the Conversation interaction when it starts, so on its own a long talk is
+  // worth no more than a short one. When the talk ends (initiator's copy only, so it's given once), both pawns get up to
+  // MaxIntimacyForLength more, on the same length curve as the opinion: with the default 1 h time scale, a short talk
+  // adds under 1%, half an hour about 1.6%, an epic 2.5 h talk about 3.7%.
+  private void GiveIntimacyForLength()
+  {
+    if (!IntimacyCompat.Active)
+    {
+      return;
+    }
+    float t = ((float)ageTicks) / ((float)GenDate.TicksPerHour) / PsychologySettings.convoTimeScaleHours;
+    float amount = MaxIntimacyForLength * Func(t);
+    IntimacyCompat.GainSocialIntimacy(this.pawn, amount);
+    IntimacyCompat.GainSocialIntimacy(this.otherPawn, amount);
+    PsychologyDebug.Log($"{this.pawn} and {this.otherPawn} talked for {ageTicks / (float)GenDate.TicksPerHour:0.00} h: +{amount:P1} intimacy each");
   }
 
   // Keeps at most ~10 conversation memories per pair: once full, a new one is only added if it's stronger than the
