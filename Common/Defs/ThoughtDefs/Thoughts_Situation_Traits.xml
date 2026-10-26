@@ -171,5 +171,63 @@
       </li>
     </stages>
   </ThoughtDef>
+
+  <!-- Matriarch/Patriarch: one stage per child (one on the way counts), 5 or more for the last. -->
+  <ThoughtDef>
+    <defName>FamilySize</defName>
+    <workerClass>Psychology.ThoughtWorker_FamilySize</workerClass>
+    <requiredTraits>
+      <li>Matriarch</li>
+    </requiredTraits>
+    <stages>
+      <li>
+        <label>a child of my own</label>
+        <description>I have a child. It's a start; I want a whole family.</description>
+        <baseMoodEffect>2</baseMoodEffect>
+      </li>
+      <li>
+        <label>a growing family</label>
+        <description>Two children! My family is growing.</description>
+        <baseMoodEffect>4</baseMoodEffect>
+      </li>
+      <li>
+        <label>a proper family</label>
+        <description>Three children. This is what a family should look like.</description>
+        <baseMoodEffect>6</baseMoodEffect>
+      </li>
+      <li>
+        <label>a big family</label>
+        <description>Four children. My family is everything to me.</description>
+        <baseMoodEffect>8</baseMoodEffect>
+      </li>
+      <li>
+        <label>a dynasty</label>
+        <description>So many children! My family will carry on long after I'm gone.</description>
+        <baseMoodEffect>10</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
+
+  <!-- Child-free: content without children, miserable while any child is under adulthood (one on the way counts),
+       nothing once all their children are grown. -->
+  <ThoughtDef>
+    <defName>ChildFreeLife</defName>
+    <workerClass>Psychology.ThoughtWorker_ChildFree</workerClass>
+    <requiredTraits>
+      <li>ChildFree</li>
+    </requiredTraits>
+    <stages>
+      <li>
+        <label>child-free</label>
+        <description>No children to tie me down. Just how I like it.</description>
+        <baseMoodEffect>3</baseMoodEffect>
+      </li>
+      <li>
+        <label>never wanted children</label>
+        <description>I never wanted to be a parent. Now there's a child, and my life isn't my own anymore.</description>
+        <baseMoodEffect>-12</baseMoodEffect>
+      </li>
+    </stages>
+  </ThoughtDef>
   
 </Defs>

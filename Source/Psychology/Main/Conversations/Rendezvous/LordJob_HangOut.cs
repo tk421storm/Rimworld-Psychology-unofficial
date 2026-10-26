@@ -12,7 +12,8 @@ using UnityEngine;
 
 namespace Psychology
 {
-    // A 3-5 hour hang-out; same rules as LordJob_Date, "hung out" memory at the end.
+    // A 3-5 hour hang-out; same rules as LordJob_Date (only injuries during it end it early, as does a mental break), "hung out" memory at the
+    // end. Unlike dates, no message when it's cut short.
     class LordJob_HangOut : LordJob
     {
         public LordJob_HangOut()
@@ -22,6 +23,8 @@ namespace Psychology
         {
             this.initiator = initiator;
             this.recipient = recipient;
+            this.initiatorHealth = initiator.health.summaryHealth.SummaryHealthPercent;
+            this.recipientHealth = recipient.health.summaryHealth.SummaryHealthPercent;
         }
 
         public override StateGraph CreateGraph()
@@ -33,7 +36,7 @@ namespace Psychology
             stateGraph.AddToil(lordToil_End);
             Transition transition = new Transition(lordToil_HangOut, lordToil_End);
             transition.AddTrigger(new Trigger_TickCondition(() => this.ShouldBeCalledOff()));
-            transition.AddTrigger(new Trigger_TickCondition(() => this.initiator.health.summaryHealth.SummaryHealthPercent < 1f || this.recipient.health.summaryHealth.SummaryHealthPercent < 1f));
+            transition.AddTrigger(new Trigger_TickCondition(() => RendezvousUtility.HurtSince(this.initiator, this.initiatorHealth) || RendezvousUtility.HurtSince(this.recipient, this.recipientHealth)));
             transition.AddTrigger(new Trigger_TickCondition(() => this.initiator.Drafted || this.recipient.Drafted));
             transition.AddTrigger(new Trigger_TickCondition(() => this.initiator.Map == null || this.recipient.Map == null));
             transition.AddTrigger(new Trigger_PawnLost());
@@ -59,27 +62,38 @@ namespace Psychology
         {
             Scribe_References.Look(ref this.initiator, "initiator");
             Scribe_References.Look(ref this.recipient, "recipient");
+            Scribe_Values.Look(ref this.initiatorHealth, "initiatorHealth", 1f);
+            Scribe_Values.Look(ref this.recipientHealth, "recipientHealth", 1f);
         }
         
         public override string GetReport(Pawn pawn)
         {
             return "LordReportHangingOut".Translate();
         }
+
+        // A mental break ends the hang-out, as for dates (not a social fight).
+        public override void Notify_InMentalState(Pawn pawn, MentalStateDef stateDef)
+        {
+            if (RendezvousUtility.EndsOuting(stateDef))
+            {
+                this.lord.Notify_PawnLost(pawn, PawnLostCondition.InMentalState);
+            }
+        }
         
         private bool ShouldBeCalledOff()
         {
-
             return !GatheringsUtility.AcceptableGameConditionsToContinueGathering(base.Map)
                 || this.initiator.GetTimeAssignment() == TimeAssignmentDefOf.Work
                 || this.recipient.GetTimeAssignment() == TimeAssignmentDefOf.Work
-                || (this.initiator.needs.rest == null ? false : this.initiator.needs.rest.CurLevel < 0.3f)
-                || (this.recipient.needs.rest == null ? false : this.recipient.needs.rest.CurLevel < 0.3f)
-                || ((this.initiator.needs.rest == null && this.recipient.needs.rest == null) && (this.initiator.needs.joy.CurLevel > 0.9f && this.recipient.needs.joy.CurLevel > 0.9f));
-
+                || this.initiator.needs.rest?.CurLevel < 0.3f
+                || this.recipient.needs.rest?.CurLevel < 0.3f
+                || (this.initiator.needs.rest == null && this.recipient.needs.rest == null && this.initiator.needs.joy?.CurLevel > 0.9f && this.recipient.needs.joy?.CurLevel > 0.9f);
         }
 
         private Trigger_TicksPassed timeoutTrigger;
         public Pawn initiator;
         public Pawn recipient;
+        public float initiatorHealth = 1f;
+        public float recipientHealth = 1f;
     }
 }

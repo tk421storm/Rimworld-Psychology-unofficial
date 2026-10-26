@@ -392,7 +392,7 @@ namespace Psychology
     /// The one place that decides what <paramref name="initiator"/> wants from <paramref name="recipient"/>, so date night,
     /// courtship and hookups share the same gates. Both need a psyche and must be old enough to date. Partners get
     /// DateNight. Otherwise the initiator must find the recipient attractive (MinAttraction): Courtship needs the minimum
-    /// romance opinion plus some romantic drive, or an earlier good date with them; Hookup needs the minimum hookup opinion
+    /// romance opinion (default -5, so pawns who barely know each other qualify) plus some romantic drive, or an earlier good date with them; Hookup needs the minimum hookup opinion
     /// and a pawn willing to hook up. Cheating and the recipient's answer are left to the callers.
     /// </summary>
     public static RomanticIntent GetRomanticIntent(Pawn initiator, Pawn recipient)
@@ -441,6 +441,25 @@ namespace Psychology
       return RomanticIntent.None;
     }
 
+    // For the debug log: pawn's attraction to other, "raw 0.39 = orientation 1.00 x age 0.45 x looks 0.95 x drive 0.91",
+    // plus whatever vanilla multiplies in on top (relations such as siblings, Psychic Love, Biotech gene factors). Just
+    // the raw value when "Print debug info" is off, so callers can always use it.
+    public static string AttractionBreakdown(Pawn pawn, Pawn other)
+    {
+      float romanceFactor = pawn.relations.SecondaryRomanceChanceFactor(other);
+      if (!PsychologyDebug.Enabled)
+      {
+        return $"raw {romanceFactor:0.00}";
+      }
+      float lovinFactor = Psychology.Harmony.Pawn_RelationsTracker_LovinChancePatch.Attraction(pawn, other, true, out string parts);
+      string text = $"raw {romanceFactor:0.00} = {parts}";
+      if (lovinFactor > 0f && Mathf.Abs(romanceFactor / lovinFactor - 1f) > 0.005f)
+      {
+        text += $" x relations/psychic love/genes {romanceFactor / lovinFactor:0.00}";
+      }
+      return text;
+    }
+
     // Personality compatibility in [-1, 1] (0 = a typical pair); see Pawn_PsycheTracker.PersonalityCompatibilityWith.
     public static float Compatibility(Pawn pawn, Pawn other)
     {
@@ -470,6 +489,62 @@ namespace Psychology
     public static int GoodDateCount(Pawn pawn, Pawn other)
     {
       return CountMemoriesOf(pawn, other, ThoughtDefOfPsychology.DateWentWell);
+    }
+
+    // How long after a pair's last courtship date TrySecondDates may still have them ask for another.
+    public const float SecondDateWindowDays = 15f;
+
+    /// <summary>
+    /// Once a day (PsychologyGameComponent), on top of asking in person (InteractionWorker_AskOutOnDate): a pair whose
+    /// last courtship date, within SecondDateWindowDays, went well for both may ask for another from anywhere on the same
+    /// map. They still need the usual date gates (InteractionWorker_DateBase.BlockReason: courtship intent, so not
+    /// partners, and the cooldown, which also covers a date already planned), and neither may have turned the other's
+    /// date down lately. The asker is the more eager of the two (AskWeight, which is 0 with courtship off); the daily
+    /// chance is the second date setting x their average quality x (1 + 0.5 per good date the asker remembers with
+    /// them). The answer is rolled as for any date request and goes to the play log. At most one ask per pawn per day.
+    /// With force (dev menu), every eligible pair asks, skipping the daily chance.
+    /// </summary>
+    public static void TrySecondDates(bool force = false)
+    {
+      if (PsychologySettings.secondDateChance <= 0f && !force)
+      {
+        return;
+      }
+      InteractionWorker_DateBase worker = (InteractionWorker_DateBase)InteractionDefOfPsychology.AskOutOnDate.Worker;
+      int windowStart = Find.TickManager.TicksGame - Mathf.RoundToInt(SecondDateWindowDays * GenDate.TicksPerDay);
+      HashSet<Pawn> asked = new HashSet<Pawn>();
+      // A list: asking plans a date, which shouldn't run while the date history is being read.
+      foreach ((DateRecord recordA, DateRecord recordB) in PsycheHelper.GameComp.LastDatePerPair().ToList())
+      {
+        Pawn a = recordA.pawn;
+        Pawn b = recordB.pawn;
+        if (recordA.quality <= 0f || recordB.quality <= 0f || Mathf.Max(recordA.tick, recordB.tick) < windowStart || asked.Contains(a) || asked.Contains(b)
+          || !a.Spawned || !b.Spawned || a.Map != b.Map
+          || CountMemoriesOf(a, b, ThoughtDefOfPsychology.RebuffedMyDateRequest) > 0 || CountMemoriesOf(b, a, ThoughtDefOfPsychology.RebuffedMyDateRequest) > 0)
+        {
+          continue;
+        }
+        float weightA = worker.BlockReason(a, b) == null ? InteractionWorker_AskOutOnDate.AskWeight(a, b, false, out _) : 0f;
+        float weightB = worker.BlockReason(b, a) == null ? InteractionWorker_AskOutOnDate.AskWeight(b, a, false, out _) : 0f;
+        if (weightA <= 0f && weightB <= 0f)
+        {
+          continue;
+        }
+        Pawn asker = Rand.Value * (weightA + weightB) < weightA ? a : b;
+        Pawn other = asker == a ? b : a;
+        float chance = Mathf.Clamp01(PsychologySettings.secondDateChance / 100f * (recordA.quality + recordB.quality) / 2f * (1f + 0.5f * GoodDateCount(asker, other)));
+        if (!force && !Rand.Chance(chance))
+        {
+          PsychologyDebug.Log($"Second date: {asker} and {other} (last date {recordA.quality:+0.00} / {recordB.quality:+0.00}): chance {chance:P0} -> not today");
+          continue;
+        }
+        asked.Add(a);
+        asked.Add(b);
+        List<RulePackDef> extraSentencePacks = new List<RulePackDef>();
+        bool accepted = InteractionWorker_AskOutOnDate.Ask(asker, other, extraSentencePacks, out float acceptChance, out string details);
+        Find.PlayLog.Add(new PlayLogEntry_Interaction(InteractionDefOfPsychology.AskOutOnDate, asker, other, extraSentencePacks));
+        PsychologyDebug.Log($"Second date: {asker} asks {other} out again (chance {chance:P0}{(force ? ", forced" : "")}): accept chance {acceptChance:P0} ({details}) -> {(accepted ? "yes" : "no")}");
+      }
     }
 
     /// <summary>
@@ -628,7 +703,8 @@ namespace Psychology
       //Decrease if opinion is negative, increase if positive but on a lesser scale
       float opinionFactor = Mathf.InverseLerp(-100f, 0f, opinion) * GenMath.LerpDouble(0, 100f, 1f, 1.5f, opinion);
       float appeal = Mathf.InverseLerp(0.05f, 1f, romanceFactor * opinionFactor);
-      details = $"attraction {romanceFactor:0.00} x opinion {opinionFactor:0.00} -> appeal {appeal:0.00} x cheat {cheat:0.00}{(cheatOn != null ? $" (on {cheatOn})" : "")}";
+      // romanceFactor is the attraction, divided by 1.5 unless they're partners
+      details = $"attraction {romanceFactor:0.00} ({AttractionBreakdown(target, asker)}{(partners ? "" : ", / 1.5 not partners")}) x opinion {opinionFactor:0.00} -> appeal {appeal:0.00} x cheat {cheat:0.00}{(cheatOn != null ? $" (on {cheatOn})" : "")}";
       return Mathf.Clamp01(cheat * appeal);
     }
 

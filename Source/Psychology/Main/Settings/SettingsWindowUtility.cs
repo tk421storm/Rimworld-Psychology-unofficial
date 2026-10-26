@@ -300,11 +300,13 @@ public static class SettingsWindowUtility{
         ShiftRectsDown(customWeightEntryRect.height);
       }
       CheckboxEntry(nameof(PsychologySettings.enableDateLetters));
+      CheckboxEntry(nameof(PsychologySettings.pawnsChoosePregnancyApproach));
       FloatEntry(nameof(PsychologySettings.romanceChanceMultiplier), 0f, 1E+09f);
       FloatEntry(nameof(PsychologySettings.romanceOpinionThreshold), -99f, 99f);
       FloatSliderEntry(nameof(PsychologySettings.lovinFrequency), PsychologySettings.lovinFrequencyMin, PsychologySettings.lovinFrequencyMax, 2);
       FloatSliderEntry(nameof(PsychologySettings.cheatChance), 0f, 100f, 0);
       FloatSliderEntry(nameof(PsychologySettings.courtshipChance), 0f, PsychologySettings.courtshipChanceMax, 2);
+      FloatSliderEntry(nameof(PsychologySettings.secondDateChance), 0f, 100f, 0);
       FloatSliderEntry(nameof(PsychologySettings.socialRomanceChance), 0f, 100f, 0);
       FloatSliderEntry(nameof(PsychologySettings.dateOpinionGood), 0f, PsychologySettings.dateOpinionMax, 0);
       FloatSliderEntry(nameof(PsychologySettings.dateOpinionBad), -PsychologySettings.dateOpinionMax, 0f, 0);

@@ -172,10 +172,8 @@ public class SpeciesHelper
       pawnDef.recipes = new List<RecipeDef>(6);
     }
     // AllRecipes is cached on first use, so add to it as well in case this runs after it was built (e.g. a race first
-    // registered mid-game).
-    foreach (RecipeDef recipe in new[] { RecipeDefOfPsychology.CureAnxiety, RecipeDefOfPsychology.TreatChemicalInterest,
-      RecipeDefOfPsychology.TreatChemicalFascination, RecipeDefOfPsychology.TreatDepression,
-      RecipeDefOfPsychology.TreatInsomnia, RecipeDefOfPsychology.TreatPyromania })
+    // registered mid-game). Every TreatmentRecipeDef, so compat ones (Common/Mods/VanillaTraitsExpanded) are included.
+    foreach (RecipeDef recipe in DefDatabase<TreatmentRecipeDef>.AllDefs.Cast<RecipeDef>().Prepend(RecipeDefOfPsychology.CureAnxiety))
     {
       pawnDef.recipes.AddDistinct(recipe);
       pawnDef.AllRecipes.AddDistinct(recipe);

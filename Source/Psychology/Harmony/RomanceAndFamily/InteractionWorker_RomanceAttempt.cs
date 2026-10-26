@@ -432,8 +432,18 @@ public static class InteractionWorker_RomanceAttempt_Interacted_Patches
     letterDef = null;
     lookTargets = null;
     string result = RomanceAttemptRouter.Resolve(type, initiator, recipient, extraSentencePacks);
-    PsychologyDebug.Log($"{initiator} attempted to romance {recipient}: {type} ({reason}), {result}");
+    if (PsychologyDebug.Enabled)
+    {
+      PsychologyDebug.Log($"{initiator} attempted to romance {recipient}: {type} ({reason}), {result}{AttractionBothWays(initiator, recipient)}");
+    }
     return false;
+  }
+
+  // For the debug log: each pawn's attraction to the other, with its parts.
+  private static string AttractionBothWays(Pawn initiator, Pawn recipient)
+  {
+    return $"; attraction {initiator.LabelShort} -> {recipient.LabelShort} {RomanceUtility.AttractionBreakdown(initiator, recipient)}, "
+      + $"{recipient.LabelShort} -> {initiator.LabelShort} {RomanceUtility.AttractionBreakdown(recipient, initiator)}";
   }
 
   [HarmonyPostfix]
@@ -442,7 +452,7 @@ public static class InteractionWorker_RomanceAttempt_Interacted_Patches
     if (__state != null)
     {
       bool accepted = extraSentencePacks.Contains(RulePackDefOf.Sentence_RomanceAttemptAccepted);
-      PsychologyDebug.Log($"{__state} -> {(accepted ? "now lovers" : "rejected")}");
+      PsychologyDebug.Log($"{__state} -> {(accepted ? "now lovers" : "rejected")}{AttractionBothWays(initiator, recipient)}");
     }
   }
 

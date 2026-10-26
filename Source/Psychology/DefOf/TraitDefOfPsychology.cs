@@ -28,4 +28,6 @@ public static class TraitDefOfPsychology
     public static TraitDef OpenMinded;
     public static TraitDef Chatty;
     public static TraitDef Sedentary;
+    public static TraitDef Matriarch;
+    public static TraitDef ChildFree;
 }

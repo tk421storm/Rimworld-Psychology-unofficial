@@ -15,6 +15,11 @@ namespace Psychology;
 ///     a sex drive below 0.1 counts as asexual. Both are further scaled by age (AdjustedSexDrive/AdjustedRomanticDrive).
 ///   - knownSexualities: Kinsey ratings of others this pawn has learned, e.g. by being turned down, so they stop
 ///     hitting on people who can't be interested in them.
+///   - familyDrive in [0, 1]: how much the pawn wants children, normal(0.55, 0.2) truncated to [0, 1]. This is the raw
+///     roll; personality and the Matriarch / Child-free traits shape it further (FamilyUtility.FamilyDrive). Used with
+///     or without Kinsey.
+///   - pregnancyApproachChoices: the pregnancy approach this pawn and each partner last chose for themselves
+///     (FamilyUtility.UpdatePregnancyApproach), to tell when the player has changed it since.
 /// When the Kinsey system is disabled, the vanilla Gay/Bisexual/Asexual traits are used instead.
 /// </summary>
 public class Pawn_SexualityTracker : IExposable
@@ -22,6 +27,11 @@ public class Pawn_SexualityTracker : IExposable
   public int kinseyRating;
   public float sexDrive;
   public float romanticDrive;
+  // -1: not rolled yet (saves from before family drive); rolled on load.
+  public float familyDrive = -1f;
+  public Dictionary<Pawn, PregnancyApproach> pregnancyApproachChoices = new Dictionary<Pawn, PregnancyApproach>();
+  private List<Pawn> pregnancyApproachChoicesKeys;
+  private List<PregnancyApproach> pregnancyApproachChoicesValues;
   public List<Pawn> knownSexualitiesWorkingKeys;
   public List<int> knownSexualitiesWorkingValues;
   public Dictionary<Pawn, int> knownSexualities = new Dictionary<Pawn, int>();
@@ -147,16 +157,25 @@ public class Pawn_SexualityTracker : IExposable
     Scribe_Values.Look(ref this.kinseyRating, "kinseyRating", 0, false);
     Scribe_Values.Look(ref this.sexDrive, "sexDrive", 1, false);
     Scribe_Values.Look(ref this.romanticDrive, "romanticDrive", 1, false);
+    Scribe_Values.Look(ref this.familyDrive, "familyDrive", -1f, false);
     // Remembered pawns can be discarded later (e.g. world pawn clean-up of old visitors), which leaves references that
     // don't resolve: forget them before saving, and don't log the ones older saves still have (they're just skipped).
     if (Scribe.mode == LoadSaveMode.Saving)
     {
       this.knownSexualities?.RemoveAll(kvp => kvp.Key == null || kvp.Key.Discarded);
+      this.pregnancyApproachChoices?.RemoveAll(kvp => kvp.Key == null || kvp.Key.Discarded);
     }
     Scribe_Collections.Look(ref this.knownSexualities, "knownSexualities", LookMode.Reference, LookMode.Value, ref this.knownSexualitiesWorkingKeys, ref this.knownSexualitiesWorkingValues, logNullErrors: false);
-    if (Scribe.mode == LoadSaveMode.PostLoadInit && this.knownSexualities == null)
+    Scribe_Collections.Look(ref this.pregnancyApproachChoices, "pregnancyApproachChoices", LookMode.Reference, LookMode.Value, ref this.pregnancyApproachChoicesKeys, ref this.pregnancyApproachChoicesValues, logNullErrors: false);
+    if (Scribe.mode == LoadSaveMode.PostLoadInit)
     {
-      this.knownSexualities = new Dictionary<Pawn, int>();
+      this.knownSexualities ??= new Dictionary<Pawn, int>();
+      this.pregnancyApproachChoices ??= new Dictionary<Pawn, PregnancyApproach>();
+      this.pregnancyApproachChoices.RemoveAll(kvp => kvp.Key == null);
+      if (this.familyDrive < 0f)
+      {
+        GenerateFamilyDrive();
+      }
     }
   }
 
@@ -170,6 +189,7 @@ public class Pawn_SexualityTracker : IExposable
     GenerateKinsey(overrideKinseyArray, inputSeed);
     GenerateSexDrive(inputSeed);
     GenerateRomanticDrive(inputSeed);
+    GenerateFamilyDrive(inputSeed);
   }
 
   public virtual void GenerateKinsey(float[] overrideKinseyArray, int inputSeed = 0)
@@ -185,6 +205,11 @@ public class Pawn_SexualityTracker : IExposable
   public virtual void GenerateRomanticDrive(int inputSeed = 0)
   {
     romanticDrive = RandRomanticDrive(inputSeed);
+  }
+
+  public virtual void GenerateFamilyDrive(int inputSeed = 0)
+  {
+    familyDrive = RandFamilyDrive(inputSeed);
   }
 
   /*
@@ -274,6 +299,25 @@ public class Pawn_SexualityTracker : IExposable
     return RandSexDrive(859456 + 3 * inputSeed);
   }
 
+  // Rejection-samples a seeded normal(0.55, 0.2) until it falls inside [0, 1]: unlike the other drives, spread across
+  // the whole range, as people differ a lot in how much they want children.
+  public virtual float RandFamilyDrive(int inputSeed = 0)
+  {
+    float drive = -1f;
+    int kill = 0;
+    int pawnSeed = PsycheHelper.PawnSeed(this.pawn);
+    int seed1 = 17 * pawnSeed + 5 * inputSeed + 271;
+    int seed2 = 19 * pawnSeed + 3 * inputSeed + 613;
+    while ((drive < 0f || 1f < drive) && kill < 500)
+    {
+      drive = PsycheHelper.RandGaussianSeeded(seed1, seed2, 0.55f, 0.2f);
+      seed1 += 43;
+      seed2 += 67;
+      kill++;
+    }
+    return Mathf.Clamp01(drive);
+  }
+
   // The *TraitReroll methods convert a vanilla orientation trait into the equivalent Kinsey values (see
   // PsycheHelper.CorrectTraitsForPawnKinseyEnabled).
   public void AsexualTraitReroll()
@@ -310,6 +354,8 @@ public class Pawn_SexualityTracker : IExposable
     this.kinseyRating = otherTracker.kinseyRating;
     this.sexDrive = otherTracker.sexDrive;
     this.romanticDrive = otherTracker.romanticDrive;
+    this.familyDrive = otherTracker.familyDrive;
+    this.pregnancyApproachChoices = new Dictionary<Pawn, PregnancyApproach>(otherTracker.pregnancyApproachChoices);
     if (otherTracker.knownSexualitiesWorkingKeys != null)
     {
       this.knownSexualitiesWorkingKeys = new List<Pawn>();

@@ -1,5 +1,6 @@
 using System.Collections.Generic;
 using System.Linq;
+using HarmonyLib;
 using RimWorld;
 using UnityEngine;
 using Verse;
@@ -83,6 +84,10 @@ namespace Psychology
           return ((InteractionWorker_DateBase)InteractionDefOfPsychology.AskOutOnDate.Worker).BlockReason(initiator, recipient);
         case RomanceAttemptType.Hookup:
         case RomanceAttemptType.Cheating:
+          if (OnVisitDuty(initiator) || OnVisitDuty(recipient))
+          {
+            return "visitor on a duty (trading, visiting, raiding or a quest)";
+          }
           if (RomanceUtility.CountMemoriesOf(initiator, recipient, ThoughtDefOfPsychology.RebuffedMyHookupAttempt) > 0)
           {
             return "they turned this pawn's hookup down recently";
@@ -100,6 +105,13 @@ namespace Psychology
         default:
           return null;
       }
+    }
+
+    // A non-colonist following one of vanilla's group orders (a trade caravan, a visit, a raid or siege, a quest's
+    // lodgers or shuttle). Guests of mods with their own lord jobs, like Hospitality's, can still hook up.
+    public static bool OnVisitDuty(Pawn pawn)
+    {
+      return !pawn.IsColonist && pawn.GetLord()?.LordJob?.GetType().Assembly == typeof(LordJob).Assembly;
     }
 
     // Selection-weight gate: false if a randomly picked attempt would be routed to something that can't happen now.
@@ -154,16 +166,22 @@ namespace Psychology
     /// "romance while socializing" setting, to become a look around for romance instead. A pawn looking has a need:
     /// single, or allowed another partner, or rolling their cheat chance (RomanticNeed). Candidates are the pawns
     /// close enough to interact with now, weighted by the romance attempt's selection weight (attraction, opinion,
-    /// cooldowns, the router's gates), and the one picked gets a romance attempt, routed as usual. Not on a date.
+    /// cooldowns, the router's gates), and the one picked gets a romance attempt, routed as usual. Not on a date, nor for
+    /// visitors on a vanilla group order (OnVisitDuty).
     /// True if an attempt was made, which stands in for that random interaction.
     /// </summary>
+    private static readonly System.Func<Pawn_InteractionsTracker, RandomSocialMode> currentSocialMode =
+      AccessTools.MethodDelegate<System.Func<Pawn_InteractionsTracker, RandomSocialMode>>(
+        AccessTools.PropertyGetter(typeof(Pawn_InteractionsTracker), "CurrentSocialMode"));
+
     public static bool TrySocialRomance(Pawn pawn)
     {
       if (PsychologySettings.socialRomanceChance <= 0f || !PsycheHelper.PsychologyEnabled(pawn))
       {
         return false;
       }
-      if (pawn.jobs?.curDriver?.DesiredSocialMode() != RandomSocialMode.SuperActive || pawn.GetLord()?.LordJob is LordJob_Date)
+      // Vanilla's social mode: the job's, capped by the lord duty, drafting and mental states.
+      if (currentSocialMode(pawn.interactions) != RandomSocialMode.SuperActive || pawn.GetLord()?.LordJob is LordJob_Date || OnVisitDuty(pawn))
       {
         return false;
       }

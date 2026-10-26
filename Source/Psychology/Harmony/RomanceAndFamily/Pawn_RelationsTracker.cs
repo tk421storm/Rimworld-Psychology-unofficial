@@ -25,6 +25,18 @@ public static class Notify_RescuedBy_BleedingHeartPatch
     }
 }
 
+// Biotech: whenever anything reads a pair's pregnancy approach (vanilla's pregnancy chance, the social tab, other
+// mods), the pawns' own approach is applied first (FamilyUtility.OnApproachRead): child-free pawns always avoid.
+[HarmonyPatch(typeof(Pawn_RelationsTracker), nameof(Pawn_RelationsTracker.GetPregnancyApproachForPartner))]
+public static class Pawn_RelationsTracker_PregnancyApproachPatch
+{
+    [HarmonyPostfix]
+    public static void PawnsChoose(Pawn partner, Pawn ___pawn, ref PregnancyApproach __result)
+    {
+        __result = FamilyUtility.OnApproachRead(___pawn, partner, __result);
+    }
+}
+
 // Replaces vanilla's attraction (SecondaryLovinChanceFactor) entirely; HarmonyInitialize also strips other mods' patches
 // from it. 0 if either pawn has no psyche. Otherwise the product of:
 //   - orientation: Kinsey/3 toward the same gender, 2 - Kinsey/3 toward the other (clamped to 0..1), or the vanilla
@@ -38,21 +50,28 @@ public static class Notify_RescuedBy_BleedingHeartPatch
 public static class Pawn_RelationsTracker_LovinChancePatch
 {
     [HarmonyPrefix]
-    public static bool SecondaryLovinChanceFactor(Pawn_RelationsTracker __instance, Pawn otherPawn, Pawn ___pawn, ref float __result)
+    public static bool SecondaryLovinChanceFactor(Pawn otherPawn, Pawn ___pawn, ref float __result)
     {
-        Pawn pawn = ___pawn;
+        __result = Attraction(___pawn, otherPawn, false, out _);
+        return false;
+    }
+
+    // The attraction above. With explain, breakdown lists its parts for the debug log ("orientation 1.00 x age 0.45 x
+    // looks 0.95 x drive 0.91"); it's skipped otherwise, as this runs very often.
+    public static float Attraction(Pawn pawn, Pawn otherPawn, bool explain, out string breakdown)
+    {
         if (pawn == otherPawn)
         {
-            __result = 0f;
-            return false;
+            breakdown = "self";
+            return 0f;
         }
 
         // Disable psyche for a species means no personality or sexuality generated
         // However, should we use the vanilla formula or just diable all dating?
         if (!PsycheHelper.PsychologyEnabled(pawn) || !PsycheHelper.PsychologyEnabled(otherPawn))
         {
-            __result = 0f; // Disable all dating for pawns with no psyche
-            return false;
+            breakdown = "no psyche"; // Disable all dating for pawns with no psyche
+            return 0f;
         }
 
         /* SEXUAL PREFERENCE FACTOR */
@@ -68,8 +87,8 @@ public static class Pawn_RelationsTracker_LovinChancePatch
         {
             if (pawn.story.traits.HasTrait(TraitDefOf.Asexual))
             {
-                __result = 0f;
-                return false;
+                breakdown = "asexual";
+                return 0f;
             }
             if (!pawn.story.traits.HasTrait(TraitDefOf.Bisexual))
             {
@@ -77,14 +96,14 @@ public static class Pawn_RelationsTracker_LovinChancePatch
                 {
                     if (otherPawn.gender != pawn.gender)
                     {
-                        __result = 0f;
-                        return false;
+                        breakdown = "orientation 0 (gay)";
+                        return 0f;
                     }
                 }
                 else if (otherPawn.gender == pawn.gender)
                 {
-                    __result = 0f;
-                    return false;
+                    breakdown = "orientation 0 (straight)";
+                    return 0f;
                 }
             }
         }
@@ -93,8 +112,8 @@ public static class Pawn_RelationsTracker_LovinChancePatch
         float ageFactor = CalculateAgeFactor(pawn, otherPawn);
         if (ageFactor == 0f)
         {
-            __result = 0f;
-            return false;
+            breakdown = !explain ? null : $"orientation {sexualityFactor:0.00} x age 0 (too young or under the age minimum)";
+            return 0f;
         }
 
         /* BEAUTY FACTOR */
@@ -126,8 +145,8 @@ public static class Pawn_RelationsTracker_LovinChancePatch
         float pawnDriveFactor = pawnRomanceDrive + 0.25f * pawnSexDrive;
 
         /*  MULTIPLY TO GET RESULT */
-        __result = sexualityFactor * ageFactor * beautyFactor * pawnDriveFactor;
-        return false;
+        breakdown = !explain ? null : $"orientation {sexualityFactor:0.00} x age {ageFactor:0.00} x looks {beautyFactor:0.00} x drive {pawnDriveFactor:0.00}";
+        return sexualityFactor * ageFactor * beautyFactor * pawnDriveFactor;
     }
 
     // Age part of attraction: species minimum dating ages (Lechers ignore some limits), a soft minimum of half your age

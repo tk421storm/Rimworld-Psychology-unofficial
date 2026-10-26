@@ -30,7 +30,7 @@ public class PsychologyMod : Mod
   public static int lastDrawFrame;
   public static bool initializeLastDrawFrame = true;
 
-  public override string SettingsCategory() => "Psychology";
+  public override string SettingsCategory() => "Psychology Resurrected";
 
   public PsychologyMod(ModContentPack content) : base(content)
   {

@@ -42,5 +42,13 @@
     <joyXpPerTick>0.004</joyXpPerTick>
     <joyKind>Lewd</joyKind>
   </JobDef>
+
+  <!-- Dates -->
+  <JobDef>
+    <defName>DateDance</defName>
+    <driverClass>Psychology.JobDriver_DateDance</driverClass>
+    <reportString>dancing with TargetA.</reportString>
+    <joyKind>Social</joyKind>
+  </JobDef>
   
 </Defs>

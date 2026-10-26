@@ -39,6 +39,13 @@
 	<RomanticDriveDescription0>Romantic drive</RomanticDriveDescription0>
 	<RomanticDriveDescription>{0} describes a person's overall desire for romantic relationships.</RomanticDriveDescription>
 	<AromanticDescription>This pawn has a very low romantic drive. They are unlikely to make romance attempts or accept marriage proposals, but may still take lovers.</AromanticDescription>
+	<FamilyDrive0>No desire for children</FamilyDrive0>
+	<FamilyDrive1>Low family drive</FamilyDrive1>
+	<FamilyDrive2>Medium family drive</FamilyDrive2>
+	<FamilyDrive3>High family drive</FamilyDrive3>
+	<FamilyDrive4>Extreme family drive</FamilyDrive4>
+	<FamilyDriveDescription0>Family drive</FamilyDriveDescription0>
+	<FamilyDriveDescription>{0} describes how much a person wants children of their own. It's shaped by their personality and by the Matriarch/Patriarch and Child-free traits. With Biotech, it sets their pregnancy approach: those with a low drive avoid pregnancy, and those with a high one try for a baby.</FamilyDriveDescription>
 
 	<!-- Display options -->
 	<OptionsText4>Word cloud</OptionsText4>
@@ -57,6 +64,7 @@
 	<PersonalityNodeWarning>You are editing the raw values of a pawn's personality. The actual stats will be adjusted by other factors.</PersonalityNodeWarning>
 	<SexDrive>Sex drive:</SexDrive>
 	<RomanticDrive>Romantic drive:</RomanticDrive>
+	<FamilyDrive>Family drive:</FamilyDrive>
 	<PsycheResetTooltip>Reset this pawn's psyche to default based on their unique HashCode ID.</PsycheResetTooltip>
 
 	<!-- Node descriptions -->

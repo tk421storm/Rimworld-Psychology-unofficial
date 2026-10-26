@@ -43,6 +43,8 @@
 	
 	<EnableDateLettersTitle>Send date letters</EnableDateLettersTitle>
 	<EnableDateLettersTooltip>Turn this off to disable receiving letters when your colonists plan a date together.</EnableDateLettersTooltip>
+	<PawnsChoosePregnancyApproachTitle>Pawns choose their pregnancy approach</PawnsChoosePregnancyApproachTitle>
+	<PawnsChoosePregnancyApproachTooltip>With Biotech, each pawn has their own pregnancy approach, the same with anyone, from how much they want children (their family drive, lowered for each child they're still raising, half as much for a matriarch or patriarch): avoid pregnancy, leave it to chance, or try for a baby. Each pair gets the more careful of the two, so a pawn who avoids pregnancy avoids it with every partner, and a pair only tries for a baby if both want to. This covers lovers, hookups and other mods' pairings. If you change a pair's approach in the social tab, they keep your choice. Child-free pawns always avoid pregnancy, even with this off.</PawnsChoosePregnancyApproachTooltip>
 	
 <!--	<BenchmarkingTitle>Enable performance testing</BenchmarkingTitle>
 	<BenchmarkingTooltip>Turn this on to receive occasional performance reports in the console relating to Psychology systems. You can copy and paste these reports to assist in optimization of the mod. WARNING: Performance testing comes with its own performance impact.\n\nToggling this will restart your game.</BenchmarkingTooltip>-->
@@ -54,7 +56,7 @@
 	<RomanceChanceMultiplierTooltip>Romance chance will be multiplied by this value. Setting to 0 should eliminate new romances entirely.</RomanceChanceMultiplierTooltip>
 
 	<RomanceOpinionThresholdTitle>Minimum romance opinion</RomanceOpinionThresholdTitle>
-	<RomanceOpinionThresholdTooltip>Minimum opinion one colonist must have of another in order to be romanced.</RomanceOpinionThresholdTooltip>
+	<RomanceOpinionThresholdTooltip>Minimum opinion a colonist must have of someone they're attracted to before asking them out on a date or making a romance attempt. Kept low by default so pawns who barely know each other can ask; attraction matters far more than opinion.</RomanceOpinionThresholdTooltip>
 
 
 
@@ -115,6 +117,8 @@
 
 	<CourtshipChanceTitle>Courtship chance (x)</CourtshipChanceTitle>
 	<CourtshipChanceTooltip>How often single pawns (and pawns willing to cheat) ask someone they're attracted to out on a date. The chance also rises with attraction, opinion, romantic drive and confidence, and with earlier good dates. Each date leaves a good or bad date memory; good dates make a romance attempt more likely. Set to 0 to turn courtship off. Couples' date nights aren't affected.</CourtshipChanceTooltip>
+	<SecondDateChanceTitle>Second date chance (%)</SecondDateChanceTitle>
+	<SecondDateChanceTooltip>Once a day, pawns whose last courtship date went well for both of them may ask each other out again, wherever they are on the map. This is the daily chance for a pair whose date went as well as it could; it's lower after a merely good date and higher after several good dates. The answer is rolled as for any date request. In addition to asking in person; set to 0 to turn it off.</SecondDateChanceTooltip>
 	<SocialRomanceChanceTitle>Romance while socializing (%)</SocialRomanceChanceTitle>
 	<SocialRomanceChanceTooltip>While relaxing socially (at a table or campfire), at a party or hangout, dancing or playing billiards, pawns chat much more often than usual. This is the chance that one of those chats becomes a look around for romance instead. Only pawns who are single, allowed another partner, or willing to cheat on theirs this time (see the cheating chance) look. They pick someone close by they're attracted to and like enough, favouring the most attractive, and make a romance attempt: a date night for partners, asking out, a hookup, or an affair if it would be cheating. Not during dates. Set to 0 to turn it off.</SocialRomanceChanceTooltip>
 	<DateOpinionGoodTitle>Good date opinion</DateOpinionGoodTitle>

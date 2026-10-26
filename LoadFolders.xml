@@ -21,6 +21,7 @@
 		<li IfModActive="VanillaExpanded.VPsycastsE">1.6/Mods/VanillaPsycastsExpanded</li>
 		<li IfModActive="EdB.PrepareCarefully">1.6/Mods/EdBPrepareCarefully</li>
 		<li IfModActive="LovelyDovey.Sex.WithEuterpe">Common/Mods/Intimacy</li>
+		<li IfModActive="VanillaExpanded.VanillaTraitsExpanded">Common/Mods/VanillaTraitsExpanded</li>
 	</v1.6>
 	<v1.7>
 		<li>Common</li>
@@ -32,5 +33,6 @@
 		<li IfModActive="tachyonite.pawnmorpherpublic">1.7/Mods/Pawnmorpher</li>
 		<li IfModActive="VanillaExpanded.VPsycastsE">1.7/Mods/VanillaPsycastsExpanded</li>
 		<li IfModActive="LovelyDovey.Sex.WithEuterpe">Common/Mods/Intimacy</li>
+		<li IfModActive="VanillaExpanded.VanillaTraitsExpanded">Common/Mods/VanillaTraitsExpanded</li>
 	</v1.7>
 </loadFolders>

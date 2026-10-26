@@ -7,7 +7,7 @@ using UnityEngine;
 namespace Psychology
 {
     // Courtship: asking out someone who isn't a partner (RomanceUtility.GetRomanticIntent == Courtship). Weight: the base
-    // courtship setting x attraction x opinion x romantic drive x confidence x (1 + 0.5 per good date with them) x the
+    // courtship setting x attraction x opinion (a mild factor: pawns may barely know each other) x romantic drive x confidence x (1 + 0.5 per good date with them) x the
     // cheat chance if the asker has a partner. They don't ask again while "turned down my date" lasts. A yes plans a date
     // through the same scheduling as date night (RendezvousUtility.PlanDate); how the date went is decided in LordJob_Date.
     public class InteractionWorker_AskOutOnDate : InteractionWorker_DateBase
@@ -35,7 +35,8 @@ namespace Psychology
         {
             CompPsychology comp = PsycheHelper.Comp(initiator);
             float attraction = Mathf.InverseLerp(RomanceUtility.MinAttraction, 1f, initiator.relations.SecondaryRomanceChanceFactor(recipient));
-            float opinion = 0.2f + 0.8f * Mathf.InverseLerp(PsychologySettings.romanceOpinionThreshold, 100f, initiator.relations.OpinionOf(recipient));
+            // Attraction leads; opinion only nudges (0.6 at the minimum romance opinion, 1 at 100).
+            float opinion = 0.6f + 0.4f * Mathf.InverseLerp(PsychologySettings.romanceOpinionThreshold, 100f, initiator.relations.OpinionOf(recipient));
             float drive = comp.Sexuality.AdjustedRomanticDrive;
             float confidence = 0.5f + comp.Psyche.GetPersonalityRating(PersonalityNodeDefOf.Confident);
             float history = 1f + 0.5f * RomanceUtility.GoodDateCount(initiator, recipient);
@@ -90,17 +91,21 @@ namespace Psychology
                 return 0f;
             }
             float romanceFactor = recipient.relations.SecondaryRomanceChanceFactor(initiator);
+            string rawAttraction = RomanceUtility.AttractionBreakdown(recipient, initiator);
             if (romanceFactor < RomanceUtility.MinAttraction)
             {
-                details = $"not attracted ({romanceFactor:0.00})";
+                details = $"not attracted ({rawAttraction})";
                 return 0f;
             }
             float attraction = 0.3f + 0.7f * Mathf.InverseLerp(RomanceUtility.MinAttraction, 1f, romanceFactor);
-            float opinion = 0.4f + 0.6f * Mathf.InverseLerp(-20f, 80f, recipient.relations.OpinionOf(initiator));
+            // Strangers (opinion ~0) are open to a first date: 0.8 at 0, rising to 1 at +40, falling to 0.3 at -30
+            float opinionOf = recipient.relations.OpinionOf(initiator);
+            float opinion = opinionOf >= 0f ? Mathf.Lerp(0.8f, 1f, Mathf.InverseLerp(0f, 40f, opinionOf))
+                : Mathf.Lerp(0.3f, 0.8f, Mathf.InverseLerp(-30f, 0f, opinionOf));
             float compatibility = 1f + 0.5f * RomanceUtility.Compatibility(recipient, initiator);
             float history = 1f + 0.25f * RomanceUtility.GoodDateCount(recipient, initiator);
             float cheat = RomanceUtility.CheatFactor(recipient, initiator, out Pawn cheatOn);
-            details = $"attraction {attraction:0.00} x opinion {opinion:0.00} x compatibility {compatibility:0.00} x history {history:0.00} x cheat {cheat:0.00}{(cheatOn != null ? $" (on {cheatOn})" : "")}";
+            details = $"attraction {attraction:0.00} ({rawAttraction}) x opinion {opinion:0.00} x compatibility {compatibility:0.00} x history {history:0.00} x cheat {cheat:0.00}{(cheatOn != null ? $" (on {cheatOn})" : "")}";
             return Mathf.Clamp01(attraction * opinion * compatibility * history * cheat);
         }
     }

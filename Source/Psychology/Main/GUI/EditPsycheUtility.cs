@@ -22,6 +22,7 @@ public static class EditPsycheUtility
   public static Vector2 KinseySize;
   public static Vector2 SexDriveSize;
   public static Vector2 RomDriveSize;
+  public static Vector2 FamDriveSize;
   public static float SexualityWidth;
   public static float SexualityHeight;
   public static float NodeWidth;
@@ -37,6 +38,7 @@ public static class EditPsycheUtility
   public static string KinseyRatingText = "KinseyRating".Translate();
   public static string SexDriveText = "SexDrive".Translate();
   public static string RomDriveText = "RomanticDrive".Translate();
+  public static string FamDriveText = "FamilyDrive".Translate();
   public static string SaveButtonText = "SaveButton".Translate();
   public static string ResetButtonText = "ResetButton".Translate();
   public static string RandomButtonText = "Random".Translate();
@@ -51,14 +53,13 @@ public static class EditPsycheUtility
   static EditPsycheUtility()
   {
 
-    if (PsychologySettings.enableKinsey)
-    {
-      KinseySize = ScalingVector * Text.CalcSize(KinseyRatingText);
-      SexDriveSize = ScalingVector * Text.CalcSize(SexDriveText);
-      RomDriveSize = ScalingVector * Text.CalcSize(RomDriveText);
-      SexualityWidth = Mathf.Max(KinseySize.x, SexDriveSize.x, RomDriveSize.x);
-      SexualityHeight = Mathf.Max(KinseySize.y, SexDriveSize.y, RomDriveSize.y);
-    }
+    // Family drive's row is shown with or without Kinsey, so the sizes are always needed.
+    KinseySize = ScalingVector * Text.CalcSize(KinseyRatingText);
+    SexDriveSize = ScalingVector * Text.CalcSize(SexDriveText);
+    RomDriveSize = ScalingVector * Text.CalcSize(RomDriveText);
+    FamDriveSize = ScalingVector * Text.CalcSize(FamDriveText);
+    SexualityWidth = Mathf.Max(KinseySize.x, SexDriveSize.x, RomDriveSize.x, FamDriveSize.x);
+    SexualityHeight = Mathf.Max(KinseySize.y, SexDriveSize.y, RomDriveSize.y, FamDriveSize.y);
 
     Descriptions.Clear();
     SortedLabelNodeDefList.Clear();
@@ -126,7 +127,7 @@ public static class EditPsycheUtility
     float highlightShift = 0.063f;
 
     totalRect.width = CalculateEditWidth(pawn);
-    ScrollHeight = totalRect.height - (BoundaryPadding + TitleHeight + BoundaryPadding + 3f * yCompression * SexualityHeight + 2f * BoundaryPadding + 0f + 2f * BoundaryPadding + ButtonHeight + BoundaryPadding);
+    ScrollHeight = totalRect.height - (BoundaryPadding + TitleHeight + BoundaryPadding + 4f * yCompression * SexualityHeight + 2f * BoundaryPadding + 0f + 2f * BoundaryPadding + ButtonHeight + BoundaryPadding);
 
     GUI.BeginGroup(totalRect);
     totalRect.position = Vector2.zero;
@@ -216,7 +217,29 @@ public static class EditPsycheUtility
       Rect warningRect = new Rect(mainRect.x, mainRect.y, mainRect.width, 3f * yCompression * SexualityHeight);
       Widgets.Label(warningRect, "SexualityDisabledWarning".Translate().Colorize(Color.red));
     }
-    mainRect.yMin += 3f * yCompression * SexualityHeight + BoundaryPadding;
+    mainRect.yMin += 3f * yCompression * SexualityHeight;
+
+    // Family drive, with or without Kinsey (laid out like the rows above).
+    Rect famLabelRect = new Rect(mainRect.x, mainRect.y, SexualityWidth, SexualityHeight);
+    Rect famSliderRect = new Rect(famLabelRect.xMax + BoundaryPadding, famLabelRect.y + SliderShiftDown, SliderWidth, SexualityHeight);
+    Rect famTooltipRect = famLabelRect;
+    famTooltipRect.xMin -= HighlightPadding;
+    famTooltipRect.height *= yCompression;
+    famTooltipRect.y += highlightShift * SexualityHeight;
+    Rect famHighlightRect = famTooltipRect;
+    famHighlightRect.xMax = famSliderRect.xMax + HighlightPadding;
+    Text.Anchor = TextAnchor.MiddleLeft;
+    Widgets.Label(famLabelRect, FamDriveText);
+    Text.Anchor = oldAnchor;
+    float newFamDrive = Widgets.HorizontalSlider(famSliderRect, st.familyDrive, 0f, 1f, true);
+    changed |= newFamDrive != st.familyDrive;
+    st.familyDrive = newFamDrive;
+    TooltipHandler.TipRegion(famTooltipRect, delegate
+    {
+      return ((string)"FamilyDriveDescription".Translate()).ReplaceFirst("{0}", "FamilyDriveDescription0".Translate().Colorize(UIAssets.TitleColor));
+    }, 14927);
+    Widgets.DrawHighlightIfMouseover(famHighlightRect);
+    mainRect.yMin += yCompression * SexualityHeight + BoundaryPadding;
 
     UIAssets.DrawLineHorizontal(mainRect.x - HighlightPadding, mainRect.y, mainRect.width + 2f * HighlightPadding, UIAssets.ModEntryLineColor);
     mainRect.yMin += BoundaryPadding;
@@ -269,6 +292,10 @@ public static class EditPsycheUtility
       {
         st.GenerateSexuality();
       }
+      else
+      {
+        st.GenerateFamilyDrive();
+      }
     }
     TooltipHandler.TipRegion(resetRect, delegate
     {
@@ -282,6 +309,10 @@ public static class EditPsycheUtility
       if (PsychologySettings.enableKinsey)
       {
         st.GenerateSexuality(Mathf.CeilToInt(1e+7f * Rand.Value));
+      }
+      else
+      {
+        st.GenerateFamilyDrive(Mathf.CeilToInt(1e+7f * Rand.Value));
       }
     }
     // Only rebuild the psyche card when something was actually edited (this used to force it on every GUI pass).

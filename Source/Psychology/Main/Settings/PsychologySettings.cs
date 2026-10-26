@@ -75,6 +75,10 @@ public class PsychologySettings : ModSettings
   public const bool enableDateLettersDefault = true;
   public static bool enableDateLetters = true;
 
+  // Couples pick their own pregnancy approach from their family drives (FamilyUtility). Child-free pawns always avoid.
+  public const bool pawnsChoosePregnancyApproachDefault = true;
+  public static bool pawnsChoosePregnancyApproach = true;
+
   public const float mentalBreakAnxietyChanceDefault = 0.05f;
   public static float mentalBreakAnxietyChance = 0.05f;
 
@@ -110,8 +114,8 @@ public class PsychologySettings : ModSettings
   public const float romanceChanceMultiplierDefault = 1f; // v1.1
   public static float romanceChanceMultiplier = 1f; // v1.1
 
-  public const float romanceOpinionThresholdDefault = 5f; // v1.1
-  public static float romanceOpinionThreshold = 5f; // v1.1
+  public const float romanceOpinionThresholdDefault = -5f; // also gates courtship; low so pawns who barely know each other can ask
+  public static float romanceOpinionThreshold = -5f;
 
   // Divides the time between a couple's lovin (2 = twice as often). Slider range lovinFrequencyMin-lovinFrequencyMax.
   public const float lovinFrequencyDefault = 1f;
@@ -127,6 +131,11 @@ public class PsychologySettings : ModSettings
   public const float courtshipChanceDefault = 1f;
   public static float courtshipChance = 1f;
   public const float courtshipChanceMax = 5f;
+
+  // Percent daily chance, at best, that a pair whose last courtship date went well for both asks for another wherever
+  // they are on the map; see RomanceUtility.TrySecondDates. Slider 0-100; 0 turns it off.
+  public const float secondDateChanceDefault = 33f;
+  public static float secondDateChance = 33f;
 
   // Percent chance that a random interaction during a super-active social job (relaxing socially, parties, dancing,
   // billiards) becomes a look around for romance; see RomanceAttemptRouter.TrySocialRomance. Slider 0-100.
@@ -195,6 +204,7 @@ public class PsychologySettings : ModSettings
     ScribeValueAndAddToNameList(nameof(enableIndividuality));
     ScribeValueAndAddToNameList(nameof(printDebugInfo));
     ScribeValueAndAddToNameList(nameof(enableDateLetters));
+    ScribeValueAndAddToNameList(nameof(pawnsChoosePregnancyApproach));
     ScribeValueAndAddToNameList(nameof(mentalBreakAnxietyChance));
     ScribeValueAndAddToNameList(nameof(imprisonedDebuff));
     ScribeValueAndAddToNameList(nameof(adjustRapportByCompatibility));
@@ -209,6 +219,7 @@ public class PsychologySettings : ModSettings
     ScribeValueAndAddToNameList(nameof(lovinFrequency));
     ScribeValueAndAddToNameList(nameof(cheatChance));
     ScribeValueAndAddToNameList(nameof(courtshipChance));
+    ScribeValueAndAddToNameList(nameof(secondDateChance));
     ScribeValueAndAddToNameList(nameof(socialRomanceChance));
     ScribeValueAndAddToNameList(nameof(dateOpinionGood));
     ScribeValueAndAddToNameList(nameof(dateOpinionBad));
@@ -240,6 +251,7 @@ public class PsychologySettings : ModSettings
     arrestBaseChance = Mathf.Clamp(arrestBaseChance, 0f, arrestBaseChanceMax);
     cheatChance = Mathf.Clamp(cheatChance, 0f, 100f);
     courtshipChance = Mathf.Clamp(courtshipChance, 0f, courtshipChanceMax);
+    secondDateChance = Mathf.Clamp(secondDateChance, 0f, 100f);
     socialRomanceChance = Mathf.Clamp(socialRomanceChance, 0f, 100f);
     dateOpinionGood = Mathf.Clamp(dateOpinionGood, 0f, dateOpinionMax);
     dateOpinionBad = Mathf.Clamp(dateOpinionBad, -dateOpinionMax, 0f);

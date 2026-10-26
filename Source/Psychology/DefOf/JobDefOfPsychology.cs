@@ -12,6 +12,8 @@ namespace Psychology
         // Hookups
         public static JobDef DoLovinCasual;
         public static JobDef LeadHookup;
+        // Dates
+        public static JobDef DateDance;
 
     }
 }

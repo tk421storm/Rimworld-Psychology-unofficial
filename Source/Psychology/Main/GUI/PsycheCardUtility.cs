@@ -48,6 +48,7 @@ public class PsycheCardUtility
   private static string KinseyTextCached = "";
   private static int SexDriveIntCached;
   private static int RomDriveIntCached;
+  private static int FamDriveIntCached;
 
   // Big Five axis labels and their sizes (depend only on language and font size), built on first use.
   private static string[] BigFiveLabels;
@@ -82,6 +83,10 @@ public class PsycheCardUtility
   public static List<Vector2> RomDriveSize = new List<Vector2>();
   public static float RomDriveWidth;
   public static float RomDriveHeight;
+  public static List<string> FamDriveText = new List<string>();
+  public static List<Vector2> FamDriveSize = new List<Vector2>();
+  public static float FamDriveWidth;
+  public static float FamDriveHeight;
 
   public static List<string> OptionsText = new List<string>();
   public static List<Vector2> OptionsSize = new List<Vector2>();
@@ -167,18 +172,22 @@ public class PsycheCardUtility
     style.fontSize = SexualityFontSize;
     // Kinsey rating text
     KinseyTextSize = Text.CalcSize("KinseyRating".Translate() + " 0") * calcSizeScalingVector;
-    // Sex and romantic drive text
+    // Sex, romantic and family drive text
     for (int i = 0; i < 5; i++)
     {
       SexDriveText.Add(("SexDrive" + i.ToString()).Translate());
       RomDriveText.Add(("RomanticDrive" + i.ToString()).Translate());
+      FamDriveText.Add(("FamilyDrive" + i.ToString()).Translate());
       SexDriveSize.Add(Text.CalcSize(SexDriveText[i]) * calcSizeScalingVector);
       RomDriveSize.Add(Text.CalcSize(RomDriveText[i]) * calcSizeScalingVector);
+      FamDriveSize.Add(Text.CalcSize(FamDriveText[i]) * calcSizeScalingVector);
     }
     SexDriveWidth = SexDriveSize.Max(s => s.x);
     SexDriveHeight = SexDriveSize.Max(s => s.y);
     RomDriveWidth = RomDriveSize.Max(s => s.x);
     RomDriveHeight = RomDriveSize.Max(s => s.y);
+    FamDriveWidth = FamDriveSize.Max(s => s.x);
+    FamDriveHeight = FamDriveSize.Max(s => s.y);
 
     style.fontSize = OptionsFontSize;
     // Personality options text
@@ -205,7 +214,7 @@ public class PsycheCardUtility
     style.fontSize = FiveFactorTitleFontSize;
     FiveFactorSize = Text.CalcSize(FiveFactorText) * calcSizeScalingVector;
 
-    SexualityWidth = Mathf.Max(KinseyTextSize.x, SexDriveWidth, RomDriveWidth, OptionsWidth, UseColorsWidth, AlphabeticalWidth, UseAntonymsWidth, FiveFactorSize.x);
+    SexualityWidth = Mathf.Max(KinseyTextSize.x, SexDriveWidth, RomDriveWidth, FamDriveWidth, OptionsWidth, UseColorsWidth, AlphabeticalWidth, UseAntonymsWidth, FiveFactorSize.x);
     KinseyWidth = SexualityWidth + BoundaryPadding - 27f;
 
     for (int c = 0; c < CreativeLetters.Count(); c++)
@@ -235,7 +244,7 @@ public class PsycheCardUtility
     float personalityRectWidth = BoundaryPadding + TraitListPadding + CategoryWidth + TraitListPadding + GenUI.ScrollBarWidth + NodeWidth + TraitListPadding + BoundaryPadding;
     float forbiddenRectWidth = BoundaryPadding + HighlightPadding + SexualityWidth + BoundaryPadding;
     float totalRectWidth = personalityRectWidth + forbiddenRectWidth;
-    float forbiddenRectHeight = BoundaryPadding + KinseyTextSize.y + RowTopPadding + SexDriveHeight + RowTopPadding + RomDriveHeight + BoundaryPadding + OptionsHeight + BoundaryPadding + UseColorsHeight + BoundaryPadding;
+    float forbiddenRectHeight = BoundaryPadding + KinseyTextSize.y + RowTopPadding + SexDriveHeight + RowTopPadding + RomDriveHeight + RowTopPadding + FamDriveHeight + BoundaryPadding + OptionsHeight + BoundaryPadding + UseColorsHeight + BoundaryPadding;
     HighlightRadius = 0.506f * forbiddenRectWidth;
     float totalRectHeight = forbiddenRectHeight + AlphabeticalHeight + BoundaryPadding + UseAntonymsHeight + BoundaryPadding + FiveFactorSize.y + BoundaryPadding + 2f * HighlightRadius + BoundaryPadding;// + FiveFactorSize.y + BoundaryPadding;
     PsycheRect = new Rect(0f, 0f, totalRectWidth, totalRectHeight);
@@ -260,9 +269,10 @@ public class PsycheCardUtility
     Rect kinseyRect = new Rect(totalRect.xMax - SexualityWidth - BoundaryPadding, totalRect.y + BoundaryPadding, kWidth, KinseyTextSize.y);
     Rect sexDriveRect = new Rect(kinseyRect.x, kinseyRect.yMax + RowTopPadding, SexualityWidth, SexDriveHeight);
     Rect romDriveRect = new Rect(kinseyRect.x, sexDriveRect.yMax + RowTopPadding, SexualityWidth, RomDriveHeight);
+    Rect famDriveRect = new Rect(kinseyRect.x, romDriveRect.yMax + RowTopPadding, SexualityWidth, FamDriveHeight);
 
     // Calculate rectanges for display options
-    Rect optionsRect = new Rect(kinseyRect.x - HighlightPadding, romDriveRect.yMax + BoundaryPadding, OptionsWidth, OptionsHeight);
+    Rect optionsRect = new Rect(kinseyRect.x - HighlightPadding, famDriveRect.yMax + BoundaryPadding, OptionsWidth, OptionsHeight);
     Rect useColorsRect = new Rect(kinseyRect.x, optionsRect.yMax + BoundaryPadding, UseColorsWidth, UseColorsHeight);
     Rect alphabeticalRect = new Rect(kinseyRect.x, useColorsRect.yMax + BoundaryPadding, AlphabeticalWidth, AlphabeticalHeight);
     Rect useAntonymsRect = new Rect(kinseyRect.x, alphabeticalRect.yMax + BoundaryPadding, UseAntonymsWidth, UseAntonymsHeight);
@@ -344,6 +354,27 @@ public class PsycheCardUtility
       Widgets.Label(disabledRect, "SexualityDisabledWarning".Translate());
       GUI.color = Color.white;
     }
+
+    // Family drive: shown with or without Kinsey (FamilyUtility uses it either way).
+    int famDriveInt = FamDriveIntCached;
+    Text.Anchor = TextAnchor.MiddleLeft;
+    style.fontSize = SexualityFontSize;
+    Widgets.Label(famDriveRect, FamDriveText[famDriveInt]);
+    style.fontSize = OldSmallFontSize;
+    Text.Anchor = OldAnchor;
+    famDriveRect.xMin -= HighlightPadding;
+    Widgets.DrawHighlightIfMouseover(famDriveRect);
+    TooltipHandler.TipRegion(famDriveRect, delegate
+    {
+      string famString = ((string)"FamilyDriveDescription".Translate()).ReplaceFirst("{0}", "FamilyDriveDescription0".Translate().Colorize(UIAssets.TitleColor));
+      if (ShowNumbersBool)
+      {
+        string rawRating = PsycheHelper.Comp(pawn).Sexuality.familyDrive.ToString(RatingFormat, CultureInfo.InvariantCulture).Colorize(UIAssets.RatingColor);
+        string adjRating = FamilyUtility.FamilyDrive(pawn).ToString(RatingFormat, CultureInfo.InvariantCulture).Colorize(UIAssets.RatingColor);
+        famString += "\n\nRaw: " + rawRating + "  Adjusted: " + adjRating;
+      }
+      return famString;
+    }, 89143);
 
     style.fontSize = OptionsFontSize;
     if (Widgets.ButtonText(optionsRect, OptionsText[PsychologySettings.displayOption], drawBackground: true, doMouseoverSound: true, true))
@@ -902,12 +933,19 @@ public class PsycheCardUtility
     KinseyTextCached = "KinseyRating".Translate() + " " + comp.Sexuality.kinseyRating;
     SexDriveIntCached = DriveCategory(comp.Sexuality.AdjustedSexDrive);
     RomDriveIntCached = DriveCategory(comp.Sexuality.AdjustedRomanticDrive);
+    FamDriveIntCached = FamilyDriveCategory(FamilyUtility.FamilyDrive(pawn));
   }
 
   // Index into SexDriveText / RomDriveText.
   private static int DriveCategory(float drive)
   {
     return (drive > 1.30f) ? 4 : (drive > 0.90f) ? 3 : (drive > 0.50f) ? 2 : (drive > 0.10f) ? 1 : 0;
+  }
+
+  // Index into FamDriveText. Family drive isn't age-scaled, so it stays within 0-1.
+  private static int FamilyDriveCategory(float drive)
+  {
+    return (drive >= 0.85f) ? 4 : (drive >= 0.65f) ? 3 : (drive >= 0.35f) ? 2 : (drive >= 0.15f) ? 1 : 0;
   }
 
   // Serialise / restore a pawn's psyche as a "key:value|..." string (meant for copy/paste between editors). Not called
@@ -927,6 +965,7 @@ public class PsycheCardUtility
     psychologyDict[nameof(sexuality.kinseyRating)] = sexuality.kinseyRating;
     psychologyDict[nameof(sexuality.sexDrive)] = sexuality.sexDrive;
     psychologyDict[nameof(sexuality.romanticDrive)] = sexuality.romanticDrive;
+    psychologyDict[nameof(sexuality.familyDrive)] = sexuality.familyDrive;
 
     foreach (PersonalityNode node in comp.Psyche.PersonalityNodes)
     {
@@ -978,6 +1017,10 @@ public class PsycheCardUtility
     if (psychologyDict.TryGetValue(nameof(sexuality.romanticDrive), out parsedFloat))
     {
       sexuality.romanticDrive = parsedFloat;
+    }
+    if (psychologyDict.TryGetValue(nameof(sexuality.familyDrive), out parsedFloat))
+    {
+      sexuality.familyDrive = parsedFloat;
     }
     foreach (PersonalityNode node in psyche.PersonalityNodes)
     {

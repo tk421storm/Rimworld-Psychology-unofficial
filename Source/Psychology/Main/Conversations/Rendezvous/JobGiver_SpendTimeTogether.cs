@@ -10,10 +10,11 @@ using System.Reflection;
 namespace Psychology
 {
     // Job giver for the HangOut duty (dates and hang-outs). Lovers may go lie down together (leading to lovin); otherwise
-    // the pair picks a joy activity every 1-3 hours, stays within talking distance and wanders or idles near each other.
-    public class JobGiver_SpendTimeTogether : JobGiver_GetJoy
+    // the pair does activities together one after another (DateActivityDef: a game, a walk, reading side by side...).
+    // When there's nothing they can do together, they stay within talking distance and wander or idle near each other.
+    public class JobGiver_SpendTimeTogether : ThinkNode_JobGiver
     {
-        
+
         protected override Job TryGiveJob(Pawn pawn)
         {
             LordToil_HangOut toil = pawn.GetLord()?.CurLordToil as LordToil_HangOut;
@@ -22,39 +23,26 @@ namespace Psychology
             Pawn friend = (pawn == toil.friends[0] ? toil.friends[1] : toil.friends[0]);
             if (friend == null || pawn.needs?.joy == null)
                 return null;
+            /* Vanilla re-runs the think tree now and then while a job is running (CheckForJobOverride); returning the
+               current job tells it to carry on, so an activity in progress isn't cut short. */
+            if (toil.activity != null && !toil.activity.Ended && toil.activity.IsDoing(pawn))
+                return pawn.CurJob;
             /* If they are partners, possibly send them to lay down together so they'll do lovin'. */
             if (LovePartnerRelationUtility.LovePartnerRelationExists(pawn, friend) && pawn.ownership.OwnedBed != null && !pawn.GetPosture().Laying() && (pawn.IsHashIntervalTick(GenDate.TicksPerHour) || friend.IsHashIntervalTick(GenDate.TicksPerHour)))
             {
                 return new Job(JobDefOf.LayDown, pawn.ownership.OwnedBed, GenDate.TicksPerHour);
             }
-            /* If they have no joy activity assigned, or they've been doing it for 1-3 hours, give them a new one. */
-            if (toil.hangOut == null || toil.ticksToNextJoy < Find.TickManager.TicksGame)
+            /* Their activity together: the next step of the current one, or (if it's over) start a new one; a meal first
+               if either is hungry (DateActivityWorker_ShareMeal). */
+            DateActivity activity = toil.CurrentActivity(pawn);
+            Job job = activity?.NextJob(pawn);
+            if (job == null && activity != null)
             {
-                toil.hangOut = base.TryGiveJob(pawn);
-                toil.ticksToNextJoy = Find.TickManager.TicksGame + Rand.RangeInclusive(GenDate.TicksPerHour, GenDate.TicksPerHour * 3);
+                job = toil.CurrentActivity(pawn)?.NextJob(pawn);
             }
-            /* If they need joy, go do the joy activity.*/
-            if (toil.hangOut != null && (friend.needs.food == null ? true : friend.needs.food.CurLevel > 0.33f) && pawn.needs.joy.CurLevel < 0.8f && Math.Abs(toil.tickSinceLastJobGiven - Find.TickManager.TicksGame) > 1)
+            if (job != null)
             {
-                /* Sometimes the joy activity can't be reserved because it's for one person only. */
-                Job job = new Job(toil.hangOut.def);
-                job.targetA = toil.hangOut.targetA;
-                job.targetB = toil.hangOut.targetB;
-                job.targetC = toil.hangOut.targetC;
-                job.targetQueueA = toil.hangOut.targetQueueA;
-                job.targetQueueB = toil.hangOut.targetQueueB;
-                job.count = toil.hangOut.count;
-                job.countQueue = toil.hangOut.countQueue;
-                job.expiryInterval = toil.hangOut.expiryInterval;
-                job.locomotionUrgency = toil.hangOut.locomotionUrgency;
-                if (job.TryMakePreToilReservations(pawn, false))
-                {
-                    /* We'll just straight-up prevent this JobGiver from giving 10 jobs in one tick. */
-                    toil.tickSinceLastJobGiven = Find.TickManager.TicksGame;
-                    return job;
-                }
-                else
-                    pawn.ClearAllReservations(false);
+                return job;
             }
             if (((pawn.Position - friend.Position).LengthHorizontalSquared >= 54 || !GenSight.LineOfSight(pawn.Position, friend.Position, pawn.Map, true)))
             { /* Make sure they are close to each other if they're not actively doing a joy activity. */

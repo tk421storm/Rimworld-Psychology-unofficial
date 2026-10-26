@@ -273,5 +273,37 @@
       <li>Social</li>
     </requiredWorkTags>
   </TraitDef>
+
+  <!-- Family traits: both strongly set the pawn's family drive (Psychology.FamilyUtility), which decides the couple's
+       pregnancy approach with Biotech. -->
+  <TraitDef>
+    <defName>Matriarch</defName>
+    <commonality>0.5</commonality>
+    <degreeDatas>
+      <li>
+        <label>patriarch</label>
+        <labelMale>patriarch</labelMale>
+        <labelFemale>matriarch</labelFemale>
+        <description>[PAWN_nameDef] dreams of a big family and is happiest surrounded by [PAWN_possessive] children. Every child makes [PAWN_objective] happier, and [PAWN_pronoun] will always want another.</description>
+      </li>
+    </degreeDatas>
+    <conflictingTraits>
+      <li>ChildFree</li>
+    </conflictingTraits>
+  </TraitDef>
+
+  <TraitDef>
+    <defName>ChildFree</defName>
+    <commonality>0.5</commonality>
+    <degreeDatas>
+      <li>
+        <label>child-free</label>
+        <description>[PAWN_nameDef] has never wanted children and never will. [PAWN_pronoun] enjoys [PAWN_possessive] freedom, always avoids pregnancy, and would be miserable as a parent.</description>
+      </li>
+    </degreeDatas>
+    <conflictingTraits>
+      <li>Matriarch</li>
+    </conflictingTraits>
+  </TraitDef>
   
 </Defs>

@@ -12,9 +12,11 @@ using UnityEngine;
 
 namespace Psychology
 {
-    // A 4-6 hour date. Ends early on danger, injury, drafting, work time or exhaustion. Finishing a date night gives both
-    // a "went on a date" memory; finishing a courtship date gives each a good or bad date memory scaled by how it went
-    // for them (RomanceUtility.DateQuality), and if it went well for both it may end in a romance attempt.
+    // A 4-6 hour date. Ends early on danger, a new injury, a mental break (which ruins it for the other: a bad date memory),
+    // drafting, work time or exhaustion. Finishing a date night gives
+    // both a "went on a date" memory; finishing a courtship date gives each a good or bad date memory scaled by how it went
+    // for them (RomanceUtility.DateQuality), and if it went well for both it may end in a romance attempt. The outcome (or
+    // why it was cut short) is shown as a top-left message.
     class LordJob_Date : LordJob
     {
         public LordJob_Date()
@@ -25,6 +27,9 @@ namespace Psychology
             this.initiator = initiator;
             this.recipient = recipient;
             this.courtship = courtship;
+            // Only injuries during the date end it; old scars or missing parts would otherwise end it at once.
+            this.initiatorHealth = initiator.health.summaryHealth.SummaryHealthPercent;
+            this.recipientHealth = recipient.health.summaryHealth.SummaryHealthPercent;
         }
 
         public override StateGraph CreateGraph()
@@ -36,9 +41,13 @@ namespace Psychology
             stateGraph.AddToil(lordToil_End);
             Transition transition = new Transition(lordToil_HangOut, lordToil_End);
             transition.AddTrigger(new Trigger_TickCondition(() => this.ShouldBeCalledOff()));
-            transition.AddTrigger(new Trigger_TickCondition(() => this.initiator.health.summaryHealth.SummaryHealthPercent < 1f || this.recipient.health.summaryHealth.SummaryHealthPercent < 1f));
+            transition.AddTrigger(new Trigger_TickCondition(() => RendezvousUtility.HurtSince(this.initiator, this.initiatorHealth) || RendezvousUtility.HurtSince(this.recipient, this.recipientHealth)));
             transition.AddTrigger(new Trigger_TickCondition(() => this.initiator.Drafted || this.recipient.Drafted));
             transition.AddTrigger(new Trigger_PawnLost());
+            transition.AddPreAction(new TransitionAction_Custom((Action)delegate
+            {
+                this.CutShort();
+            }));
             stateGraph.AddTransition(transition);
             this.timeoutTrigger = new Trigger_TicksPassed(Rand.RangeInclusive(GenDate.TicksPerHour*4, GenDate.TicksPerHour*6));
             Transition transition2 = new Transition(lordToil_HangOut, lordToil_End);
@@ -59,6 +68,54 @@ namespace Psychology
             }
             this.initiator.needs.mood.thoughts.memories.TryGainMemory(ThoughtDefOfPsychology.WentOnDate, this.recipient);
             this.recipient.needs.mood.thoughts.memories.TryGainMemory(ThoughtDefOfPsychology.WentOnDate, this.initiator);
+            RendezvousUtility.DateMessage("DateNightFinished", this.initiator, this.recipient, false, MessageTypeDefOf.PositiveEvent);
+        }
+
+        // Message for a date that ended before its time, with the first reason that applies. One pawn's mental break
+        // instead ruins the date for the other (RuinedBy).
+        private void CutShort()
+        {
+            bool initiatorBroke = RendezvousUtility.EndsOuting(this.initiator.MentalStateDef);
+            if (initiatorBroke != RendezvousUtility.EndsOuting(this.recipient.MentalStateDef))
+            {
+                this.RuinedBy(initiatorBroke ? this.initiator : this.recipient);
+                return;
+            }
+            string reason = null;
+            foreach (Pawn p in new Pawn[] { this.initiator, this.recipient })
+            {
+                if (reason != null)
+                {
+                    break;
+                }
+                float healthAtStart = p == this.initiator ? this.initiatorHealth : this.recipientHealth;
+                reason = RendezvousUtility.EndsOuting(p.MentalStateDef) ? "DateReasonMentalState".Translate(p)
+                    : p.Dead || !p.Spawned || !this.lord.ownedPawns.Contains(p) ? "DateReasonLeft".Translate(p)
+                    : p.Drafted ? "DateReasonDrafted".Translate(p)
+                    : RendezvousUtility.HurtSince(p, healthAtStart) ? "DateReasonHurt".Translate(p)
+                    : p.GetTimeAssignment() == TimeAssignmentDefOf.Work ? "DateReasonWork".Translate(p)
+                    : p.needs.rest?.CurLevel < RendezvousUtility.DateTooTiredRest ? "DateReasonTired".Translate(p)
+                    : (string)null;
+            }
+            reason ??= "DateReasonDanger".Translate();
+            PsychologyDebug.Log($"{(this.courtship ? "Date" : "Date night")} of {this.initiator} and {this.recipient} cut short: {reason}");
+            RendezvousUtility.DateMessage("DateCutShort", this.initiator, this.recipient, this.courtship, MessageTypeDefOf.NeutralEvent, reason);
+        }
+
+        // The breaker's mental break ruined the date for the other: a bad date memory of the breaker, at least
+        // RuinedDateQuality bad (worse if it was going badly anyway), and on record for a courtship date. Nothing for the
+        // breaker, who's busy with their break.
+        private void RuinedBy(Pawn breaker)
+        {
+            Pawn other = breaker == this.initiator ? this.recipient : this.initiator;
+            float quality = Mathf.Min(RomanceUtility.DateQuality(other, breaker), RuinedDateQuality);
+            if (this.courtship)
+            {
+                PsycheHelper.GameComp.RecordDate(other, breaker, quality);
+            }
+            RomanceUtility.GainDateMemory(other, breaker, quality);
+            PsychologyDebug.Log($"{(this.courtship ? "Date" : "Date night")} of {this.initiator} and {this.recipient} ruined by {breaker}'s mental break ({breaker.MentalStateDef}): quality {quality:0.00} for {other}");
+            RendezvousUtility.DateMessage("DateRuined", breaker, other, this.courtship, MessageTypeDefOf.NegativeEvent);
         }
 
         private void FinishedCourtship()
@@ -67,8 +124,14 @@ namespace Psychology
             float previousGoodDates = (RomanceUtility.GoodDateCount(this.initiator, this.recipient) + RomanceUtility.GoodDateCount(this.recipient, this.initiator)) / 2f;
             float initiatorQuality = RomanceUtility.DateQuality(this.initiator, this.recipient);
             float recipientQuality = RomanceUtility.DateQuality(this.recipient, this.initiator);
+            PsycheHelper.GameComp.RecordDate(this.initiator, this.recipient, initiatorQuality);
+            PsycheHelper.GameComp.RecordDate(this.recipient, this.initiator, recipientQuality);
             RomanceUtility.GainDateMemory(this.initiator, this.recipient, initiatorQuality);
             RomanceUtility.GainDateMemory(this.recipient, this.initiator, recipientQuality);
+            string outcomeKey = initiatorQuality > 0f && recipientQuality > 0f ? "DateWentWell" : initiatorQuality > 0f || recipientQuality > 0f ? "DateWentWellForOne" : "DateWentBadly";
+            // DateWentWellForOne names the pawn who enjoyed it first.
+            bool initiatorFirst = initiatorQuality > 0f || recipientQuality <= 0f;
+            RendezvousUtility.DateMessage(outcomeKey, initiatorFirst ? this.initiator : this.recipient, initiatorFirst ? this.recipient : this.initiator, true, outcomeKey == "DateWentBadly" ? MessageTypeDefOf.NegativeEvent : MessageTypeDefOf.PositiveEvent);
             PsychologyDebug.Log($"Date of {this.initiator} and {this.recipient} finished: quality {initiatorQuality:0.00} / {recipientQuality:0.00} (compatibility {RomanceUtility.Compatibility(this.initiator, this.recipient):0.00}), earlier good dates {previousGoodDates:0.#}");
             if (initiatorQuality <= 0f || recipientQuality <= 0f || LovePartnerRelationUtility.LovePartnerRelationExists(this.initiator, this.recipient))
             {
@@ -89,21 +152,37 @@ namespace Psychology
             Scribe_References.Look(ref this.initiator, "initiator");
             Scribe_References.Look(ref this.recipient, "recipient");
             Scribe_Values.Look(ref this.courtship, "courtship", false);
+            Scribe_Values.Look(ref this.initiatorHealth, "initiatorHealth", 1f);
+            Scribe_Values.Look(ref this.recipientHealth, "recipientHealth", 1f);
         }
         
         public override string GetReport(Pawn pawn)
         {
             return "LordReportDate".Translate();
         }
+
+        // A mental break ends the date (Trigger_PawnLost fires), even one that isn't violent: hallucinations or a daze
+        // wander off too. A social fight, even with each other, doesn't (RendezvousUtility.EndsOuting).
+        public override void Notify_InMentalState(Pawn pawn, MentalStateDef stateDef)
+        {
+            if (RendezvousUtility.EndsOuting(stateDef))
+            {
+                this.lord.Notify_PawnLost(pawn, PawnLostCondition.InMentalState);
+            }
+        }
         
         private bool ShouldBeCalledOff()
         {
-            return !GatheringsUtility.AcceptableGameConditionsToContinueGathering(base.Map) || this.initiator.GetTimeAssignment() == TimeAssignmentDefOf.Work || this.recipient.GetTimeAssignment() == TimeAssignmentDefOf.Work || this.initiator.needs.rest.CurLevel < 0.3f || this.recipient.needs.rest.CurLevel < 0.3f;
+            return !GatheringsUtility.AcceptableGameConditionsToContinueGathering(base.Map) || this.initiator.GetTimeAssignment() == TimeAssignmentDefOf.Work || this.recipient.GetTimeAssignment() == TimeAssignmentDefOf.Work || this.initiator.needs.rest?.CurLevel < RendezvousUtility.DateTooTiredRest || this.recipient.needs.rest?.CurLevel < RendezvousUtility.DateTooTiredRest;
         }
         
+        private const float RuinedDateQuality = -0.5f;
+
         private Trigger_TicksPassed timeoutTrigger;
         public Pawn initiator;
         public Pawn recipient;
         public bool courtship;
+        public float initiatorHealth = 1f;
+        public float recipientHealth = 1f;
     }
 }

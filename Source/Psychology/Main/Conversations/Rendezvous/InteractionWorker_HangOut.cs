@@ -10,6 +10,7 @@ using UnityEngine;
 namespace Psychology
 {
     // Invite another colonist to hang out (LordJob_HangOut: 3-5 hours doing joy activities together).
+    // Only between pawns with a recreation need (no children or babies).
     // Weight: initiator Extroverted + opinion, recipient Friendly/Cool; for people they dislike (opinion -20 or less) only
     // very Empathetic initiators and Trusting recipients bother. Much likelier when both are idle and not on work time,
     // and scaled down in small colonies.
@@ -22,6 +23,12 @@ namespace Psychology
             {
                 return 0f;
             }
+            // Hang-outs are recreation: children and babies have no recreation need (learning/play instead), so they'd
+            // just stand around while the other has fun.
+            if (initiator.needs?.joy == null || recipient.needs?.joy == null)
+            {
+                return 0f;
+            }
             if (!GatheringsUtility.ShouldGuestKeepAttendingGathering(initiator) || !GatheringsUtility.ShouldGuestKeepAttendingGathering(recipient))
             {
                 return 0f;
@@ -30,7 +37,7 @@ namespace Psychology
             {
                 return 0f;
             }
-            if (initiator.Drafted || recipient.Drafted)
+            if (initiator.Drafted || recipient.Drafted || recipient.InMentalState)
             {
                 return 0f;
             }

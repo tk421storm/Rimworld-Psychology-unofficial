@@ -7,6 +7,12 @@
 		<thinkRoot Class="ThinkNode_Priority">
 			<subNodes>
 				<li Class="ThinkNode_ConditionalMentalState">
+					<state>PanicAttack</state>
+					<subNodes>
+						<li Class="Psychology.JobGiver_PanicAttack" />
+					</subNodes>
+				</li>
+				<li Class="ThinkNode_ConditionalMentalState">
 					<state>SelfHarm</state>
 					<subNodes>
 						<li Class="ThinkNode_Priority">
