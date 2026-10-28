@@ -154,8 +154,8 @@ namespace Psychology
             plannedDate.hour = hour;
             plannedDate.courtship = courtship;
             initiator.health.AddHediff(plannedDate);
-            PsycheHelper.Comp(initiator).Psyche.lastDateTick = day;
-            PsycheHelper.Comp(recipient).Psyche.lastDateTick = day;
+            PsycheHelper.Comp(initiator).Psyche.SetLastDateTick(recipient, day);
+            PsycheHelper.Comp(recipient).Psyche.SetLastDateTick(initiator, day);
             float longitude = Find.WorldGrid.LongLatOf(initiator.Map.Tile).x;
             int startTick = DateStartTick(day, hour, initiator.Map);
             PsychologyDebug.Log($"{(courtship ? "Date" : "Date night")} planned: {initiator} and {recipient}, in {(startTick - Find.TickManager.TicksAbs) / (float)GenDate.TicksPerDay:0.0} days, on the {GenDate.QuadrumDateStringAt(startTick, longitude)} at hour {hour}");

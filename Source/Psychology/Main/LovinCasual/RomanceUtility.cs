@@ -503,47 +503,73 @@ namespace Psychology
     /// chance is the second date setting x their average quality x (1 + 0.5 per good date the asker remembers with
     /// them). The answer is rolled as for any date request and goes to the play log. At most one ask per pawn per day.
     /// With force (dev menu), every eligible pair asks, skipping the daily chance.
+    /// Logs a report, one line per pair with why it was skipped or how the ask went: always when forced, otherwise with
+    /// "Print debug info" on.
     /// </summary>
     public static void TrySecondDates(bool force = false)
     {
       if (PsychologySettings.secondDateChance <= 0f && !force)
       {
+        PsychologyDebug.Log("Second dates: off (second date chance setting is 0)");
         return;
       }
+      bool report = force || PsychologyDebug.Enabled;
+      System.Text.StringBuilder text = report ? new System.Text.StringBuilder() : null;
       InteractionWorker_DateBase worker = (InteractionWorker_DateBase)InteractionDefOfPsychology.AskOutOnDate.Worker;
       int windowStart = Find.TickManager.TicksGame - Mathf.RoundToInt(SecondDateWindowDays * GenDate.TicksPerDay);
       HashSet<Pawn> asked = new HashSet<Pawn>();
+      int asks = 0;
       // A list: asking plans a date, which shouldn't run while the date history is being read.
-      foreach ((DateRecord recordA, DateRecord recordB) in PsycheHelper.GameComp.LastDatePerPair().ToList())
+      List<(DateRecord, DateRecord)> pairs = PsycheHelper.GameComp.LastDatePerPair().ToList();
+      foreach ((DateRecord recordA, DateRecord recordB) in pairs)
       {
         Pawn a = recordA.pawn;
         Pawn b = recordB.pawn;
-        if (recordA.quality <= 0f || recordB.quality <= 0f || Mathf.Max(recordA.tick, recordB.tick) < windowStart || asked.Contains(a) || asked.Contains(b)
-          || !a.Spawned || !b.Spawned || a.Map != b.Map
-          || CountMemoriesOf(a, b, ThoughtDefOfPsychology.RebuffedMyDateRequest) > 0 || CountMemoriesOf(b, a, ThoughtDefOfPsychology.RebuffedMyDateRequest) > 0)
+        float daysAgo = (Find.TickManager.TicksGame - Mathf.Max(recordA.tick, recordB.tick)) / (float)GenDate.TicksPerDay;
+        string pair = $"{a.LabelShort} & {b.LabelShort} (last date {daysAgo:0.0} days ago, {recordA.quality:+0.00;-0.00} / {recordB.quality:+0.00;-0.00})";
+        string skip = recordA.quality <= 0f || recordB.quality <= 0f ? "didn't go well for both"
+          : Mathf.Max(recordA.tick, recordB.tick) < windowStart ? $"over {SecondDateWindowDays:0} days ago"
+          : asked.Contains(a) || asked.Contains(b) ? "one of them already asked or was asked today"
+          : !a.Spawned || !b.Spawned ? "one of them isn't on a map (or is dead)"
+          : a.Map != b.Map ? "on different maps"
+          : CountMemoriesOf(a, b, ThoughtDefOfPsychology.RebuffedMyDateRequest) > 0 ? $"{b.LabelShort} recently turned down {a.LabelShort}'s date"
+          : CountMemoriesOf(b, a, ThoughtDefOfPsychology.RebuffedMyDateRequest) > 0 ? $"{a.LabelShort} recently turned down {b.LabelShort}'s date"
+          : null;
+        if (skip != null)
         {
+          text?.AppendLine($"  {pair}: skipped, {skip}");
           continue;
         }
-        float weightA = worker.BlockReason(a, b) == null ? InteractionWorker_AskOutOnDate.AskWeight(a, b, false, out _) : 0f;
-        float weightB = worker.BlockReason(b, a) == null ? InteractionWorker_AskOutOnDate.AskWeight(b, a, false, out _) : 0f;
+        string blockA = worker.BlockReason(a, b);
+        string blockB = worker.BlockReason(b, a);
+        float weightA = blockA == null ? InteractionWorker_AskOutOnDate.AskWeight(a, b, false, out _) : 0f;
+        float weightB = blockB == null ? InteractionWorker_AskOutOnDate.AskWeight(b, a, false, out _) : 0f;
         if (weightA <= 0f && weightB <= 0f)
         {
+          text?.AppendLine($"  {pair}: skipped, neither can ask ({a.LabelShort}: {blockA ?? "ask weight 0"}; {b.LabelShort}: {blockB ?? "ask weight 0"})");
           continue;
         }
         Pawn asker = Rand.Value * (weightA + weightB) < weightA ? a : b;
         Pawn other = asker == a ? b : a;
         float chance = Mathf.Clamp01(PsychologySettings.secondDateChance / 100f * (recordA.quality + recordB.quality) / 2f * (1f + 0.5f * GoodDateCount(asker, other)));
+        string roll = $"ask weights {a.LabelShort} {weightA:0.00} / {b.LabelShort} {weightB:0.00}, {asker.LabelShort} asks; chance {chance:P0} ({PsychologySettings.secondDateChance:0}% x average quality x (1 + 0.5 x {GoodDateCount(asker, other)} good date(s)))";
         if (!force && !Rand.Chance(chance))
         {
-          PsychologyDebug.Log($"Second date: {asker} and {other} (last date {recordA.quality:+0.00} / {recordB.quality:+0.00}): chance {chance:P0} -> not today");
+          text?.AppendLine($"  {pair}: {roll} -> not today");
           continue;
         }
         asked.Add(a);
         asked.Add(b);
+        asks++;
         List<RulePackDef> extraSentencePacks = new List<RulePackDef>();
         bool accepted = InteractionWorker_AskOutOnDate.Ask(asker, other, extraSentencePacks, out float acceptChance, out string details);
         Find.PlayLog.Add(new PlayLogEntry_Interaction(InteractionDefOfPsychology.AskOutOnDate, asker, other, extraSentencePacks));
-        PsychologyDebug.Log($"Second date: {asker} asks {other} out again (chance {chance:P0}{(force ? ", forced" : "")}): accept chance {acceptChance:P0} ({details}) -> {(accepted ? "yes" : "no")}");
+        text?.AppendLine($"  {pair}: {roll}{(force ? " (forced)" : "")} -> asks {other.LabelShort} out again: accept chance {acceptChance:P0} ({details}) -> {(accepted ? "yes" : "no")}");
+      }
+      if (report)
+      {
+        Log.Message($"[Psychology] Second dates{(force ? " (forced)" : "")}: {PsycheHelper.GameComp.PawnsWithDateHistory.Count()} pawn(s) in the date history, {pairs.Count} pair(s) with records on both sides, {asks} ask(s)"
+          + (text.Length > 0 ? "\n" + text.ToString().TrimEnd() : ""));
       }
     }
 

@@ -21,8 +21,8 @@ namespace Psychology.Harmony;
 // Otherwise 1.15 x setting x the product of:
 //   - attraction above the 0.15 cut-off, rescaled to 0..1
 //   - opinion factor: steeper for Romantic pawns (who need to really like someone); Psychopaths need less
-//   - existing partner: unless their ideoligion allows another partner (or Polygamous/Lecher), a pawn who likes their
-//     current partner stays loyal; Romantic pawns are loyal longer but turn faster on a partner they dislike
+//   - existing partner: unless their ideoligion allows another partner (or they're Polygamous, or no partner would
+//     mind), the cheat chance on the partner they'd feel worst about cheating on (RomanceUtility.CheatFactor)
 //   - sexuality: 0.05 if they already know the recipient isn't into their gender; without Kinsey, 0.15 when the Gay
 //     traits don't line up (Bisexual isn't considered here)
 //   - "straight woman" factor (women initiate less in vanilla; 1.5/1.6 made it 1.15-2x with Kinsey)
@@ -128,19 +128,10 @@ public static class InteractionWorker_RomanceAttempt_SelectionWeightPatch
 
     /* INITIATOR EXISTING LOVE PARTNER FACTOR */
     // Romancing someone else while their ideoligion allows no more partners is cheating (a successful attempt makes both
-    // pawns leave their partners, who get "cheated on me"), so it's weighted by the same cheat chance as casual hookups
-    // (RomanceUtility.CheatChance: setting x Romantic-shaped opinion of the partner x personality; Lechers use their own
-    // curve). Polygamous pawns, or pawns whose partner is Polygamous, aren't held back.
-    float existingPartnerMult = 1f;
-    if (!new HistoryEvent(initiator.GetHistoryEventForLoveRelationCountPlusOne(), initiator.Named(HistoryEventArgsNames.Doer)).DoerWillingToDo())
-    {
-      Pawn pawn = LovePartnerRelationUtility.ExistingMostLikedLovePartner(initiator, allowDead: false);
-      if (pawn != null && !initiator.story.traits.HasTrait(TraitDefOfPsychology.Polygamous)
-          && !pawn.story.traits.HasTrait(TraitDefOfPsychology.Polygamous))
-      {
-        existingPartnerMult = RomanceUtility.CheatChance(initiator, pawn);
-      }
-    }
+    // pawns leave their partners, who get "cheated on me"), so it's weighted the same way as dates and casual hookups
+    // (RomanceUtility.CheatFactor: the cheat chance on the partner they'd feel worst about cheating on). Polygamous
+    // pawns aren't held back, nor are pawns whose partners are all Polygamous.
+    float existingPartnerMult = RomanceUtility.CheatFactor(initiator, recipient, out _);
 
     /* INITIATOR KNOWN SEXUALITY FACTOR */
     float knownSexFactor;
@@ -487,6 +478,28 @@ public static class InteractionWorker_RomanceAttempt_Interacted_Patches
     }
   }
 
+}
+
+// A Highmate's psychic bond waits for commitment: vanilla bonds as soon as a romance attempt makes them lovers, or at
+// their first lovin; here only spouses bond, or lovers/fiances when either is Codependent. Married bonds them at the
+// wedding (MarriageCeremonyUtility_MarriedPatch). CanCreatePsychicBondBetween is left alone, so a Highmate's romance
+// attempts still succeed more easily (vanilla's sure success, then our SuccessChance postfix).
+[HarmonyPatch(typeof(InteractionWorker_RomanceAttempt), nameof(InteractionWorker_RomanceAttempt.TryCreatePsychicBondBetween))]
+public static class InteractionWorker_RomanceAttempt_TryCreatePsychicBondPatch
+{
+  [HarmonyPrefix]
+  public static bool CommittedEnoughToBond(Pawn initiator, Pawn recipient, ref bool __result)
+  {
+    if (initiator.relations.DirectRelationExists(PawnRelationDefOf.Spouse, recipient)
+      || (LovePartnerRelationUtility.LovePartnerRelationExists(initiator, recipient)
+        && (initiator.story?.traits?.HasTrait(TraitDefOfPsychology.Codependent) == true || recipient.story?.traits?.HasTrait(TraitDefOfPsychology.Codependent) == true)))
+    {
+      return true;
+    }
+    PsychologyDebug.Log($"Psychic bond between {initiator} and {recipient} waits: not married (and neither is Codependent)");
+    __result = false;
+    return false;
+  }
 }
 
 // Polygamous pawns who start a new relationship don't break up with their existing lovers/fiances, and a Polygamous

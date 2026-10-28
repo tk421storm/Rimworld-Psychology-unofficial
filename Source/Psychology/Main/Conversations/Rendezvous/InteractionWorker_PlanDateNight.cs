@@ -10,14 +10,20 @@ using UnityEngine;
 namespace Psychology
 {
     // Shared gates for both date interactions (InteractionWorker_PlanDateNight for couples, InteractionWorker_AskOutOnDate
-    // for courtship): colonists with a psyche, safe conditions, neither busy with a gathering, neither with a date within
-    // the cooldown, and RomanceUtility.GetRomanticIntent must be the subclass's intent.
+    // for courtship): colonists with a psyche, safe conditions, neither busy with a gathering, neither with a date in the
+    // last 3 days, no date with each other within the subclass's cooldown, and RomanceUtility.GetRomanticIntent must be
+    // the subclass's intent.
     public abstract class InteractionWorker_DateBase : InteractionWorker
     {
         protected abstract RomanticIntent Intent { get; }
 
-        // No new date for either pawn until this many days after their last planned one.
+        // No new date for the pair until this many days after their last planned one together.
         protected abstract float CooldownDays { get; }
+
+        // No new date for either pawn, with anyone, until this many days after their last planned one: this covers a date
+        // already planned, and paces single pawns courting several people. A pawn with several partners can have a date
+        // night with each, this far apart, rather than one per partner cooldown.
+        private const float AnyDateCooldownDays = 3f;
 
         protected bool CanPlanDate(Pawn initiator, Pawn recipient)
         {
@@ -39,11 +45,17 @@ namespace Psychology
             {
                 return "not safe to go out (danger, injuries, under 4 colonists or half drafted)";
             }
-            // lastDateTick is the planned date as an absolute tick (TicksAbs, see RendezvousUtility.PlanDate).
-            int cooldownStart = Find.TickManager.TicksAbs - Mathf.RoundToInt(GenDate.TicksPerDay * CooldownDays);
-            if (PsycheHelper.Comp(initiator).Psyche.lastDateTick >= cooldownStart || PsycheHelper.Comp(recipient).Psyche.lastDateTick >= cooldownStart)
+            // The last date ticks are the planned date as an absolute tick (TicksAbs, see RendezvousUtility.PlanDate).
+            Pawn_PsycheTracker initiatorPsyche = PsycheHelper.Comp(initiator).Psyche;
+            int anyDateCooldownStart = Find.TickManager.TicksAbs - Mathf.RoundToInt(GenDate.TicksPerDay * AnyDateCooldownDays);
+            if (initiatorPsyche.lastDateTick >= anyDateCooldownStart || PsycheHelper.Comp(recipient).Psyche.lastDateTick >= anyDateCooldownStart)
             {
-                return $"a date within the last {CooldownDays:0} days (or one planned)";
+                return $"one of them had a date within the last {AnyDateCooldownDays:0} days (or has one planned)";
+            }
+            int cooldownStart = Find.TickManager.TicksAbs - Mathf.RoundToInt(GenDate.TicksPerDay * CooldownDays);
+            if (initiatorPsyche.LastDateTickWith(recipient) >= cooldownStart)
+            {
+                return $"a date with each other within the last {CooldownDays:0} days";
             }
             if (!GatheringsUtility.ShouldGuestKeepAttendingGathering(initiator) || !GatheringsUtility.ShouldGuestKeepAttendingGathering(recipient))
             {
@@ -58,7 +70,8 @@ namespace Psychology
     }
 
     // Lovers plan a date night: likelier the less they currently like each other (to repair things) and the more Romantic
-    // and less Independent both are. At most one date per couple per week.
+    // and less Independent both are. At most one date per couple per week (a pawn with several partners can have one
+    // with each).
     public class InteractionWorker_PlanDateNight : InteractionWorker_DateBase
     {
         protected override RomanticIntent Intent => RomanticIntent.DateNight;

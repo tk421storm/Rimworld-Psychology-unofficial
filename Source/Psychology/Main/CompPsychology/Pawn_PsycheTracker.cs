@@ -34,9 +34,11 @@ public class Pawn_PsycheTracker : IExposable
 {
   // Saved but no longer read anywhere; kept for save compatibility.
   public int upbringing = 0;
-  // When this pawn's last planned date is (absolute ticks, set by RendezvousUtility.PlanDate); InteractionWorker_DateBase
-  // uses it for the date cooldowns.
+  // When this pawn's last planned date is (absolute ticks, set by RendezvousUtility.PlanDate), with anyone and with each
+  // partner (keyed by their thingIDNumber); InteractionWorker_DateBase uses them for the date cooldowns. Entries over
+  // a month old are dropped on save.
   public int lastDateTick = 0;
+  private Dictionary<int, int> lastDateTickWith = new Dictionary<int, int>();
   private Pawn pawn;
   private HashSet<PersonalityNode> nodes;
 
@@ -97,10 +99,29 @@ public class Pawn_PsycheTracker : IExposable
     this.pawn = p;
   }
 
+  // When this pawn's last planned date with partner is (absolute ticks), or 0 if none is remembered.
+  public int LastDateTickWith(Pawn partner)
+  {
+    return lastDateTickWith.TryGetValue(partner.thingIDNumber, out int tick) ? tick : 0;
+  }
+
+  public void SetLastDateTick(Pawn partner, int tick)
+  {
+    lastDateTick = tick;
+    lastDateTickWith[partner.thingIDNumber] = tick;
+  }
+
   public void ExposeData()
   {
     Scribe_Values.Look(ref this.upbringing, "upbringing", 0, false);
     Scribe_Values.Look(ref this.lastDateTick, "lastDateTick", 0, false);
+    if (Scribe.mode == LoadSaveMode.Saving)
+    {
+      int stale = Find.TickManager.TicksAbs - 30 * GenDate.TicksPerDay;
+      lastDateTickWith.RemoveAll(e => e.Value < stale);
+    }
+    Scribe_Collections.Look(ref this.lastDateTickWith, "lastDateTickWith", LookMode.Value, LookMode.Value);
+    this.lastDateTickWith ??= new Dictionary<int, int>();
     PsycheHelper.Look(ref this.nodes, "nodes", LookMode.Deep, new object[] { this.pawn });
     foreach (PersonalityNode n in this.nodes)
     {
@@ -412,6 +433,7 @@ public class Pawn_PsycheTracker : IExposable
   {
     this.upbringing = trackerToCopy.upbringing;
     this.lastDateTick = trackerToCopy.lastDateTick;
+    this.lastDateTickWith = new Dictionary<int, int>(trackerToCopy.lastDateTickWith);
 
     this.nodes = new HashSet<PersonalityNode>();
     foreach (PersonalityNodeDef def in PersonalityNodeMatrix.DefList)
